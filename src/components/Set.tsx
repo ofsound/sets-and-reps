@@ -1,10 +1,20 @@
-function Set() {
+interface innerRowObject {
+  reps: number;
+  weight: string;
+  note: string;
+  date: string;
+}
+
+type inputProps = {
+  set: innerRowObject;
+};
+
+function Set({ set }: inputProps) {
   return (
-    <div>
-      <div>Name </div>
-      <div>Weight</div>
-      <div>Reps </div>
-      <div>Note </div>
+    <div className="flex">
+      <div>{set.reps}</div>
+      <div>{set.weight}</div>
+      <div>{set.note}</div>
     </div>
   );
 }
