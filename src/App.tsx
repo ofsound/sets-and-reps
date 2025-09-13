@@ -2,7 +2,7 @@ import Exercises from "./components/Exercises.tsx";
 
 function App() {
   return (
-    <div className="h-full bg-gray-200 p-12">
+    <div className="h-full bg-gray-200 p-6">
       <Exercises />
     </div>
   );

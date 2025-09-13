@@ -12,21 +12,19 @@ type inputProps = {
 function Set({ set }: inputProps) {
   const dateToTime = (dateNumber: number): string => {
     const date = new Date(dateNumber);
-    return date.toLocaleTimeString("en-US", {
+    return date.toLocaleDateString("en-US", {
       year: "numeric",
       month: "numeric",
       day: "numeric",
-      hour: "2-digit",
-      minute: "2-digit",
     });
   };
 
   return (
-    <div className="flex gap-2">
-      <div className="max-w-10">{set.reps} x </div>
-      <div className="min-w-24">{set.weight}</div>
-      <div className="flex-1">{set.notes}</div>
-      <div className="ml-auto">{dateToTime(set.date)}</div>
+    <div className="my-1 flex gap-2">
+      <div className="max-w-10 font-black">{set.reps} x </div>
+      <div className="min-w-14 font-black">{set.weight}</div>
+      <div className="flex-1 text-sm italic">{set.notes}</div>
+      <div className="ml-auto text-sm">{dateToTime(set.date)}</div>
     </div>
   );
 }

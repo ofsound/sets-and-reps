@@ -71,58 +71,64 @@ function Attempt({ attempt, addSet, isActive }: inputProps) {
           <div className="flex">
             <div className="flex w-full border-t-1 border-gray-400 bg-blue-200 px-2 py-3 grayscale-70">
               <div className="flex max-h-max">
-                <div className="text-md mt-[34px] w-12 pr-4 text-right">
-                  Reps
-                </div>
-                <input
-                  id="reps"
-                  type="text"
-                  className="mt-4 mr-10 ml-auto h-14 w-16 rounded-md border-1 border-dotted bg-gray-100 pr-5 text-right text-xl font-bold tabular-nums"
-                  value={reps}
-                  onChange={handleChange}
-                />
+                <div className="flex-col">
+                  <div className="text-md mt-[34px] w-12 pr-4 text-right">
+                    Reps
+                  </div>
+                  <div className="flex">
+                    <input
+                      id="reps"
+                      type="text"
+                      className="mt-4 mr-6 ml-auto h-10 w-12 rounded-md border-1 border-dotted bg-gray-100 pr-5 text-right text-xl font-bold tabular-nums"
+                      value={reps}
+                      onChange={handleChange}
+                    />
 
-                <div className="flex flex-col gap-3">
-                  <button
-                    className="block h-10 w-10 rounded-sm border-1 border-dotted border-gray-900 bg-gray-100 text-xl font-bold shadow-md"
-                    onClick={() => trySetReps(reps + 1)}
-                  >
-                    <div className="relative -top-[2px]">+</div>
-                  </button>
-                  <button
-                    className="block h-10 w-10 rounded-sm border-1 border-dotted border-gray-900 bg-gray-100 text-xl font-bold shadow-md"
-                    onClick={() => trySetReps(reps - 1)}
-                  >
-                    <div className="relative -top-[1px]">–</div>
-                  </button>
+                    <div className="flex flex-col gap-3">
+                      <button
+                        className="block h-10 w-10 rounded-sm border-1 border-dotted border-gray-900 bg-gray-100 text-xl font-bold shadow-md"
+                        onClick={() => trySetReps(reps + 1)}
+                      >
+                        <div className="relative -top-[2px]">+</div>
+                      </button>
+                      <button
+                        className="block h-10 w-10 rounded-sm border-1 border-dotted border-gray-900 bg-gray-100 text-xl font-bold shadow-md"
+                        onClick={() => trySetReps(reps - 1)}
+                      >
+                        <div className="relative -top-[1px]">–</div>
+                      </button>
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>
             <div className="flex w-full justify-center border-t-1 border-gray-400 bg-blue-200 px-2 py-3 grayscale-70">
-              <div className="flex max-h-max self-center-safe">
+              <div className="flex max-h-max flex-col self-center-safe">
                 <div className="text-md mt-[34px] w-16 pr-4 text-right">
                   Weight
                 </div>
-                <input
-                  id="weight"
-                  type="text"
-                  className="mt-4 mr-10 ml-auto h-14 w-26 rounded-md border-1 border-dotted bg-gray-100 pr-5 text-right text-xl font-bold tabular-nums"
-                  value={weight}
-                  onChange={handleChange}
-                />
-                <div className="flex flex-col gap-3">
-                  <button
-                    className="block h-10 w-10 rounded-sm border-1 border-dotted border-gray-900 bg-gray-100 text-xl font-bold shadow-md"
-                    // onClick={() => trySetCountInTime(countInTime + 1)}
-                  >
-                    <div className="relative -top-[2px]">+</div>
-                  </button>
-                  <button
-                    className="block h-10 w-10 rounded-sm border-1 border-dotted border-gray-900 bg-gray-100 text-xl font-bold shadow-md"
-                    // onClick={() => trySetCountInTime(countInTime - 1)}
-                  >
-                    <div className="relative -top-[1px]">–</div>
-                  </button>
+                <div className="flex">
+                  <input
+                    id="weight"
+                    type="text"
+                    className="mt-4 mr-6 ml-auto h-10 w-15 rounded-md border-1 border-dotted bg-gray-100 pr-5 text-right text-xl font-bold tabular-nums"
+                    value={weight}
+                    onChange={handleChange}
+                  />
+                  <div className="flex flex-col gap-3">
+                    <button
+                      className="block h-10 w-10 rounded-sm border-1 border-dotted border-gray-900 bg-gray-100 text-xl font-bold shadow-md"
+                      // onClick={() => trySetCountInTime(countInTime + 1)}
+                    >
+                      <div className="relative -top-[2px]">+</div>
+                    </button>
+                    <button
+                      className="block h-10 w-10 rounded-sm border-1 border-dotted border-gray-900 bg-gray-100 text-xl font-bold shadow-md"
+                      // onClick={() => trySetCountInTime(countInTime - 1)}
+                    >
+                      <div className="relative -top-[1px]">–</div>
+                    </button>
+                  </div>
                 </div>
               </div>
             </div>
@@ -140,21 +146,20 @@ function Attempt({ attempt, addSet, isActive }: inputProps) {
               />
             </div>
           </div>
+          <button
+            className={` ${!isActive && "hidden"} m-4 block h-12 w-full rounded-md border-1 bg-green-600 font-black text-white`}
+            onClick={() => {
+              addSet({
+                reps: reps,
+                weight: weight,
+                notes: notes,
+                date: Date.now(),
+              });
+            }}
+          >
+            Add Set
+          </button>
         </div>
-
-        <button
-          className={` ${!isActive && "hidden"} m-4 block w-full rounded-md border-1 bg-green-600 font-black text-white`}
-          onClick={() => {
-            addSet({
-              reps: reps,
-              weight: weight,
-              notes: notes,
-              date: Date.now(),
-            });
-          }}
-        >
-          Add Set
-        </button>
       </div>
     </>
   );

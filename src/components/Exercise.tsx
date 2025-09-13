@@ -8,6 +8,7 @@ interface setObject {
 }
 
 interface rowObject {
+  id: string;
   name: string;
   attempts: setObject[][];
 }
@@ -15,31 +16,42 @@ interface rowObject {
 type inputProps = {
   data: rowObject;
   newAttempt: () => void;
+  toggleVisibility: () => void;
   newSet: (set: setObject) => void;
+  isActive: boolean;
 };
 
-function Exercise({ data, newAttempt, newSet }: inputProps) {
+function Exercise({
+  data,
+  newAttempt,
+  toggleVisibility,
+  newSet,
+  isActive,
+}: inputProps) {
   const handleAddSet = (set: setObject) => {
-    console.log("handle", set);
-
     newSet(set);
   };
 
   return (
     <div className="mb-4">
-      <h1 className="mb-2 font-black">{data.name}</h1>
-      <button className="block rounded-md border-1 p-2" onClick={newAttempt}>
-        Add Attempt
-      </button>
+      <h1 onClick={toggleVisibility} className="mb-2 font-black">
+        {data.name}
+      </h1>
 
-      {data.attempts.map((item, index) => (
-        <Attempt
-          attempt={item}
-          key={index}
-          addSet={handleAddSet}
-          isActive={index === data.attempts.length - 1}
-        />
-      ))}
+      <div className={`${isActive ? "block" : "hidden"}`}>
+        <button className="block rounded-md border-1 p-2" onClick={newAttempt}>
+          Add Attempt
+        </button>
+
+        {data.attempts.map((item, index) => (
+          <Attempt
+            attempt={item}
+            key={index}
+            addSet={handleAddSet}
+            isActive={index === data.attempts.length - 1}
+          />
+        ))}
+      </div>
     </div>
   );
 }
