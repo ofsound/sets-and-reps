@@ -5,8 +5,8 @@ import Exercise from "../components/Exercise.tsx";
 interface setObject {
   reps: number;
   weight: string;
-  note: string;
-  date: string;
+  notes: string;
+  date: number;
 }
 
 interface rowObject {
@@ -34,41 +34,43 @@ function Exercises() {
 
   const handleNewSet = (index: number, newSet: setObject) => {
     const newExercises = [...exercises];
-    newExercises[index].attempts[0].push(newSet);
+    newExercises[index].attempts[newExercises[index].attempts.length - 1].push(
+      newSet,
+    );
     localStorage.setItem("exercises", JSON.stringify(newExercises));
     setExercises(newExercises);
   };
 
   useEffect(() => {
-    // const newExercises = [
-    //   {
-    //     name: "Lateral Raises",
-    //     attempts: [
-    //       [
-    //         { reps: 3, weight: "35lbs", note: "no belt", date: "stamped" },
-    //         { reps: 4, weight: "25lbs", note: "no belt", date: "stamped" },
-    //       ],
-    //       [
-    //         { reps: 2, weight: "15lbs", note: "no belt", date: "stamped" },
-    //         { reps: 2, weight: "15lbs", note: "no belt", date: "stamped" },
-    //       ],
-    //     ],
-    //   },
-    //   {
-    //     name: "Pec Fly",
-    //     attempts: [
-    //       [
-    //         { reps: 3, weight: "35lbs", note: "no belt", date: "stamped" },
-    //         { reps: 4, weight: "25lbs", note: "no belt", date: "stamped" },
-    //       ],
-    //       [
-    //         { reps: 3, weight: "35lbs", note: "no belt", date: "stamped" },
-    //         { reps: 4, weight: "25lbs", note: "no belt", date: "stamped" },
-    //       ],
-    //     ],
-    //   },
-    // ];
-    // localStorage.setItem("exercises", JSON.stringify(newExercises));
+    const newExercises = [
+      {
+        name: "Lateral Raises",
+        attempts: [
+          [
+            { reps: 3, weight: "35lbs", note: "no belt", date: "stamped" },
+            { reps: 4, weight: "25lbs", note: "no belt", date: "stamped" },
+          ],
+          [
+            { reps: 2, weight: "15lbs", note: "no belt", date: "stamped" },
+            { reps: 2, weight: "15lbs", note: "no belt", date: "stamped" },
+          ],
+        ],
+      },
+      {
+        name: "Pec Fly",
+        attempts: [
+          [
+            { reps: 3, weight: "35lbs", note: "no belt", date: "stamped" },
+            { reps: 4, weight: "25lbs", note: "no belt", date: "stamped" },
+          ],
+          [
+            { reps: 3, weight: "35lbs", note: "no belt", date: "stamped" },
+            { reps: 4, weight: "25lbs", note: "no belt", date: "stamped" },
+          ],
+        ],
+      },
+    ];
+    localStorage.setItem("exercises", JSON.stringify(newExercises));
     // setExercises(newExercises);
   }, []);
 

@@ -1,8 +1,8 @@
 interface setObject {
   reps: number;
   weight: string;
-  note: string;
-  date: string;
+  notes: string;
+  date: number;
 }
 
 type inputProps = {
@@ -10,11 +10,23 @@ type inputProps = {
 };
 
 function Set({ set }: inputProps) {
+  const dateToTime = (dateNumber: number): string => {
+    const date = new Date(dateNumber);
+    return date.toLocaleTimeString("en-US", {
+      year: "numeric",
+      month: "numeric",
+      day: "numeric",
+      hour: "2-digit",
+      minute: "2-digit",
+    });
+  };
+
   return (
     <div className="flex gap-2">
-      <div>{set.reps}</div>
-      <div>{set.weight}</div>
-      <div>{set.note}</div>
+      <div className="max-w-10">{set.reps} x </div>
+      <div className="min-w-24">{set.weight}</div>
+      <div className="flex-1">{set.notes}</div>
+      <div className="ml-auto">{dateToTime(set.date)}</div>
     </div>
   );
 }

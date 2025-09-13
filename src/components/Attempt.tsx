@@ -1,18 +1,64 @@
+import type { ChangeEvent } from "react";
+import { useState } from "react";
+
 import Set from "../components/Set.tsx";
 
 interface setObject {
   reps: number;
   weight: string;
-  note: string;
-  date: string;
+  notes: string;
+  date: number;
 }
 
 type inputProps = {
   attempt: setObject[];
   addSet: (row: setObject) => void;
+  isActive: boolean;
 };
 
-function Attempt({ attempt, addSet }: inputProps) {
+function Attempt({ attempt, addSet, isActive }: inputProps) {
+  const [reps, setReps] = useState(3);
+  const [weight, setWeight] = useState("15lbs");
+  const [notes, setNotes] = useState("great job");
+
+  const handleChange = (
+    event: ChangeEvent<HTMLInputElement> | ChangeEvent<HTMLTextAreaElement>,
+  ) => {
+    const theInput = event.target as HTMLInputElement;
+    const newValue = parseInt(theInput.value, 10);
+
+    switch (theInput.id) {
+      case "reps":
+        setReps(newValue);
+        break;
+      case "weight":
+        setWeight(theInput.value);
+        break;
+      case "notes":
+        setNotes(theInput.value);
+        break;
+    }
+  };
+
+  const trySetReps = (newValue: number) => {
+    if (newValue >= 0 && newValue <= 99) {
+      setReps(newValue);
+    }
+  };
+
+  // const trySetSoundEffectIndex = (newValue: number) => {
+  //   if (newValue >= 1 && newValue <= 3) {
+  //     setSoundEffectIndex(newValue);
+  //     onSoundChange(newValue);
+  //   }
+  // };
+
+  // const trySetColorThemeIndex = (newValue: number) => {
+  //   if (newValue >= 1 && newValue <= 1) {
+  //     setColorThemeIndex(newValue);
+  //   }
+  // };
+
   return (
     <>
       <div className="mb-2 border-1 p-2">
@@ -20,87 +66,96 @@ function Attempt({ attempt, addSet }: inputProps) {
           <Set set={item} key={index} />
         ))}
       </div>
-      <div className="flex">
-        <div className="flex w-full justify-center border-t-1 border-gray-400 bg-blue-100 px-11 py-3 grayscale-70 even:bg-blue-200">
-          <div className="flex max-h-max self-center-safe">
-            <div className="text-md mt-[34px] w-30 pr-4 text-right">Reps</div>
-            <input
-              id="countInTime"
-              type="text"
-              className="pointer-events-none mt-4 mr-10 ml-auto h-14 w-14 rounded-md border-1 border-dotted bg-gray-100 pr-5 text-right text-2xl font-bold tabular-nums"
-              // value={countInTime}
-              // onChange={handleChange}
-            />
+      <div className={`${isActive ? "flex" : "hidden"}`}>
+        <div className="flex flex-col">
+          <div className="flex">
+            <div className="flex w-full border-t-1 border-gray-400 bg-blue-200 px-2 py-3 grayscale-70">
+              <div className="flex max-h-max">
+                <div className="text-md mt-[34px] w-12 pr-4 text-right">
+                  Reps
+                </div>
+                <input
+                  id="reps"
+                  type="text"
+                  className="mt-4 mr-10 ml-auto h-14 w-16 rounded-md border-1 border-dotted bg-gray-100 pr-5 text-right text-xl font-bold tabular-nums"
+                  value={reps}
+                  onChange={handleChange}
+                />
 
-            <div className="flex flex-col gap-3">
-              <button
-                className="block h-10 w-10 rounded-sm border-1 border-dotted border-gray-900 bg-gray-100 text-2xl font-bold shadow-md"
-                // onClick={() => trySetCountInTime(countInTime + 1)}
-              >
-                <div className="relative -top-[2px]">+</div>
-              </button>
-              <button
-                className="block h-10 w-10 rounded-sm border-1 border-dotted border-gray-900 bg-gray-100 text-2xl font-bold shadow-md"
-                // onClick={() => trySetCountInTime(countInTime - 1)}
-              >
-                <div className="relative -top-[1px]">–</div>
-              </button>
+                <div className="flex flex-col gap-3">
+                  <button
+                    className="block h-10 w-10 rounded-sm border-1 border-dotted border-gray-900 bg-gray-100 text-xl font-bold shadow-md"
+                    onClick={() => trySetReps(reps + 1)}
+                  >
+                    <div className="relative -top-[2px]">+</div>
+                  </button>
+                  <button
+                    className="block h-10 w-10 rounded-sm border-1 border-dotted border-gray-900 bg-gray-100 text-xl font-bold shadow-md"
+                    onClick={() => trySetReps(reps - 1)}
+                  >
+                    <div className="relative -top-[1px]">–</div>
+                  </button>
+                </div>
+              </div>
+            </div>
+            <div className="flex w-full justify-center border-t-1 border-gray-400 bg-blue-200 px-2 py-3 grayscale-70">
+              <div className="flex max-h-max self-center-safe">
+                <div className="text-md mt-[34px] w-16 pr-4 text-right">
+                  Weight
+                </div>
+                <input
+                  id="weight"
+                  type="text"
+                  className="mt-4 mr-10 ml-auto h-14 w-26 rounded-md border-1 border-dotted bg-gray-100 pr-5 text-right text-xl font-bold tabular-nums"
+                  value={weight}
+                  onChange={handleChange}
+                />
+                <div className="flex flex-col gap-3">
+                  <button
+                    className="block h-10 w-10 rounded-sm border-1 border-dotted border-gray-900 bg-gray-100 text-xl font-bold shadow-md"
+                    // onClick={() => trySetCountInTime(countInTime + 1)}
+                  >
+                    <div className="relative -top-[2px]">+</div>
+                  </button>
+                  <button
+                    className="block h-10 w-10 rounded-sm border-1 border-dotted border-gray-900 bg-gray-100 text-xl font-bold shadow-md"
+                    // onClick={() => trySetCountInTime(countInTime - 1)}
+                  >
+                    <div className="relative -top-[1px]">–</div>
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div className="flex w-full justify-center border-t-1 border-gray-400 bg-blue-200 px-2 py-3 grayscale-70">
+            <div className="flex max-h-max w-full self-center-safe">
+              <div className="text-md mt-[34px] w-12 pr-4 text-right">
+                Notes
+              </div>
+              <textarea
+                id="notes"
+                className="mt-4 mr-2 ml-auto h-full w-full rounded-md border-1 border-dotted bg-gray-100 p-3 text-left text-base font-bold tabular-nums"
+                value={notes}
+                onChange={handleChange}
+              />
             </div>
           </div>
         </div>
-        <div className="flex w-full justify-center border-t-1 border-gray-400 bg-blue-100 px-11 py-3 grayscale-70 even:bg-blue-200">
-          <div className="flex max-h-max self-center-safe">
-            <div className="text-md mt-[34px] w-30 pr-4 text-right">Weight</div>
-            <input
-              id="countInTime"
-              type="text"
-              className="pointer-events-none mt-4 mr-10 ml-auto h-14 w-14 rounded-md border-1 border-dotted bg-gray-100 pr-5 text-right text-2xl font-bold tabular-nums"
-              // value={countInTime}
-              // onChange={handleChange}
-            />
 
-            <div className="flex flex-col gap-3">
-              <button
-                className="block h-10 w-10 rounded-sm border-1 border-dotted border-gray-900 bg-gray-100 text-2xl font-bold shadow-md"
-                // onClick={() => trySetCountInTime(countInTime + 1)}
-              >
-                <div className="relative -top-[2px]">+</div>
-              </button>
-              <button
-                className="block h-10 w-10 rounded-sm border-1 border-dotted border-gray-900 bg-gray-100 text-2xl font-bold shadow-md"
-                // onClick={() => trySetCountInTime(countInTime - 1)}
-              >
-                <div className="relative -top-[1px]">–</div>
-              </button>
-            </div>
-          </div>
-        </div>
-        <div className="flex w-full justify-center border-t-1 border-gray-400 bg-blue-100 px-11 py-3 grayscale-70 even:bg-blue-200">
-          <div className="flex max-h-max self-center-safe">
-            <div className="text-md mt-[34px] w-30 pr-4 text-right">Notes</div>
-            <input
-              id="countInTime"
-              type="text"
-              className="pointer-events-none mt-4 mr-10 ml-auto h-14 w-14 rounded-md border-1 border-dotted bg-gray-100 pr-5 text-right text-2xl font-bold tabular-nums"
-              // value={countInTime}
-              // onChange={handleChange}
-            />
-          </div>
-        </div>
+        <button
+          className={` ${!isActive && "hidden"} m-4 block w-full rounded-md border-1 bg-green-600 font-black text-white`}
+          onClick={() => {
+            addSet({
+              reps: reps,
+              weight: weight,
+              notes: notes,
+              date: Date.now(),
+            });
+          }}
+        >
+          Add Set
+        </button>
       </div>
-
-      <button
-        onClick={() => {
-          addSet({
-            reps: 3,
-            weight: "35lbs",
-            note: "no belt",
-            date: "stamped",
-          });
-        }}
-      >
-        Add Set
-      </button>
     </>
   );
 }
