@@ -1,4 +1,4 @@
-interface innerRowObject {
+interface setObject {
   reps: number;
   weight: string;
   note: string;
@@ -6,7 +6,7 @@ interface innerRowObject {
 }
 
 type inputProps = {
-  set: innerRowObject;
+  set: setObject;
 };
 
 function Set({ set }: inputProps) {
