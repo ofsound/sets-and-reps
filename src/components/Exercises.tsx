@@ -7,7 +7,7 @@ import Exercise from "../components/Exercise.tsx";
 
 interface setObject {
   reps: number;
-  weight: string;
+  weight: number;
   notes: string;
   date: number;
 }
@@ -34,12 +34,14 @@ function Exercises() {
   });
 
   const handleNewAttempt = (index: number) => {
+    console.log("handleNewAttempt");
+
     const newExercises = [...exercises];
 
-    if (
-      newExercises[index].attempts[newExercises[index].attempts.length - 1]
-        .length !== 0
-    ) {
+    const lastAttempt =
+      newExercises[index].attempts[newExercises[index].attempts.length - 1];
+
+    if (lastAttempt.length !== 0) {
       newExercises[index].attempts.push([]);
       localStorage.setItem("exercises", JSON.stringify(newExercises));
       setExercises(newExercises);
@@ -65,6 +67,7 @@ function Exercises() {
 
     const newExercises = [...exercises];
     newExercises.push(newExercise);
+    localStorage.setItem("exercises", JSON.stringify(newExercises));
     setExercises(newExercises);
   };
 
@@ -92,50 +95,50 @@ function Exercises() {
   };
 
   useEffect(() => {
-    // const newExercises = [
-    //   {
-    //     name: "Lateral Raises",
-    //     attempts: [
-    //       [
-    //         { reps: 3, weight: "35lbs", notes: "no belt", date: 9823498938 },
-    //         { reps: 4, weight: "25lbs", notes: "no belt", date: 9823498938 },
-    //       ],
-    //       [
-    //         { reps: 2, weight: "15lbs", notes: "no belt", date: 9823498938 },
-    //         { reps: 2, weight: "15lbs", notes: "no belt", date: 9823498938 },
-    //       ],
-    //     ],
-    //   },
-    //   {
-    //     name: "Pec Fly",
-    //     attempts: [
-    //       [
-    //         { reps: 3, weight: "35lbs", notes: "no belt", date: 9823498938 },
-    //         { reps: 4, weight: "25lbs", notes: "no belt", date: 9823498938 },
-    //       ],
-    //       [
-    //         { reps: 3, weight: "35lbs", notes: "no belt", date: 9823498938 },
-    //         { reps: 4, weight: "25lbs", notes: "no belt", date: 9823498938 },
-    //       ],
-    //     ],
-    //   },
-    // ];
-    // localStorage.setItem("exercises", JSON.stringify(newExercises));
+    const newExercises = [
+      {
+        name: "Lateral Raises",
+        attempts: [
+          [
+            { reps: 3, weight: 35, notes: "no belt", date: 9823498938 },
+            { reps: 4, weight: 25, notes: "no belt", date: 9823498938 },
+          ],
+          [
+            { reps: 2, weight: 15, notes: "no belt", date: 9823498938 },
+            { reps: 2, weight: 15, notes: "no belt", date: 9823498938 },
+          ],
+        ],
+      },
+      {
+        name: "Pec Fly",
+        attempts: [
+          [
+            { reps: 3, weight: 35, notes: "no belt", date: 9823498938 },
+            { reps: 4, weight: 25, notes: "no belt", date: 9823498938 },
+          ],
+          [
+            { reps: 3, weight: 35, notes: "no belt", date: 9823498938 },
+            { reps: 4, weight: 25, notes: "no belt", date: 9823498938 },
+          ],
+        ],
+      },
+    ];
+    localStorage.setItem("exercises", JSON.stringify(newExercises));
     // setExercises(newExercises);
   }, []);
 
   return (
     <div>
-      <div className="mb-8 hidden bg-gray-300 p-4 shadow-md">
+      <div className="flex bg-gray-300 p-4 shadow-md">
         <input
           id="name"
           type="text"
-          className="mr-10 ml-auto h-14 w-full rounded-md border-1 border-dotted bg-gray-100 p-3 text-left text-xl font-bold tabular-nums"
+          className="mr-10 ml-auto h-10 w-full rounded-md border-1 border-dotted bg-gray-100 p-3 text-left text-xl font-bold tabular-nums"
           onChange={handleChange}
         />
 
         <button
-          className="block h-14 rounded-md border-1 p-2"
+          className="block h-10 rounded-md border-1 p-2"
           onClick={handleNewExercise}
         >
           Add&nbsp;Exercise

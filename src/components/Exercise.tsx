@@ -3,7 +3,7 @@ import Attempt from "../components/Attempt.tsx";
 
 interface setObject {
   reps: number;
-  weight: string;
+  weight: number;
   notes: string;
   date: number;
 }
@@ -29,6 +29,8 @@ function Exercise({ data, newAttempt, newSet, isActive }: inputProps) {
   };
 
   if (isActive && !isToggled.current) {
+    console.log("new Attempt!");
+
     newAttempt();
     isToggled.current = true;
   }
@@ -39,7 +41,7 @@ function Exercise({ data, newAttempt, newSet, isActive }: inputProps) {
 
   return (
     <div className={`${isActive ? "block" : "hidden"} mb-4`}>
-      <h1 className="mb-2 font-black">{data.name}</h1>
+      <h1 className="my-6 text-center text-2xl font-black">{data.name}</h1>
 
       <div className={`${isActive ? "block" : "hidden"}`}>
         {data.attempts.map((item, index) => (
