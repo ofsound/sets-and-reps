@@ -11,7 +11,7 @@ type inputProps = {
 
 function Set({ set }: inputProps) {
   return (
-    <div className="flex">
+    <div className="flex gap-2">
       <div>{set.reps}</div>
       <div>{set.weight}</div>
       <div>{set.note}</div>
