@@ -35,9 +35,15 @@ function Exercises() {
 
   const handleNewAttempt = (index: number) => {
     const newExercises = [...exercises];
-    newExercises[index].attempts.push([]);
-    localStorage.setItem("exercises", JSON.stringify(newExercises));
-    setExercises(newExercises);
+
+    if (
+      newExercises[index].attempts[newExercises[index].attempts.length - 1]
+        .length !== 0
+    ) {
+      newExercises[index].attempts.push([]);
+      localStorage.setItem("exercises", JSON.stringify(newExercises));
+      setExercises(newExercises);
+    }
   };
 
   const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
@@ -72,20 +78,12 @@ function Exercises() {
   };
 
   const handleToggleVisibility = (index: number) => {
-    let currentActiveIndex = -1;
-
-    for (let i = 0; i < isActiveArray.length; i++) {
-      if (isActiveArray[i] === true) {
-        currentActiveIndex = i;
-      }
-    }
-
     const tempIsActiveArray = [];
 
     for (let i = 0; i < exercises.length; i++) {
       tempIsActiveArray[i] = false;
 
-      if (index === i && i !== currentActiveIndex) {
+      if (index === i) {
         tempIsActiveArray[i] = true;
       }
     }
@@ -128,7 +126,7 @@ function Exercises() {
 
   return (
     <div>
-      <div className="mb-8 flex bg-gray-300 p-4 shadow-md">
+      <div className="mb-8 hidden bg-gray-300 p-4 shadow-md">
         <input
           id="name"
           type="text"
@@ -144,6 +142,20 @@ function Exercises() {
         </button>
       </div>
 
+      <div className="mb-4 bg-gray-500 p-4">
+        {exercises.map((item, index) => (
+          <button
+            key={index}
+            className="mr-2 rounded-sm border-1 border-white px-2 text-white"
+            onClick={() => {
+              handleToggleVisibility(index);
+            }}
+          >
+            {item.name}
+          </button>
+        ))}
+      </div>
+
       {exercises.map((item, index) => (
         <Exercise
           data={item}
@@ -154,9 +166,6 @@ function Exercises() {
           }}
           newSet={(set: setObject) => {
             handleNewSet(index, set);
-          }}
-          toggleVisibility={() => {
-            handleToggleVisibility(index);
           }}
         />
       ))}

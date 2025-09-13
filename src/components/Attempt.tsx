@@ -115,7 +115,21 @@ function Attempt({ attempt, addSet, isActive }: inputProps) {
                 </div>
               </div>
             </div>
+            <button
+              className={` ${!isActive && "hidden"} m-0 block h-full w-full rounded-md border-1 bg-green-600 font-black text-white`}
+              onClick={() => {
+                addSet({
+                  reps: reps,
+                  weight: weight,
+                  notes: notes,
+                  date: Date.now(),
+                });
+              }}
+            >
+              Add Set
+            </button>
           </div>
+
           <div className="flex w-full justify-center border-t-1 border-gray-400 bg-blue-200 px-2 py-3 grayscale-70">
             <div className="flex max-h-max w-full self-center-safe">
               <div className="text-md w-12 pr-4 text-right">Notes</div>
@@ -127,19 +141,6 @@ function Attempt({ attempt, addSet, isActive }: inputProps) {
               />
             </div>
           </div>
-          <button
-            className={` ${!isActive && "hidden"} m-4 block h-12 w-full rounded-md border-1 bg-green-600 font-black text-white`}
-            onClick={() => {
-              addSet({
-                reps: reps,
-                weight: weight,
-                notes: notes,
-                date: Date.now(),
-              });
-            }}
-          >
-            Add Set
-          </button>
         </div>
       </div>
     </>

@@ -1,3 +1,4 @@
+import { useRef } from "react";
 import Attempt from "../components/Attempt.tsx";
 
 interface setObject {
@@ -16,33 +17,31 @@ interface rowObject {
 type inputProps = {
   data: rowObject;
   newAttempt: () => void;
-  toggleVisibility: () => void;
   newSet: (set: setObject) => void;
   isActive: boolean;
 };
 
-function Exercise({
-  data,
-  newAttempt,
-  toggleVisibility,
-  newSet,
-  isActive,
-}: inputProps) {
+function Exercise({ data, newAttempt, newSet, isActive }: inputProps) {
+  const isToggled = useRef(false);
+
   const handleAddSet = (set: setObject) => {
     newSet(set);
   };
 
+  if (isActive && !isToggled.current) {
+    newAttempt();
+    isToggled.current = true;
+  }
+
+  if (!isActive) {
+    isToggled.current = false;
+  }
+
   return (
-    <div className="mb-4">
-      <h1 onClick={toggleVisibility} className="mb-2 font-black">
-        {data.name}
-      </h1>
+    <div className={`${isActive ? "block" : "hidden"} mb-4`}>
+      <h1 className="mb-2 font-black">{data.name}</h1>
 
       <div className={`${isActive ? "block" : "hidden"}`}>
-        <button className="block rounded-md border-1 p-2" onClick={newAttempt}>
-          Add Attempt
-        </button>
-
         {data.attempts.map((item, index) => (
           <Attempt
             attempt={item}
