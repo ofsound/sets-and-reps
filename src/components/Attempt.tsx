@@ -18,8 +18,8 @@ type inputProps = {
 
 function Attempt({ attempt, addSet, isActive }: inputProps) {
   const [reps, setReps] = useState(3);
-  const [weight, setWeight] = useState("15lbs");
-  const [notes, setNotes] = useState("great job");
+  const [weight, setWeight] = useState("50lbs");
+  const [notes, setNotes] = useState("");
 
   const handleChange = (
     event: ChangeEvent<HTMLInputElement> | ChangeEvent<HTMLTextAreaElement>,
@@ -46,19 +46,6 @@ function Attempt({ attempt, addSet, isActive }: inputProps) {
     }
   };
 
-  // const trySetSoundEffectIndex = (newValue: number) => {
-  //   if (newValue >= 1 && newValue <= 3) {
-  //     setSoundEffectIndex(newValue);
-  //     onSoundChange(newValue);
-  //   }
-  // };
-
-  // const trySetColorThemeIndex = (newValue: number) => {
-  //   if (newValue >= 1 && newValue <= 1) {
-  //     setColorThemeIndex(newValue);
-  //   }
-  // };
-
   return (
     <>
       <div className="mb-2 border-1 p-2">
@@ -67,14 +54,12 @@ function Attempt({ attempt, addSet, isActive }: inputProps) {
         ))}
       </div>
       <div className={`${isActive ? "flex" : "hidden"}`}>
-        <div className="flex flex-col">
-          <div className="flex">
+        <div className="flex w-full flex-col">
+          <div className="flex w-full">
             <div className="flex w-full border-t-1 border-gray-400 bg-blue-200 px-2 py-3 grayscale-70">
               <div className="flex max-h-max">
                 <div className="flex-col">
-                  <div className="text-md mt-[34px] w-12 pr-4 text-right">
-                    Reps
-                  </div>
+                  <div className="text-md w-12 pr-4 text-right">Reps</div>
                   <div className="flex">
                     <input
                       id="reps"
@@ -104,14 +89,12 @@ function Attempt({ attempt, addSet, isActive }: inputProps) {
             </div>
             <div className="flex w-full justify-center border-t-1 border-gray-400 bg-blue-200 px-2 py-3 grayscale-70">
               <div className="flex max-h-max flex-col self-center-safe">
-                <div className="text-md mt-[34px] w-16 pr-4 text-right">
-                  Weight
-                </div>
+                <div className="text-md w-full pr-4">Weight</div>
                 <div className="flex">
                   <input
                     id="weight"
                     type="text"
-                    className="mt-4 mr-6 ml-auto h-10 w-15 rounded-md border-1 border-dotted bg-gray-100 pr-5 text-right text-xl font-bold tabular-nums"
+                    className="mt-4 mr-6 ml-auto h-10 w-26 rounded-md border-1 border-dotted bg-gray-100 pr-5 text-right text-xl font-bold tabular-nums"
                     value={weight}
                     onChange={handleChange}
                   />
@@ -135,9 +118,7 @@ function Attempt({ attempt, addSet, isActive }: inputProps) {
           </div>
           <div className="flex w-full justify-center border-t-1 border-gray-400 bg-blue-200 px-2 py-3 grayscale-70">
             <div className="flex max-h-max w-full self-center-safe">
-              <div className="text-md mt-[34px] w-12 pr-4 text-right">
-                Notes
-              </div>
+              <div className="text-md w-12 pr-4 text-right">Notes</div>
               <textarea
                 id="notes"
                 className="mt-4 mr-2 ml-auto h-full w-full rounded-md border-1 border-dotted bg-gray-100 p-3 text-left text-base font-bold tabular-nums"
