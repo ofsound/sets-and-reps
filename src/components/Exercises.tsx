@@ -173,27 +173,27 @@ function Exercises() {
 
   return (
     <div className="flex h-full flex-col">
-      <div className="flex bg-gray-300 p-4 shadow-md">
+      <div className="flex bg-gray-500 p-4 shadow-md">
         <input
           id="name"
           type="text"
-          className="mr-10 ml-auto h-10 w-full rounded-md border-1 border-dotted bg-gray-100 p-3 text-left text-xl font-bold tabular-nums"
+          className="text-md mr-4 ml-auto h-8 w-full rounded-md border-1 border-dotted bg-gray-100 p-3 text-left font-bold tabular-nums"
           onChange={handleChange}
         />
 
         <button
-          className="block h-10 rounded-md border-1 p-2"
+          className="block h-8 rounded-md border-1 px-3 text-white"
           onClick={handleNewExercise}
         >
           Add&nbsp;Exercise
         </button>
       </div>
 
-      <div className="mb-4 bg-gray-500 p-4">
+      <div className="mb-4 border-b-2 border-gray-300 bg-gray-500 p-4">
         {exercises.map((item, index) => (
           <button
             key={index}
-            className="mr-2 rounded-sm border-1 border-white px-2 text-white"
+            className={`mr-2 rounded-md border-1 border-white px-3 py-1 text-lg text-white ${index === exerciseIndex && "bg-black"}`}
             onClick={() => {
               setExerciseIndex(index);
               handleToggleVisibility(index);
@@ -219,7 +219,7 @@ function Exercises() {
           />
         ))}
       </div>
-      <div className="mx-auto mt-4 flex w-full flex-col border-t-1 border-white bg-gray-400 py-4">
+      <div className="mx-auto mt-4 flex w-full flex-col border-t-1 border-white bg-gray-500 py-4">
         <div className="flex justify-center gap-12 pt-3 pb-6">
           <div className="flex h-full">
             <div className="flex-col">
@@ -243,7 +243,7 @@ function Exercises() {
                 <input
                   id="reps"
                   type="text"
-                  className="mt-4 ml-6 h-10 w-12 rounded-md border-1 border-dotted bg-gray-100 pr-5 text-right text-xl font-bold tabular-nums"
+                  className="mt-4 ml-6 h-10 w-12 rounded-md border-1 border-dotted bg-gray-100 pr-3 text-right text-xl font-bold tabular-nums"
                   value={reps}
                   onChange={handleChange}
                 />
@@ -256,7 +256,7 @@ function Exercises() {
               <input
                 id="weight"
                 type="text"
-                className="mt-4 mr-6 ml-auto h-10 w-26 rounded-md border-1 border-dotted bg-gray-100 pr-5 text-right text-xl font-bold tabular-nums"
+                className="mt-4 mr-6 ml-auto h-10 w-26 rounded-md border-2 border-dotted border-gray-400 bg-gray-100 pr-5 text-right text-xl font-bold tabular-nums"
                 value={weight + "lbs"}
                 onChange={handleChange}
               />
@@ -278,7 +278,7 @@ function Exercises() {
           </div>
           <div className="p-4">
             <button
-              className={`block h-full w-25 flex-1 shrink-0 rounded-md border-1 border-gray-600 bg-green-600 font-black text-white shadow-md`}
+              className={`block h-full w-25 flex-1 shrink-0 rounded-md border-1 border-gray-500 bg-green-600 font-black text-white shadow-md`}
               onClick={() => {
                 handleNewSet(exerciseIndex, {
                   reps: reps,
