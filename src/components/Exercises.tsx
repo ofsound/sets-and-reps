@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import type { ChangeEvent } from "react";
 
 import { v4 as uuidv4 } from "uuid";
@@ -19,6 +19,8 @@ interface rowObject {
 }
 
 function Exercises() {
+  const scroller = useRef(null);
+
   const [newName, setNewName] = useState("");
 
   const [exerciseIndex, setExerciseIndex] = useState(0);
@@ -36,8 +38,6 @@ function Exercises() {
   });
 
   const handleNewAttempt = (index: number) => {
-    console.log("handleNewAttempt");
-
     const newExercises = [...exercises];
 
     const lastAttempt =
@@ -49,16 +49,6 @@ function Exercises() {
       setExercises(newExercises);
     }
   };
-
-  // const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
-  //   const theInput = event.target as HTMLInputElement;
-
-  //   switch (theInput.id) {
-  //     case "name":
-  //       setNewName(theInput.value);
-  //       break;
-  //   }
-  // };
 
   const handleNewExercise = () => {
     const newExercise = {
@@ -80,6 +70,19 @@ function Exercises() {
     );
     localStorage.setItem("exercises", JSON.stringify(newExercises));
     setExercises(newExercises);
+
+    setTimeout(() => {
+      updateScroller();
+    }, 1);
+  };
+
+  const updateScroller = () => {
+    const thisScroller = scroller.current;
+    if (thisScroller) {
+      (thisScroller as HTMLElement).scrollTop = (
+        thisScroller as HTMLElement
+      ).scrollHeight;
+    }
   };
 
   const handleToggleVisibility = (index: number) => {
@@ -94,6 +97,9 @@ function Exercises() {
     }
 
     setIsActiveArray(tempIsActiveArray);
+    setTimeout(() => {
+      updateScroller();
+    }, 1);
   };
 
   useEffect(() => {
@@ -200,7 +206,10 @@ function Exercises() {
         ))}
       </div>
 
-      <div className="max-h-full flex-1 overflow-y-auto">
+      <div
+        ref={scroller}
+        className="[&>*]:last]:animate-pulse max-h-full flex-1 overflow-y-auto"
+      >
         {exercises.map((item, index) => (
           <Exercise
             data={item}
@@ -212,69 +221,66 @@ function Exercises() {
           />
         ))}
       </div>
-
-      <div className="mt-auto flex flex-col border-t-2 border-black">
-        <div className="flex w-full">
-          <div className="flex w-full bg-blue-200 px-4 py-6 grayscale-70">
-            <div className="flex max-h-max">
-              <div className="flex-col">
-                <div className="text-md w-12 pr-4 text-right">Reps</div>
-                <div className="flex">
-                  <input
-                    id="reps"
-                    type="text"
-                    className="mt-4 mr-3 ml-auto h-10 w-12 rounded-md border-1 border-dotted bg-gray-100 pr-5 text-right text-xl font-bold tabular-nums"
-                    value={reps}
-                    onChange={handleChange}
-                  />
-
-                  <div className="flex flex-col gap-3">
-                    <button
-                      className="block h-10 w-10 rounded-sm border-1 border-dotted border-gray-900 bg-gray-100 text-xl font-bold shadow-md"
-                      onClick={() => trySetReps(reps + 1)}
-                    >
-                      <div className="relative -top-[2px]">+</div>
-                    </button>
-                    <button
-                      className="block h-10 w-10 rounded-sm border-1 border-dotted border-gray-900 bg-gray-100 text-xl font-bold shadow-md"
-                      onClick={() => trySetReps(reps - 1)}
-                    >
-                      <div className="relative -top-[1px]">–</div>
-                    </button>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div className="flex w-full justify-center border-gray-400 bg-blue-200 px-2 py-3 grayscale-70">
-            <div className="flex max-h-max flex-col self-center-safe">
-              <div className="text-md w-full pr-4">Weight</div>
+      <div className="mx-auto mt-12 flex w-full flex-col border-t-1 border-white bg-gray-400">
+        <div className="flex justify-center gap-12 pt-3 pb-6">
+          <div className="flex h-full">
+            <div className="flex-col">
+              <div className="mb-6 text-sm font-bold">Reps</div>
               <div className="flex">
-                <input
-                  id="weight"
-                  type="text"
-                  className="mt-4 mr-3 ml-auto h-10 w-26 rounded-md border-1 border-dotted bg-gray-100 pr-5 text-right text-xl font-bold tabular-nums"
-                  value={weight + "lbs"}
-                  onChange={handleChange}
-                />
                 <div className="flex flex-col gap-3">
                   <button
                     className="block h-10 w-10 rounded-sm border-1 border-dotted border-gray-900 bg-gray-100 text-xl font-bold shadow-md"
-                    onClick={() => trySetWeight(weight + 1)}
+                    onClick={() => trySetReps(reps + 1)}
                   >
                     <div className="relative -top-[2px]">+</div>
                   </button>
                   <button
                     className="block h-10 w-10 rounded-sm border-1 border-dotted border-gray-900 bg-gray-100 text-xl font-bold shadow-md"
-                    onClick={() => trySetWeight(weight - 1)}
+                    onClick={() => trySetReps(reps - 1)}
                   >
                     <div className="relative -top-[1px]">–</div>
                   </button>
                 </div>
+
+                <input
+                  id="reps"
+                  type="text"
+                  className="mt-4 ml-6 h-10 w-12 rounded-md border-1 border-dotted bg-gray-100 pr-5 text-right text-xl font-bold tabular-nums"
+                  value={reps}
+                  onChange={handleChange}
+                />
               </div>
             </div>
+          </div>
+          <div className="flex flex-col border-r-1 border-l-1 border-gray-300 px-12 font-bold">
+            <div className="mb-6 text-sm">Weight</div>
+            <div className="flex">
+              <input
+                id="weight"
+                type="text"
+                className="mt-4 mr-6 ml-auto h-10 w-26 rounded-md border-1 border-dotted bg-gray-100 pr-5 text-right text-xl font-bold tabular-nums"
+                value={weight + "lbs"}
+                onChange={handleChange}
+              />
+              <div className="flex flex-col gap-3">
+                <button
+                  className="block h-10 w-10 rounded-sm border-1 border-dotted border-gray-900 bg-gray-100 text-xl font-bold shadow-md"
+                  onClick={() => trySetWeight(weight + 1)}
+                >
+                  <div className="relative -top-[2px]">+</div>
+                </button>
+                <button
+                  className="block h-10 w-10 rounded-sm border-1 border-dotted border-gray-900 bg-gray-100 text-xl font-bold shadow-md"
+                  onClick={() => trySetWeight(weight - 1)}
+                >
+                  <div className="relative -top-[1px]">–</div>
+                </button>
+              </div>
+            </div>
+          </div>
+          <div className="p-4">
             <button
-              className={`ml-4 block w-20 shrink-0 rounded-md border-1 bg-green-600 font-black text-white`}
+              className={`block h-full w-25 flex-1 shrink-0 rounded-md border-1 border-gray-600 bg-green-600 font-black text-white shadow-md`}
               onClick={() => {
                 handleNewSet(exerciseIndex, {
                   reps: reps,
@@ -288,11 +294,11 @@ function Exercises() {
             </button>
           </div>
         </div>
-
-        <div className="flex w-full justify-center border-t-1 border-gray-400 bg-blue-200 px-2 py-3 grayscale-70">
+        <div className="flex border-t-1 border-gray-400 bg-blue-200 px-6 py-4 grayscale-70">
           <div className="flex max-h-max w-full self-center-safe">
-            <div className="text-md w-12 pr-4 text-right">Notes</div>
-            <textarea
+            <div className="text-md w-12 pr-4 text-right font-bold">Notes</div>
+            <input
+              type="text"
               id="notes"
               className="ml-4 h-full w-full rounded-md border-1 border-dotted bg-gray-100 p-3 text-left text-base font-bold tabular-nums"
               value={notes}

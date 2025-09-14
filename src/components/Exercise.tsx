@@ -24,10 +24,9 @@ function Exercise({ data, newAttempt, isActive }: inputProps) {
   const isToggled = useRef(false);
 
   if (isActive && !isToggled.current) {
-    console.log("new Attempt!");
+    isToggled.current = true;
 
     newAttempt();
-    isToggled.current = true;
   }
 
   if (!isActive) {
@@ -35,10 +34,10 @@ function Exercise({ data, newAttempt, isActive }: inputProps) {
   }
 
   return (
-    <div className={`${isActive ? "block" : "hidden"} mb-4`}>
+    <div className={`${isActive ? "block" : "hidden"} mb-4 overflow-hidden`}>
       <h1 className="my-6 text-center text-2xl font-black">{data.name}</h1>
 
-      <div className={`${isActive ? "block overflow-y-auto" : "hidden"}`}>
+      <div id="help" className={`${isActive ? "block" : "hidden"}`}>
         {data.attempts.map((item, index) => (
           <Attempt
             attempt={item}

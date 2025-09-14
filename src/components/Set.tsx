@@ -20,7 +20,7 @@ function Set({ set }: inputProps) {
   };
 
   return (
-    <div className="my-1 flex gap-2">
+    <div className="my-1 flex items-baseline gap-2 px-3">
       <div className="max-w-10 font-black">{set.reps} x </div>
       <div className="min-w-14 font-black">{set.weight}lbs</div>
       <div className="flex-1 text-sm italic">{set.notes}</div>

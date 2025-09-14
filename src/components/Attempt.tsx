@@ -14,7 +14,9 @@ type inputProps = {
 
 function Attempt({ attempt, isActive }: inputProps) {
   return (
-    <div className={`${isActive ? "block" : "block"}`}>
+    <div
+      className={`${isActive ? "block" : "block"} bg-gray-100 shadow-sm last:animate-pulse last:bg-blue-100`}
+    >
       <div className="mb-2 min-h-13 rounded-md border-1 border-gray-500 p-2">
         {attempt.map((item, index) => (
           <Set set={item} key={index} />
