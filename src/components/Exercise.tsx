@@ -35,7 +35,9 @@ function Exercise({ data, newAttempt, isActive }: inputProps) {
 
   return (
     <div className={`${isActive ? "block" : "hidden"} mb-4 overflow-hidden`}>
-      <h1 className="my-6 text-center text-2xl font-black">{data.name}</h1>
+      <h1 className="my-6 hidden text-center text-2xl font-black">
+        {data.name}
+      </h1>
 
       <div id="help" className={`${isActive ? "block" : "hidden"}`}>
         {data.attempts.map((item, index) => (
