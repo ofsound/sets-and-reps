@@ -71,18 +71,18 @@ function Exercises() {
     localStorage.setItem("exercises", JSON.stringify(newExercises));
     setExercises(newExercises);
 
-    setTimeout(() => {
-      updateScroller();
-    }, 1);
+    updateScroller();
   };
 
   const updateScroller = () => {
-    const thisScroller = scroller.current;
-    if (thisScroller) {
-      (thisScroller as HTMLElement).scrollTop = (
-        thisScroller as HTMLElement
-      ).scrollHeight;
-    }
+    setTimeout(() => {
+      const thisScroller = scroller.current;
+      if (thisScroller) {
+        (thisScroller as HTMLElement).scrollTop = (
+          thisScroller as HTMLElement
+        ).scrollHeight;
+      }
+    });
   };
 
   const handleToggleVisibility = (index: number) => {
@@ -97,9 +97,7 @@ function Exercises() {
     }
 
     setIsActiveArray(tempIsActiveArray);
-    setTimeout(() => {
-      updateScroller();
-    }, 1);
+    updateScroller();
   };
 
   useEffect(() => {
@@ -221,11 +219,11 @@ function Exercises() {
           />
         ))}
       </div>
-      <div className="mx-auto mt-12 flex w-full flex-col border-t-1 border-white bg-gray-400">
+      <div className="mx-auto mt-4 flex w-full flex-col border-t-1 border-white bg-gray-400 py-4">
         <div className="flex justify-center gap-12 pt-3 pb-6">
           <div className="flex h-full">
             <div className="flex-col">
-              <div className="mb-6 text-sm font-bold">Reps</div>
+              <div className="mb-6 text-center text-sm font-bold">Reps</div>
               <div className="flex">
                 <div className="flex flex-col gap-3">
                   <button
@@ -253,7 +251,7 @@ function Exercises() {
             </div>
           </div>
           <div className="flex flex-col border-r-1 border-l-1 border-gray-300 px-12 font-bold">
-            <div className="mb-6 text-sm">Weight</div>
+            <div className="mb-6 text-center text-sm">Weight</div>
             <div className="flex">
               <input
                 id="weight"
@@ -294,9 +292,9 @@ function Exercises() {
             </button>
           </div>
         </div>
-        <div className="flex border-t-1 border-gray-400 bg-blue-200 px-6 py-4 grayscale-70">
+        <div className="flex border-t-1 border-gray-400 px-6 py-4 grayscale-70">
           <div className="flex max-h-max w-full self-center-safe">
-            <div className="text-md w-12 pr-4 text-right font-bold">Notes</div>
+            <div className="mt-3 w-12 pr-4 text-sm font-bold">Notes</div>
             <input
               type="text"
               id="notes"
