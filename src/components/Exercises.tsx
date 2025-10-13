@@ -45,8 +45,6 @@ function Exercises() {
     const lastAttempt =
       newExercises[index].attempts[newExercises[index].attempts.length - 1];
 
-    console.log("handleNewAttempt");
-
     if (lastAttempt?.length !== 0) {
       newExercises[index].attempts.push([]);
 
@@ -99,13 +97,38 @@ function Exercises() {
   };
 
   const handleNewSet = (index: number, newSet: setObject) => {
-    console.log("handleNewSet");
-
     const newExercises = [...exercises];
     newExercises[index].attempts[newExercises[index].attempts.length - 1].push(
       newSet,
     );
-    localStorage.setItem("exercises", JSON.stringify(newExercises));
+
+    interface Dictionary {
+      [key: string]: unknown;
+    }
+
+    const attemptArray: Dictionary[] = [];
+
+    newExercises[index].attempts.forEach((subAttempt) => {
+      const myObject: Dictionary = {};
+
+      subAttempt.forEach((value, index) => {
+        const indexString = index.toString();
+        myObject[indexString] = value;
+      });
+
+      attemptArray.push(myObject);
+    });
+
+    const newFirestoreDocData = {
+      id: newExercises[index].id,
+      name: newExercises[index].name,
+      attempts: attemptArray,
+    };
+
+    const exerciseRef = doc(db, "exercises", newExercises[index].id);
+
+    updateDoc(exerciseRef, newFirestoreDocData);
+
     setExercises(newExercises);
 
     updateScroller();
