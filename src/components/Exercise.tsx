@@ -14,7 +14,6 @@ function Exercise({ data, newAttempt, isActive }: inputProps) {
 
   if (isActive && !isToggled.current) {
     isToggled.current = true;
-
     newAttempt();
   }
 
