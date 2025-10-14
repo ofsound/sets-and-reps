@@ -1,9 +1,4 @@
-interface setObject {
-  reps: number;
-  weight: number;
-  notes: string;
-  date: number;
-}
+import type { setObject } from "../interfaces.ts";
 
 type inputProps = {
   set: setObject;

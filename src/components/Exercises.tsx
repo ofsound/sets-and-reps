@@ -1,7 +1,6 @@
 import { useState, useEffect, useRef } from "react";
 import type { ChangeEvent } from "react";
-
-// import { v4 as uuidv4 } from "uuid";
+import type { exerciseObject, setObject } from "../interfaces.ts";
 
 import {
   collection,
@@ -15,19 +14,6 @@ import { db } from "../firebase-config.ts";
 
 import Exercise from "../components/Exercise.tsx";
 
-interface setObject {
-  reps: number;
-  weight: number;
-  notes: string;
-  date: number;
-}
-
-interface rowObject {
-  id: string;
-  name: string;
-  attempts: setObject[][];
-}
-
 function Exercises() {
   const scroller = useRef(null);
 
@@ -37,7 +23,7 @@ function Exercises() {
 
   const [isActiveArray, setIsActiveArray] = useState<Array<boolean>>([]);
 
-  const [exercises, setExercises] = useState<Array<rowObject>>([]);
+  const [exercises, setExercises] = useState<Array<exerciseObject>>([]);
 
   const handleNewAttempt = (index: number) => {
     const newExercises = [...exercises];
@@ -162,7 +148,7 @@ function Exercises() {
 
   useEffect(() => {
     async function getExercises() {
-      const arrayFromFirestore: Array<rowObject> = [];
+      const arrayFromFirestore: Array<exerciseObject> = [];
 
       const exercisesRef = collection(db, "exercises");
       const querySnapshot = await getDocs(exercisesRef);
@@ -181,7 +167,7 @@ function Exercises() {
           },
         );
 
-        const rowFromFirestore: rowObject = {
+        const rowFromFirestore: exerciseObject = {
           id: thisExercise.id,
           name: thisExercise.name,
           attempts: attemptsInner,

@@ -1,21 +1,10 @@
 import { useRef } from "react";
+import type { exerciseObject } from "../interfaces.ts";
+
 import Attempt from "../components/Attempt.tsx";
 
-interface setObject {
-  reps: number;
-  weight: number;
-  notes: string;
-  date: number;
-}
-
-interface rowObject {
-  id: string;
-  name: string;
-  attempts: setObject[][];
-}
-
 type inputProps = {
-  data: rowObject;
+  data: exerciseObject;
   newAttempt: () => void;
   isActive: boolean;
 };
