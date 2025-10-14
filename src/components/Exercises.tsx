@@ -183,7 +183,7 @@ function Exercises() {
 
     getExercises();
 
-    const q = query(collection(db, "exercises")); // Create a query for your collection
+    const q = query(collection(db, "exercises"));
 
     const unsubscribe = onSnapshot(q, (querySnapshot) => {
       const newData: exerciseObject[] = [];
@@ -213,7 +213,6 @@ function Exercises() {
       setExercises(newData);
     });
 
-    // Cleanup function to unsubscribe when the component unmounts
     return () => unsubscribe();
   }, []);
 
