@@ -276,13 +276,13 @@ function Exercises() {
               <div className="flex">
                 <div className="flex flex-col gap-3">
                   <button
-                    className="block h-10 w-10 rounded-sm border-1 border-dotted border-gray-900 bg-gray-100 text-xl font-bold shadow-md"
+                    className="block h-10 w-10 rounded-sm border border-gray-900 bg-gray-100 text-xl font-bold shadow-md"
                     onClick={() => trySetReps(reps + 1)}
                   >
                     <div className="relative -top-[2px]">+</div>
                   </button>
                   <button
-                    className="block h-10 w-10 rounded-sm border-1 border-dotted border-gray-900 bg-gray-100 text-xl font-bold shadow-md"
+                    className="block h-10 w-10 rounded-sm border border-gray-900 bg-gray-100 text-xl font-bold shadow-md"
                     onClick={() => trySetReps(reps - 1)}
                   >
                     <div className="relative -top-[1px]">–</div>
@@ -305,19 +305,19 @@ function Exercises() {
               <input
                 id="weight"
                 type="text"
-                className="mt-4 mr-6 ml-auto h-10 w-26 rounded-md border-2 border-dotted border-gray-400 bg-gray-100 pr-5 text-right text-xl font-bold tabular-nums"
+                className="mt-4 mr-6 ml-auto h-10 w-26 rounded-md border-1 border-dotted bg-gray-100 pr-5 text-right text-xl font-bold tabular-nums"
                 value={weight + "lbs"}
                 onChange={handleChange}
               />
               <div className="flex flex-col gap-3">
                 <button
-                  className="block h-10 w-10 rounded-sm border-1 border-dotted border-gray-900 bg-gray-100 text-xl font-bold shadow-md"
+                  className="block h-10 w-10 rounded-sm border-1 border-gray-900 bg-gray-100 text-xl font-bold shadow-md"
                   onClick={() => trySetWeight(weight + 1)}
                 >
                   <div className="relative -top-[2px]">+</div>
                 </button>
                 <button
-                  className="block h-10 w-10 rounded-sm border-1 border-dotted border-gray-900 bg-gray-100 text-xl font-bold shadow-md"
+                  className="block h-10 w-10 rounded-sm border-1 border-gray-900 bg-gray-100 text-xl font-bold shadow-md"
                   onClick={() => trySetWeight(weight - 1)}
                 >
                   <div className="relative -top-[1px]">–</div>
