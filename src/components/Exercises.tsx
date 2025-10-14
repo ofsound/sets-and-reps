@@ -8,6 +8,8 @@ import {
   setDoc,
   updateDoc,
   getDocs,
+  onSnapshot,
+  query,
 } from "firebase/firestore";
 
 import { db } from "../firebase-config.ts";
@@ -180,6 +182,39 @@ function Exercises() {
     }
 
     getExercises();
+
+    const q = query(collection(db, "exercises")); // Create a query for your collection
+
+    const unsubscribe = onSnapshot(q, (querySnapshot) => {
+      const newData: exerciseObject[] = [];
+
+      querySnapshot.forEach((doc) => {
+        const attemptsInner: Array<Array<setObject>> = [];
+
+        const thisExercise = doc.data();
+
+        thisExercise.attempts.forEach(
+          (subAttempt: { [s: string]: unknown } | ArrayLike<unknown>) => {
+            const valuesArray = Object.values(
+              subAttempt,
+            ) as unknown as setObject[];
+            attemptsInner.push(valuesArray);
+          },
+        );
+
+        const rowFromFirestore: exerciseObject = {
+          id: thisExercise.id,
+          name: thisExercise.name,
+          attempts: attemptsInner,
+        };
+
+        newData.push(rowFromFirestore);
+      });
+      setExercises(newData);
+    });
+
+    // Cleanup function to unsubscribe when the component unmounts
+    return () => unsubscribe();
   }, []);
 
   const [reps, setReps] = useState(3);
