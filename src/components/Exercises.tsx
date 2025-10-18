@@ -17,11 +17,7 @@ import { db } from "../firebase-config.ts";
 import Exercise from "../components/Exercise.tsx";
 
 function Exercises() {
-  const exerciseTotalRef = useRef(0);
-
-  const exerciseCurrentRef = useRef(0);
-
-  // const [currentExerciseIndex, setCurrentExerciseIndex] = useState(0);
+  const exerciseTotalRef = useRef(0); // do i need this or can I read this quickly from something?
 
   const scroller = useRef(null);
 
@@ -32,6 +28,10 @@ function Exercises() {
   const [isActiveArray, setIsActiveArray] = useState<Array<boolean>>([]);
 
   const [exercises, setExercises] = useState<Array<exerciseObject>>([]);
+
+  const [reps, setReps] = useState(3);
+  const [weight, setWeight] = useState(50);
+  const [notes, setNotes] = useState("");
 
   const handleNewAttempt = (index: number) => {
     const newExercises = [...exercises];
@@ -138,17 +138,11 @@ function Exercises() {
     });
   };
 
-  // const handleToggleVisibility = (index: number) => {};
-
   useEffect(() => {
-    console.log("index changed");
-    // setExerciseIndex(exerciseCurrentRef.current);
-    // handleToggleVisibility(exerciseCurrentRef.current);
     const tempIsActiveArray = [];
 
     for (let i = 0; i < exerciseTotalRef.current; i++) {
       tempIsActiveArray[i] = false;
-
       if (exerciseIndex === i) {
         tempIsActiveArray[i] = true;
       }
@@ -188,25 +182,14 @@ function Exercises() {
 
       setExercises(dataFromFirestore);
 
-      console.log(exerciseTotalRef.current);
-      console.log(dataFromFirestore.length);
-
       if (dataFromFirestore.length - exerciseTotalRef.current === 1) {
-        exerciseCurrentRef.current = exerciseTotalRef.current;
-        // setCurrentExerciseIndex(exerciseTotalRef.current);
         setExerciseIndex(exerciseTotalRef.current);
-        // handleSwitchToExercise();
-        console.log("lock in!");
       }
       exerciseTotalRef.current = dataFromFirestore.length;
     });
 
     return () => unsubscribe();
   }, []);
-
-  const [reps, setReps] = useState(3);
-  const [weight, setWeight] = useState(50);
-  const [notes, setNotes] = useState("");
 
   const handleChange = (
     event: ChangeEvent<HTMLInputElement> | ChangeEvent<HTMLTextAreaElement>,
@@ -242,11 +225,6 @@ function Exercises() {
     }
   };
 
-  // const handleSwitchToExercise = () => {
-  //   setExerciseIndex(exerciseCurrentRef.current);
-  //   handleToggleVisibility(exerciseCurrentRef.current);
-  // };
-
   return (
     <div className="flex h-full flex-col">
       <div className="flex bg-gray-500 p-4 shadow-md">
@@ -272,10 +250,7 @@ function Exercises() {
             key={index}
             className={`mr-2 rounded-md border-1 border-white px-3 py-1 text-lg text-white ${index === exerciseIndex && "bg-black"}`}
             onClick={() => {
-              // exerciseCurrentRef.current = index;
-              // handleSwitchToExercise();
               setExerciseIndex(index);
-              // setCurrentExerciseIndex(index);
             }}
           >
             {item.name}
@@ -318,7 +293,6 @@ function Exercises() {
                     <div className="relative -top-[1px]">–</div>
                   </button>
                 </div>
-
                 <input
                   id="reps"
                   type="text"
