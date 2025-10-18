@@ -14,10 +14,10 @@ function SetAdder({ handleNewSet }: inputProps) {
   const handleChange = (
     event: ChangeEvent<HTMLInputElement> | ChangeEvent<HTMLTextAreaElement>,
   ) => {
-    const theInput = event.target as HTMLInputElement;
-    const newValue = parseInt(theInput.value, 10);
+    const thisInput = event.target as HTMLInputElement;
+    const newValue = parseInt(thisInput.value, 10);
 
-    switch (theInput.id) {
+    switch (thisInput.id) {
       case "reps":
         setReps(newValue);
         break;
@@ -25,13 +25,13 @@ function SetAdder({ handleNewSet }: inputProps) {
         setWeight(newValue);
         break;
       case "notes":
-        setNotes(theInput.value);
+        setNotes(thisInput.value);
         break;
     }
   };
 
   const trySetReps = (newValue: number) => {
-    if (newValue >= 0 && newValue <= 99) {
+    if (newValue >= 1 && newValue <= 99) {
       setReps(newValue);
     }
   };
