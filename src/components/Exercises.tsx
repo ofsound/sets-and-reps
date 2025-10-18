@@ -180,9 +180,6 @@ function Exercises() {
           },
         );
 
-        console.log(lastExerciseReps);
-        console.log(lastExerciseWeight);
-
         const lastExercisesObject: lastValuesFromExercise = {
           reps: lastExerciseReps,
           weight: lastExerciseWeight,

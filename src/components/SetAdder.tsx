@@ -50,13 +50,10 @@ function SetAdder({
 
   // maybe i don't need this duality, and previousReps is reps
   useEffect(() => {
-    console.log("previousWeight changed");
-
     setWeight(previousWeight);
   }, [previousWeight]);
 
   useEffect(() => {
-    console.log("previousReps changed");
     setReps(previousReps);
   }, [previousReps]);
 
