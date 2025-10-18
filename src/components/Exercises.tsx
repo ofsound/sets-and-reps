@@ -120,8 +120,6 @@ function Exercises() {
 
     updateDoc(exerciseRef, newFirestoreDocData);
 
-    // setNotes("");
-
     updateScroller();
   };
 
@@ -183,39 +181,10 @@ function Exercises() {
     return () => unsubscribe();
   }, []);
 
-  const handleChange = (
-    event: ChangeEvent<HTMLInputElement> | ChangeEvent<HTMLTextAreaElement>,
-  ) => {
-    const theInput = event.target as HTMLInputElement;
-    // const newValue = parseInt(theInput.value, 10);
-
-    switch (theInput.id) {
-      // case "reps":
-      //   setReps(newValue);
-      //   break;
-      // case "weight":
-      //   setWeight(newValue);
-      //   break;
-      // case "notes":
-      //   setNotes(theInput.value);
-      //   break;
-      case "name":
-        setNewExerciseName(theInput.value);
-        break;
-    }
+  const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
+    const newExerciseNameInput = event.target as HTMLInputElement;
+    setNewExerciseName(newExerciseNameInput.value);
   };
-
-  // const trySetReps = (newValue: number) => {
-  //   if (newValue >= 0 && newValue <= 99) {
-  //     setReps(newValue);
-  //   }
-  // };
-
-  // const trySetWeight = (newValue: number) => {
-  //   if (newValue >= 0 && newValue <= 300) {
-  //     setWeight(newValue);
-  //   }
-  // };
 
   return (
     <div className="flex h-full flex-col">
@@ -225,7 +194,6 @@ function Exercises() {
           type="text"
           className="text-md mr-4 ml-auto h-8 w-full rounded-md border-1 border-dotted bg-gray-100 p-3 text-left font-bold tabular-nums"
           onChange={handleChange}
-          value={newExerciseName}
         />
         <button
           className="block h-8 rounded-md border-1 px-3 text-white"
