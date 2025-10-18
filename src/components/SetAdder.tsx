@@ -48,7 +48,6 @@ function SetAdder({
     }
   };
 
-  // maybe i don't need this duality, and previousReps is reps
   useEffect(() => {
     setWeight(previousWeight);
   }, [previousWeight]);
