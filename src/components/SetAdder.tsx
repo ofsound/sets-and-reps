@@ -1,12 +1,18 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import type { setObject } from "../interfaces.ts";
 import type { ChangeEvent } from "react";
 
-type inputProps = {
+type SetAdderProps = {
   handleNewSet: (object: setObject) => void;
+  previousReps: number;
+  previousWeight: number;
 };
 
-function SetAdder({ handleNewSet }: inputProps) {
+function SetAdder({
+  handleNewSet,
+  previousReps,
+  previousWeight,
+}: SetAdderProps) {
   const [reps, setReps] = useState(3);
   const [weight, setWeight] = useState(50);
   const [notes, setNotes] = useState("");
@@ -41,6 +47,18 @@ function SetAdder({ handleNewSet }: inputProps) {
       setWeight(newValue);
     }
   };
+
+  // maybe i don't need this duality, and previousReps is reps
+  useEffect(() => {
+    console.log("previousWeight changed");
+
+    setWeight(previousWeight);
+  }, [previousWeight]);
+
+  useEffect(() => {
+    console.log("previousReps changed");
+    setReps(previousReps);
+  }, [previousReps]);
 
   return (
     <div className="mx-auto mt-4 flex w-full flex-col border-t-1 border-white bg-gray-500 py-4">

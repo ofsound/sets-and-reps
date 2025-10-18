@@ -11,3 +11,8 @@ export interface setObject {
     notes: string;
     date: number;
 }
+
+export interface lastValuesFromExercise {
+    reps: number;
+    weight: number;
+}

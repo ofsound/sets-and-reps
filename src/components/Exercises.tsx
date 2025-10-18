@@ -11,7 +11,11 @@ import {
   orderBy,
 } from "firebase/firestore";
 
-import type { exerciseObject, setObject } from "../interfaces.ts";
+import type {
+  exerciseObject,
+  setObject,
+  lastValuesFromExercise,
+} from "../interfaces.ts";
 
 import { db } from "../firebase-config.ts";
 
@@ -20,6 +24,8 @@ import SetAdder from "../components/SetAdder.tsx";
 
 function Exercises() {
   const exercisesTotalRef = useRef(0);
+
+  const lastSetValuesArray = useRef<lastValuesFromExercise[]>([]);
 
   const scroller = useRef(null);
 
@@ -30,6 +36,9 @@ function Exercises() {
   const [isActiveArray, setIsActiveArray] = useState<Array<boolean>>([]);
 
   const [exercises, setExercises] = useState<Array<exerciseObject>>([]);
+
+  const [lastReps, setLastReps] = useState(3);
+  const [lastWeight, setLastWeight] = useState(50);
 
   const handleNewAttempt = (index: number) => {
     const newExercises = [...exercises];
@@ -137,7 +146,11 @@ function Exercises() {
     tempIsActiveArray[exerciseIndex] = true;
     setIsActiveArray(tempIsActiveArray);
     updateScroller();
-    // This is when I should set the input values of the Adder to the last values in the set
+    if (lastSetValuesArray.current[exerciseIndex]) {
+      // why would this not be true?
+      setLastReps(lastSetValuesArray.current[exerciseIndex].reps);
+      setLastWeight(lastSetValuesArray.current[exerciseIndex].weight);
+    }
   }, [exerciseIndex]);
 
   useEffect(() => {
@@ -151,12 +164,31 @@ function Exercises() {
 
         const thisExercise = doc.data();
 
+        let lastExerciseReps = 0;
+        let lastExerciseWeight = 0;
+
         thisExercise.attempts.forEach(
           (subAttempt: { [s: string]: unknown } | ArrayLike<unknown>) => {
             const valuesArray = Object.values(subAttempt) as setObject[];
+
+            if (valuesArray[0]) {
+              lastExerciseReps = valuesArray[0].reps;
+              lastExerciseWeight = valuesArray[0].weight;
+            }
+
             thisExerciseAttempts.push(valuesArray);
           },
         );
+
+        console.log(lastExerciseReps);
+        console.log(lastExerciseWeight);
+
+        const lastExercisesObject: lastValuesFromExercise = {
+          reps: lastExerciseReps,
+          weight: lastExerciseWeight,
+        };
+
+        lastSetValuesArray.current.push(lastExercisesObject);
 
         const rowFromFirestore: exerciseObject = {
           id: thisExercise.id,
@@ -228,7 +260,11 @@ function Exercises() {
           />
         ))}
       </div>
-      <SetAdder handleNewSet={handleNewSet} />
+      <SetAdder
+        handleNewSet={handleNewSet}
+        previousReps={lastReps}
+        previousWeight={lastWeight}
+      />
     </div>
   );
 }
