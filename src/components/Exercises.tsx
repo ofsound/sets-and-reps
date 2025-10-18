@@ -111,8 +111,6 @@ function Exercises() {
     });
 
     const newFirestoreDocData = {
-      id: newExercises[exerciseIndex].id,
-      name: newExercises[exerciseIndex].name,
       attempts: attemptArray,
     };
 
