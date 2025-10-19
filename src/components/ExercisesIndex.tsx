@@ -14,7 +14,13 @@ function ExercisesIndex({ exercises, deleteExercise }: ExercisesIndexProps) {
           className={`my-2 flex rounded-md border-1 border-white px-3 py-1 text-lg text-white`}
         >
           {item.name} : {item.id}
-          <button onClick={() => deleteExercise(item.id)} className="ml-auto">
+          <input
+            type="checkbox"
+            name="optionName"
+            value="optionValue"
+            className="ml-auto"
+          ></input>
+          <button onClick={() => deleteExercise(item.id)} className="ml-10">
             ❌
           </button>
         </div>
