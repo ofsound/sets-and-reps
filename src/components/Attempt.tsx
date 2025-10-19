@@ -1,12 +1,12 @@
 import Set from "../components/Set.tsx";
 import type { setObject } from "../interfaces.ts";
 
-type inputProps = {
+type AttemptProps = {
   attempt: setObject[];
   isActive: boolean;
 };
 
-function Attempt({ attempt, isActive }: inputProps) {
+function Attempt({ attempt, isActive }: AttemptProps) {
   return (
     <div
       className={`${isActive ? "block" : "block"} mx-4 bg-white shadow-sm last:animate-pulse last:bg-blue-100`}

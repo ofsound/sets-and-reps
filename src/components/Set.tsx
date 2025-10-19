@@ -1,10 +1,10 @@
 import type { setObject } from "../interfaces.ts";
 
-type inputProps = {
+type SetProps = {
   set: setObject;
 };
 
-function Set({ set }: inputProps) {
+function Set({ set }: SetProps) {
   const dateToTime = (dateNumber: number): string => {
     const date = new Date(dateNumber);
     return date.toLocaleDateString("en-US", {

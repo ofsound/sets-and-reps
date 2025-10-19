@@ -3,13 +3,13 @@ import type { exerciseObject } from "../interfaces.ts";
 
 import Attempt from "../components/Attempt.tsx";
 
-type inputProps = {
+type ExerciseProps = {
   data: exerciseObject;
   newAttempt: () => void;
   isActive: boolean;
 };
 
-function Exercise({ data, newAttempt, isActive }: inputProps) {
+function Exercise({ data, newAttempt, isActive }: ExerciseProps) {
   const isToggled = useRef(false);
 
   if (isActive && !isToggled.current) {
