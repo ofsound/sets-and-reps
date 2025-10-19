@@ -20,6 +20,7 @@ function ExerciseAdder({ handleExerciseAdded }: ExerciseAdderProps) {
         type="text"
         className="text-md mr-4 ml-auto h-8 w-full rounded-md border-1 border-dotted bg-gray-100 p-3 text-left font-bold tabular-nums"
         onChange={handleChange}
+        value={newExerciseName}
       />
       <button
         className="block h-8 rounded-md border-1 px-3 text-white"
