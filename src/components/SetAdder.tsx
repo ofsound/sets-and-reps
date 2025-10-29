@@ -58,37 +58,35 @@ function SetAdder({
 
   return (
     <div className="mx-auto mt-4 flex w-full flex-col border-t-1 border-white bg-gray-500 py-4">
-      <div className="flex justify-center gap-12 pt-3 pb-6">
-        <div className="flex h-full">
-          <div className="flex-col">
-            <div className="mb-6 text-center text-sm font-bold">Reps</div>
-            <div className="flex">
-              <div className="flex flex-col gap-3">
-                <button
-                  className="block h-10 w-10 rounded-sm border border-gray-900 bg-gray-100 text-xl font-bold shadow-md"
-                  onClick={() => trySetReps(reps + 1)}
-                >
-                  <div className="relative -top-[2px]">+</div>
-                </button>
-                <button
-                  className="block h-10 w-10 rounded-sm border border-gray-900 bg-gray-100 text-xl font-bold shadow-md"
-                  onClick={() => trySetReps(reps - 1)}
-                >
-                  <div className="relative -top-[1px]">–</div>
-                </button>
-              </div>
-              <input
-                id="reps"
-                type="text"
-                className="mt-4 ml-6 h-10 w-12 rounded-md border-1 border-dotted bg-gray-100 pr-3 text-right text-xl font-bold tabular-nums"
-                value={reps}
-                onChange={handleChange}
-              />
+      <div className="flex justify-center pt-3 pb-6">
+        <div className="flex flex-1 flex-col bg-amber-200">
+          <div className="mb-6 text-center text-sm font-bold">Reps</div>
+          <div className="flex">
+            <div className="flex flex-col gap-3">
+              <button
+                className="block h-10 w-10 rounded-sm border border-gray-900 bg-gray-100 text-xl font-bold shadow-md"
+                onClick={() => trySetReps(reps + 1)}
+              >
+                <div className="relative -top-[2px]">+</div>
+              </button>
+              <button
+                className="block h-10 w-10 rounded-sm border border-gray-900 bg-gray-100 text-xl font-bold shadow-md"
+                onClick={() => trySetReps(reps - 1)}
+              >
+                <div className="relative -top-[1px]">–</div>
+              </button>
             </div>
+            <input
+              id="reps"
+              type="text"
+              className="mt-4 ml-6 h-10 w-12 rounded-md border-1 border-dotted bg-gray-100 pr-3 text-right text-xl font-bold tabular-nums"
+              value={reps}
+              onChange={handleChange}
+            />
           </div>
         </div>
-        <div className="flex flex-col border-r-1 border-l-1 border-gray-300 px-12 font-bold">
-          <div className="mb-6 text-center text-sm">Weight</div>
+        <div className="flex flex-1 flex-col border-l-1 border-gray-300 bg-amber-100">
+          <div className="mb-6 text-center text-sm font-bold">Weight</div>
           <div className="flex">
             <input
               id="weight"
@@ -113,7 +111,7 @@ function SetAdder({
             </div>
           </div>
         </div>
-        <div className="p-4">
+        <div className="hidden p-4">
           <button
             className={`block h-full w-25 flex-1 shrink-0 rounded-md border-1 border-gray-500 bg-green-600 font-black text-white shadow-md`}
             onClick={() => {
@@ -140,6 +138,21 @@ function SetAdder({
             onChange={handleChange}
           />
         </div>
+      </div>
+      <div className="border-t-1 border-gray-400 pt-4">
+        <button
+          className={`mx-auto block h-12 w-9/10 rounded-md border-1 border-gray-500 bg-green-600 font-black text-white shadow-md`}
+          onClick={() => {
+            handleNewSet({
+              reps: reps,
+              weight: weight,
+              notes: notes,
+              date: Date.now(),
+            });
+          }}
+        >
+          Add Set
+        </button>
       </div>
     </div>
   );
