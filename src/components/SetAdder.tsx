@@ -59,9 +59,9 @@ function SetAdder({
   return (
     <div className="mx-auto mt-4 flex w-full flex-col border-t-1 border-white bg-gray-500 py-4">
       <div className="flex justify-center pt-3 pb-6">
-        <div className="flex flex-1 flex-col bg-amber-200">
+        <div className="flex w-full flex-1 flex-col pl-4">
           <div className="mb-6 text-center text-sm font-bold">Reps</div>
-          <div className="flex">
+          <div className="flex w-full">
             <div className="flex flex-col gap-3">
               <button
                 className="block h-10 w-10 rounded-sm border border-gray-900 bg-gray-100 text-xl font-bold shadow-md"
@@ -85,7 +85,8 @@ function SetAdder({
             />
           </div>
         </div>
-        <div className="flex flex-1 flex-col border-l-1 border-gray-300 bg-amber-100">
+        <div className="h-full w-0.5 bg-gray-200"></div>
+        <div className="flex flex-1 flex-col border-gray-300 pr-4">
           <div className="mb-6 text-center text-sm font-bold">Weight</div>
           <div className="flex">
             <input

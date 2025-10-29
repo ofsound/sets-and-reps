@@ -23,6 +23,7 @@ import Exercise from "../components/Exercise.tsx";
 import ExercisesIndex from "../components/ExercisesIndex.tsx";
 import ExerciseAdder from "../components/ExerciseAdder.tsx";
 import SetAdder from "../components/SetAdder.tsx";
+import ExercisesMenu from "./ExercisesMenu.tsx";
 
 function Exercises() {
   const exercisesTotalRef = useRef(0);
@@ -65,6 +66,10 @@ function Exercises() {
     };
 
     setDoc(exercisesRef, newExercise);
+  };
+
+  const setExerciseIndexFromMenu = (newExerciseIndex: number) => {
+    setExerciseIndex(newExerciseIndex);
   };
 
   const deleteExercise = async (exerciseID: string) => {
@@ -220,19 +225,10 @@ function Exercises() {
   return (
     <div className="flex h-full flex-col">
       <ExerciseAdder handleExerciseAdded={handleExerciseAdded} />
-      {/* <div className="mb-4 border-b-2 border-gray-300 bg-gray-500 p-4">
-        {exercises.map((item, index) => (
-          <button
-            key={index}
-            className={`mr-2 rounded-md border-1 border-white px-3 py-1 text-lg text-white ${index === exerciseIndex && "bg-black"}`}
-            onClick={() => {
-              setExerciseIndex(index);
-            }}
-          >
-            {item.name}
-          </button>
-        ))}
-      </div> */}
+      <ExercisesMenu
+        exercises={exercises}
+        setExerciseIndexFromMenu={setExerciseIndexFromMenu}
+      />
       <ExercisesIndex exercises={exercises} deleteExercise={deleteExercise} />
       <div
         ref={scroller}
