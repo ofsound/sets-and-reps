@@ -1,6 +1,8 @@
 import { useState, useEffect } from "react";
-import type { SetObject } from "../interfaces.ts";
+
 import type { ChangeEvent } from "react";
+
+import type { SetObject } from "../interfaces.ts";
 
 type SetAdderProps = {
   handleNewSet: (object: SetObject) => void;

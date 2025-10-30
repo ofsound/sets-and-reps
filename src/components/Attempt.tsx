@@ -1,5 +1,6 @@
-import Set from "../components/Set.tsx";
 import type { SetObject } from "../interfaces.ts";
+
+import Set from "../components/Set.tsx";
 
 type AttemptProps = {
   attempt: SetObject[];
