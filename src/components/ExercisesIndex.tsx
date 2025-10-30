@@ -1,7 +1,7 @@
-import type { exerciseObject } from "../interfaces.ts";
+import type { ExerciseObject } from "../interfaces.ts";
 
 type ExercisesIndexProps = {
-  exercises: exerciseObject[];
+  exercises: ExerciseObject[];
   deleteExercise: (exerciseID: string) => void;
 };
 

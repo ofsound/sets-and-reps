@@ -29,7 +29,7 @@ import ExercisesMenu from "./ExercisesMenu.tsx";
 function Exercises() {
   const exercisesTotalRef = useRef(0);
 
-  const LastValuesFromExercises = useRef<LastValuesFromExercise[]>([]);
+  const lastValuesFromExercises = useRef<LastValuesFromExercise[]>([]);
 
   const scroller = useRef(null);
 
@@ -154,10 +154,10 @@ function Exercises() {
     tempIsActiveArray[exerciseIndex] = true;
     setIsActiveArray(tempIsActiveArray);
     updateScroller();
-    if (LastValuesFromExercises.current[exerciseIndex]) {
+    if (lastValuesFromExercises.current[exerciseIndex]) {
       // why would this not be true?
-      setLastReps(LastValuesFromExercises.current[exerciseIndex].reps);
-      setLastWeight(LastValuesFromExercises.current[exerciseIndex].weight);
+      setLastReps(lastValuesFromExercises.current[exerciseIndex].reps);
+      setLastWeight(lastValuesFromExercises.current[exerciseIndex].weight);
     }
   }, [exerciseIndex]);
 
@@ -193,7 +193,7 @@ function Exercises() {
           weight: lastExerciseWeight,
         };
 
-        LastValuesFromExercises.current.push(lastExercisesObject);
+        lastValuesFromExercises.current.push(lastExercisesObject);
 
         const rowFromFirestore: ExerciseObject = {
           id: thisExercise.id,
