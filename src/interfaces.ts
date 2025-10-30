@@ -1,18 +1,22 @@
-export interface exerciseObject {
+export interface ExerciseObject {
     id: string;
     name: string;
-    attempts: setObject[][];
+    attempts: SetObject[][];
     order: number
 }
 
-export interface setObject {
+export interface SetObject {
     reps: number;
     weight: number;
     notes: string;
     date: number;
 }
 
-export interface lastValuesFromExercise {
+export interface LastValuesFromExercise {
     reps: number;
     weight: number;
+}
+
+export interface Dictionary {
+    [key: string]: SetObject;
 }

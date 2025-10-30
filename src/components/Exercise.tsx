@@ -1,10 +1,10 @@
 import { useRef } from "react";
-import type { exerciseObject } from "../interfaces.ts";
+import type { ExerciseObject } from "../interfaces.ts";
 
 import Attempt from "../components/Attempt.tsx";
 
 type ExerciseProps = {
-  data: exerciseObject;
+  data: ExerciseObject;
   newAttempt: () => void;
   isActive: boolean;
 };

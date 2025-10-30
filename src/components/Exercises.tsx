@@ -12,9 +12,10 @@ import {
 } from "firebase/firestore";
 
 import type {
-  exerciseObject,
-  setObject,
-  lastValuesFromExercise,
+  ExerciseObject,
+  SetObject,
+  LastValuesFromExercise,
+  Dictionary,
 } from "../interfaces.ts";
 
 import { db } from "../firebase-config.ts";
@@ -28,7 +29,7 @@ import ExercisesMenu from "./ExercisesMenu.tsx";
 function Exercises() {
   const exercisesTotalRef = useRef(0);
 
-  const lastValuesFromExercises = useRef<lastValuesFromExercise[]>([]);
+  const LastValuesFromExercises = useRef<LastValuesFromExercise[]>([]);
 
   const scroller = useRef(null);
 
@@ -36,7 +37,7 @@ function Exercises() {
 
   const [isActiveArray, setIsActiveArray] = useState<Array<boolean>>([]);
 
-  const [exercises, setExercises] = useState<Array<exerciseObject>>([]);
+  const [exercises, setExercises] = useState<Array<ExerciseObject>>([]);
 
   const [indexVisible, setIndexVisible] = useState(false);
 
@@ -93,10 +94,6 @@ function Exercises() {
     if (lastAttempt?.length !== 0) {
       newExercises[index].attempts.push([]);
 
-      interface Dictionary {
-        [key: string]: unknown;
-      }
-
       const attemptArray: Dictionary[] = [];
 
       newExercises[index].attempts.forEach((attempt) => {
@@ -123,15 +120,11 @@ function Exercises() {
     }
   };
 
-  const handleNewSet = (newSet: setObject) => {
+  const handleNewSet = (newSet: SetObject) => {
     const newExercises = [...exercises];
     newExercises[exerciseIndex].attempts[
       newExercises[exerciseIndex].attempts.length - 1
     ].push(newSet);
-
-    interface Dictionary {
-      [key: string]: unknown;
-    }
 
     const attemptArray: Dictionary[] = [];
 
@@ -161,10 +154,10 @@ function Exercises() {
     tempIsActiveArray[exerciseIndex] = true;
     setIsActiveArray(tempIsActiveArray);
     updateScroller();
-    if (lastValuesFromExercises.current[exerciseIndex]) {
+    if (LastValuesFromExercises.current[exerciseIndex]) {
       // why would this not be true?
-      setLastReps(lastValuesFromExercises.current[exerciseIndex].reps);
-      setLastWeight(lastValuesFromExercises.current[exerciseIndex].weight);
+      setLastReps(LastValuesFromExercises.current[exerciseIndex].reps);
+      setLastWeight(LastValuesFromExercises.current[exerciseIndex].weight);
     }
   }, [exerciseIndex]);
 
@@ -172,10 +165,10 @@ function Exercises() {
     const q = query(collection(db, "exercises"), orderBy("order", "asc"));
 
     const unsubscribe = onSnapshot(q, (querySnapshot) => {
-      const dataFromFirestore: exerciseObject[] = [];
+      const dataFromFirestore: ExerciseObject[] = [];
 
       querySnapshot.forEach((doc) => {
-        const thisExerciseAttempts: Array<Array<setObject>> = [];
+        const thisExerciseAttempts: Array<Array<SetObject>> = [];
 
         const thisExercise = doc.data();
 
@@ -184,7 +177,7 @@ function Exercises() {
 
         thisExercise.attempts.forEach(
           (attempt: { [s: string]: unknown } | ArrayLike<unknown>) => {
-            const valuesArray = Object.values(attempt) as setObject[];
+            const valuesArray = Object.values(attempt) as SetObject[];
 
             if (valuesArray[0]) {
               lastExerciseReps = valuesArray[0].reps;
@@ -195,14 +188,14 @@ function Exercises() {
           },
         );
 
-        const lastExercisesObject: lastValuesFromExercise = {
+        const lastExercisesObject: LastValuesFromExercise = {
           reps: lastExerciseReps,
           weight: lastExerciseWeight,
         };
 
-        lastValuesFromExercises.current.push(lastExercisesObject);
+        LastValuesFromExercises.current.push(lastExercisesObject);
 
-        const rowFromFirestore: exerciseObject = {
+        const rowFromFirestore: ExerciseObject = {
           id: thisExercise.id,
           name: thisExercise.name,
           attempts: thisExerciseAttempts,

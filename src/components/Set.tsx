@@ -1,7 +1,7 @@
-import type { setObject } from "../interfaces.ts";
+import type { SetObject } from "../interfaces.ts";
 
 type SetProps = {
-  set: setObject;
+  set: SetObject;
 };
 
 function Set({ set }: SetProps) {

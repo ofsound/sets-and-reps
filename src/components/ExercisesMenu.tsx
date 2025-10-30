@@ -1,7 +1,7 @@
-import type { exerciseObject } from "../interfaces.ts";
+import type { ExerciseObject } from "../interfaces.ts";
 
 type ExercisesMenuProps = {
-  exercises: exerciseObject[];
+  exercises: ExerciseObject[];
   setExerciseIndexFromMenu: (exerciseIndex: number) => void;
 };
 
