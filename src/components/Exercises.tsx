@@ -38,6 +38,8 @@ function Exercises() {
 
   const [exercises, setExercises] = useState<Array<exerciseObject>>([]);
 
+  const [indexVisible, setIndexVisible] = useState(false);
+
   const [lastReps, setLastReps] = useState(3);
   const [lastWeight, setLastWeight] = useState(50);
 
@@ -151,7 +153,6 @@ function Exercises() {
     const exerciseRef = doc(db, "exercises", newExercises[exerciseIndex].id);
 
     updateDoc(exerciseRef, newFirestoreDocData);
-
     updateScroller();
   };
 
@@ -229,7 +230,15 @@ function Exercises() {
         exercises={exercises}
         setExerciseIndexFromMenu={setExerciseIndexFromMenu}
       />
-      <ExercisesIndex exercises={exercises} deleteExercise={deleteExercise} />
+      <button
+        onClick={() => setIndexVisible(!indexVisible)}
+        className="max-w-max rounded-md border-white bg-black px-4 py-2 text-white"
+      >
+        Toggle Full Index
+      </button>
+      {indexVisible && (
+        <ExercisesIndex exercises={exercises} deleteExercise={deleteExercise} />
+      )}
       <div
         ref={scroller}
         className="[&>*]:last]:animate-pulse max-h-full flex-1 overflow-y-auto"
