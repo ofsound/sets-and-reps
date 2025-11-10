@@ -20,8 +20,6 @@ import type {
 
 import Exercise from "../components/Exercise.tsx";
 import SetAdder from "../components/SetAdder.tsx";
-// import ExercisesMenu from "./ExercisesMenu.tsx";
-// import ExercisesManager from "./ExercisesManager.tsx";
 
 function Exercises() {
   const exercisesTotalRef = useRef(0);
