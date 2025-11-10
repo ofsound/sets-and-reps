@@ -12,11 +12,6 @@ export interface SetObject {
     date: number;
 }
 
-export interface LastValuesFromExercise {
-    reps: number;
-    weight: number;
-}
-
 export interface Dictionary {
     [key: string]: SetObject;
 }

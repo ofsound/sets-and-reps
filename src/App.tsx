@@ -13,10 +13,10 @@ import ExercisesMenu from "./components/ExercisesMenu.tsx";
 function App() {
   const [exercises, setExercises] = useState<Array<ExerciseObject>>([]);
 
-  const setCurrentExerciseIDFromMenu = (currentExerciseID: string) => {
-    console.log(currentExerciseID);
+  const [currentExerciseID, setCurrentExerciseID] = useState<string>("");
 
-    // setExerciseIndex(newExerciseIndex);
+  const setCurrentExerciseIDFromMenu = (currentExerciseIDFromMenu: string) => {
+    setCurrentExerciseID(currentExerciseIDFromMenu);
   };
 
   useEffect(() => {
@@ -55,12 +55,10 @@ function App() {
 
   return (
     <div className="h-full bg-gray-200 p-1">
-      <ExercisesManager exercises={exercises} />
-      <ExercisesMenu
-        exercises={exercises}
-        setCurrentExerciseIDFromMenu={setCurrentExerciseIDFromMenu}
-      />
-      <Exercises />
+      <ExercisesManager {...{ exercises }} />
+
+      <ExercisesMenu {...{ exercises }} {...{ setCurrentExerciseIDFromMenu }} />
+      <Exercises {...{ currentExerciseID }} />
     </div>
   );
 }

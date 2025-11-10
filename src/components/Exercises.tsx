@@ -11,26 +11,17 @@ import {
 
 import { db } from "../firebase-config.ts";
 
-import type {
-  ExerciseObject,
-  SetObject,
-  LastValuesFromExercise,
-  Dictionary,
-} from "../interfaces.ts";
+import type { ExerciseObject, SetObject, Dictionary } from "../interfaces.ts";
 
 import Exercise from "../components/Exercise.tsx";
 import SetAdder from "../components/SetAdder.tsx";
 
-function Exercises() {
-  const exercisesTotalRef = useRef(0);
+type ExercisesProps = {
+  currentExerciseID: string;
+};
 
-  const lastValuesFromExercises = useRef<LastValuesFromExercise[]>([]);
-
+function Exercises({ currentExerciseID }: ExercisesProps) {
   const scroller = useRef(null);
-
-  const [exerciseIndex, setExerciseIndex] = useState(-1);
-
-  const [isActiveArray, setIsActiveArray] = useState<Array<boolean>>([]);
 
   const [exercises, setExercises] = useState<Array<ExerciseObject>>([]);
 
@@ -48,18 +39,62 @@ function Exercises() {
     });
   };
 
-  const handleNewAttempt = (index: number) => {
+  const handleNewAttempt = () => {
     const newExercises = [...exercises];
 
-    const lastAttempt =
-      newExercises[index].attempts[newExercises[index].attempts.length - 1];
+    const currentExercise = newExercises.find(
+      (item) => item.id === currentExerciseID,
+    );
 
-    if (lastAttempt?.length !== 0) {
-      newExercises[index].attempts.push([]);
+    if (currentExercise) {
+      const lastAttempt =
+        currentExercise.attempts[currentExercise.attempts.length - 1];
+
+      if (lastAttempt?.length !== 0) {
+        currentExercise.attempts.push([]);
+
+        const attemptArray: Dictionary[] = [];
+
+        currentExercise.attempts.forEach((attempt) => {
+          const myObject: Dictionary = {};
+
+          attempt.forEach((value, index) => {
+            const indexString = index.toString();
+            myObject[indexString] = value;
+          });
+
+          attemptArray.push(myObject);
+        });
+
+        const newFirestoreDocData = {
+          id: currentExercise.id,
+          name: currentExercise.name,
+          attempts: attemptArray,
+          order: currentExercise.order,
+        };
+
+        const exerciseRef = doc(db, "exercises", currentExercise.id);
+
+        updateDoc(exerciseRef, newFirestoreDocData);
+      }
+    }
+  };
+
+  const handleNewSet = (newSet: SetObject) => {
+    const newExercises = [...exercises];
+
+    const currentExercise = newExercises.find(
+      (item) => item.id === currentExerciseID,
+    );
+
+    if (currentExercise) {
+      currentExercise.attempts[currentExercise.attempts.length - 1].push(
+        newSet,
+      );
 
       const attemptArray: Dictionary[] = [];
 
-      newExercises[index].attempts.forEach((attempt) => {
+      currentExercise.attempts.forEach((attempt) => {
         const myObject: Dictionary = {};
 
         attempt.forEach((value, index) => {
@@ -71,58 +106,36 @@ function Exercises() {
       });
 
       const newFirestoreDocData = {
-        id: newExercises[index].id,
-        name: newExercises[index].name,
         attempts: attemptArray,
-        order: newExercises[index].order,
       };
 
-      const exerciseRef = doc(db, "exercises", newExercises[index].id);
+      const exerciseRef = doc(db, "exercises", currentExercise.id);
 
       updateDoc(exerciseRef, newFirestoreDocData);
+      // should this have some async promise wait going on?
+      updateScroller();
     }
-  };
-
-  const handleNewSet = (newSet: SetObject) => {
-    const newExercises = [...exercises];
-    newExercises[exerciseIndex].attempts[
-      newExercises[exerciseIndex].attempts.length - 1
-    ].push(newSet);
-
-    const attemptArray: Dictionary[] = [];
-
-    newExercises[exerciseIndex].attempts.forEach((attempt) => {
-      const myObject: Dictionary = {};
-
-      attempt.forEach((value, index) => {
-        const indexString = index.toString();
-        myObject[indexString] = value;
-      });
-
-      attemptArray.push(myObject);
-    });
-
-    const newFirestoreDocData = {
-      attempts: attemptArray,
-    };
-
-    const exerciseRef = doc(db, "exercises", newExercises[exerciseIndex].id);
-
-    updateDoc(exerciseRef, newFirestoreDocData);
-    updateScroller();
   };
 
   useEffect(() => {
-    const tempIsActiveArray = new Array(exercisesTotalRef.current).fill(false);
-    tempIsActiveArray[exerciseIndex] = true;
-    setIsActiveArray(tempIsActiveArray);
     updateScroller();
-    if (lastValuesFromExercises.current[exerciseIndex]) {
-      // why would this not be true?
-      setLastReps(lastValuesFromExercises.current[exerciseIndex].reps);
-      setLastWeight(lastValuesFromExercises.current[exerciseIndex].weight);
+
+    const currentExercise = exercises.find(
+      (item) => item.id === currentExerciseID,
+    );
+
+    if (currentExercise?.attempts.length) {
+      const arrayIndex = currentExercise?.attempts.length - 2;
+
+      const lastAttemptWithData = currentExercise?.attempts[arrayIndex];
+
+      const lastSetInAttempt =
+        lastAttemptWithData[lastAttemptWithData.length - 1];
+
+      setLastReps(lastSetInAttempt.reps);
+      setLastWeight(lastSetInAttempt.weight);
     }
-  }, [exerciseIndex]);
+  }, [currentExerciseID, exercises]);
 
   useEffect(() => {
     const q = query(collection(db, "exercises"), orderBy("order", "asc"));
@@ -135,28 +148,13 @@ function Exercises() {
 
         const thisExercise = doc.data();
 
-        let lastExerciseReps = 0;
-        let lastExerciseWeight = 0;
-
         thisExercise.attempts.forEach(
           (attempt: { [s: string]: unknown } | ArrayLike<unknown>) => {
             const valuesArray = Object.values(attempt) as SetObject[];
 
-            if (valuesArray[0]) {
-              lastExerciseReps = valuesArray[0].reps;
-              lastExerciseWeight = valuesArray[0].weight;
-            }
-
             thisExerciseAttempts.push(valuesArray);
           },
         );
-
-        const lastExercisesObject: LastValuesFromExercise = {
-          reps: lastExerciseReps,
-          weight: lastExerciseWeight,
-        };
-
-        lastValuesFromExercises.current.push(lastExercisesObject);
 
         const rowFromFirestore: ExerciseObject = {
           id: thisExercise.id,
@@ -169,11 +167,6 @@ function Exercises() {
       });
 
       setExercises(dataFromFirestore);
-
-      if (dataFromFirestore.length - exercisesTotalRef.current === 1) {
-        setExerciseIndex(exercisesTotalRef.current);
-      }
-      exercisesTotalRef.current = dataFromFirestore.length;
     });
 
     return () => unsubscribe();
@@ -185,16 +178,17 @@ function Exercises() {
         ref={scroller}
         className="[&>*]:last]:animate-pulse max-h-full flex-1 overflow-y-auto"
       >
-        {exercises.map((item, index) => (
-          <Exercise
-            data={item}
-            key={index}
-            isActive={isActiveArray[index]}
-            newAttempt={() => {
-              handleNewAttempt(index);
-            }}
-          />
-        ))}
+        {exercises
+          .filter((item) => item.id === currentExerciseID)
+          .map((item, index) => (
+            <Exercise
+              data={item}
+              key={index}
+              newAttempt={() => {
+                handleNewAttempt();
+              }}
+            />
+          ))}
       </div>
       <SetAdder
         handleNewSet={handleNewSet}
