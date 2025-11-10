@@ -7,17 +7,16 @@ import type { SetObject } from "../interfaces.ts";
 type SetAdderProps = {
   handleNewSet: (object: SetObject) => void;
   previousReps: number;
-  previousWeight: number;
+  previousUnit: string;
 };
 
-function SetAdder({
-  handleNewSet,
-  previousReps,
-  previousWeight,
-}: SetAdderProps) {
+function SetAdder({ handleNewSet, previousReps, previousUnit }: SetAdderProps) {
   const [reps, setReps] = useState(3);
-  const [weight, setWeight] = useState(50);
+  const [unit, setUnit] = useState("");
   const [notes, setNotes] = useState("");
+
+  const [unitType, setUnitType] = useState("lbs");
+  const [unitLabel, setUnitLabel] = useState("Weight");
 
   const handleChange = (
     event: ChangeEvent<HTMLInputElement> | ChangeEvent<HTMLTextAreaElement>,
@@ -29,8 +28,8 @@ function SetAdder({
       case "reps":
         setReps(newValue);
         break;
-      case "weight":
-        setWeight(newValue);
+      case "unit":
+        setUnit(thisInput.value);
         break;
       case "notes":
         setNotes(thisInput.value);
@@ -44,15 +43,43 @@ function SetAdder({
     }
   };
 
-  const trySetWeight = (newValue: number) => {
+  const trySetUnitFromIncDec = (newValue: number) => {
     if (newValue >= 0 && newValue <= 300) {
-      setWeight(newValue);
+      setUnit(newValue.toString() + unitType);
+    }
+  };
+
+  const toggleUnit = () => {
+    if (unitType === "lbs") {
+      setUnitType("s");
+    } else if (unitType === "s") {
+      setUnitType("");
+    } else if (unitType === "") {
+      setUnitType("lbs");
+    }
+
+    if (unitLabel === "Weight") {
+      setUnitLabel("Time");
+    } else if (unitLabel === "Time") {
+      setUnitLabel("Action");
+    } else if (unitLabel === "Action") {
+      setUnitLabel("Weight");
+    }
+  };
+
+  const determineUnitInputValue = () => {
+    if (unitType === "") {
+      return 0;
+    } else if (unitType === "lbs") {
+      return unit.replace(/\D/g, "") + "lbs";
+    } else if (unitType === "s") {
+      return unit.replace(/\D/g, "") + "s";
     }
   };
 
   useEffect(() => {
-    setWeight(previousWeight);
-  }, [previousWeight]);
+    setUnit(previousUnit);
+  }, [previousUnit]);
 
   useEffect(() => {
     setReps(previousReps);
@@ -89,29 +116,44 @@ function SetAdder({
         </div>
         <div className="mr-4 h-full w-px bg-gray-200/30"></div>
         <div className="flex flex-1 flex-col border-gray-300 pr-4">
-          <div className="mb-1 text-center text-sm font-bold">Weight</div>
+          <div className="mb-1 text-center text-sm font-bold">
+            <button
+              onClick={toggleUnit}
+              className="rounded-sm bg-gray-200/40 px-2 py-1"
+            >
+              {unitLabel}
+            </button>
+          </div>
           <div className="flex">
             <input
-              id="weight"
+              id="unit"
               type="text"
-              className="mt-4 mr-6 ml-auto h-10 w-26 rounded-md border-1 border-dotted bg-gray-100 pr-5 text-right text-xl font-bold tabular-nums"
-              value={weight + "lbs"}
+              className={`mt-4 mr-6 ml-auto h-10 w-26 rounded-md border-1 border-dotted bg-gray-100 pr-5 text-right text-xl font-bold tabular-nums ${determineUnitInputValue() === 0 && "hidden"}`}
+              value={determineUnitInputValue()}
               onChange={handleChange}
             />
-            <div className="flex flex-col gap-2">
-              <button
-                className="block h-10 w-10 rounded-sm border-1 border-gray-900 bg-gray-100 text-xl font-bold shadow-md"
-                onClick={() => trySetWeight(weight + 1)}
-              >
-                <div className="relative -top-[2px]">+</div>
-              </button>
-              <button
-                className="block h-10 w-10 rounded-sm border-1 border-gray-900 bg-gray-100 text-xl font-bold shadow-md"
-                onClick={() => trySetWeight(weight - 1)}
-              >
-                <div className="relative -top-[1px]">–</div>
-              </button>
-            </div>
+            {determineUnitInputValue() !== 0 && (
+              <div className="flex flex-col gap-2">
+                <button
+                  className="block h-10 w-10 rounded-sm border-1 border-gray-900 bg-gray-100 text-xl font-bold shadow-md"
+                  onClick={() => {
+                    const numericString = parseInt(unit.replace(/\D/g, ""));
+                    trySetUnitFromIncDec(numericString + 1);
+                  }}
+                >
+                  <div className="relative -top-[2px]">+</div>
+                </button>
+                <button
+                  className="block h-10 w-10 rounded-sm border-1 border-gray-900 bg-gray-100 text-xl font-bold shadow-md"
+                  onClick={() => {
+                    const numericString = parseInt(unit.replace(/\D/g, ""));
+                    trySetUnitFromIncDec(numericString - 1);
+                  }}
+                >
+                  <div className="relative -top-[1px]">–</div>
+                </button>
+              </div>
+            )}
           </div>
         </div>
         <div className="hidden p-4">
@@ -120,7 +162,7 @@ function SetAdder({
             onClick={() => {
               handleNewSet({
                 reps: reps,
-                weight: weight,
+                unit: unit,
                 notes: notes,
                 date: Date.now(),
               });
@@ -147,7 +189,7 @@ function SetAdder({
           onClick={() => {
             handleNewSet({
               reps: reps,
-              weight: weight,
+              unit: unit,
               notes: notes,
               date: Date.now(),
             });

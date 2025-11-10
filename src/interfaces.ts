@@ -7,7 +7,7 @@ export interface ExerciseObject {
 
 export interface SetObject {
     reps: number;
-    weight: number;
+    unit: string;
     notes: string;
     date: number;
 }

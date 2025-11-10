@@ -28,7 +28,7 @@ function Exercise({ exerciseObject }: ExerciseProps) {
   };
 
   const [lastReps, setLastReps] = useState(3);
-  const [lastWeight, setLastWeight] = useState(50);
+  const [lastUnit, setLastUnit] = useState("");
 
   const handleNewAttempt = () => {
     const lastAttempt =
@@ -96,6 +96,8 @@ function Exercise({ exerciseObject }: ExerciseProps) {
   // this seems like overkill, to always try mostly fail, just trying to always have a new attempt started when open an exercise, better way to always have an open blank last attempt?
 
   useEffect(() => {
+    console.log(exerciseObject.attempts);
+
     const arrayIndexForLastAttemptWithData = exerciseObject.attempts.length - 2;
     const lastAttemptWithData =
       exerciseObject.attempts[arrayIndexForLastAttemptWithData];
@@ -104,7 +106,7 @@ function Exercise({ exerciseObject }: ExerciseProps) {
       lastAttemptWithData[lastAttemptWithData.length - 1];
 
     setLastReps(lastSetInAttempt.reps);
-    setLastWeight(lastSetInAttempt.weight);
+    setLastUnit(lastSetInAttempt.unit);
   }, [exerciseObject.attempts]);
 
   return (
@@ -117,7 +119,7 @@ function Exercise({ exerciseObject }: ExerciseProps) {
       <SetAdder
         handleNewSet={handleNewSet}
         previousReps={lastReps}
-        previousWeight={lastWeight}
+        previousUnit={lastUnit}
       />
     </div>
   );
