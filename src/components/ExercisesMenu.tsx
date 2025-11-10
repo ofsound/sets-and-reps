@@ -14,7 +14,7 @@ function ExercisesMenu({
       {exercises.map((item, index) => (
         <button
           key={index}
-          className="mr-2 rounded-md border-1 border-white px-3 py-1 text-lg text-white"
+          className="mr-2 rounded-md border-1 border-gray-700 bg-black px-1.5 py-1 text-sm font-bold text-white"
           onClick={() => {
             setCurrentExerciseIDFromMenu(item.id);
           }}

@@ -6,19 +6,13 @@ import { db } from "./firebase-config.ts";
 
 import type { ExerciseObject, SetObject } from "./interfaces.ts";
 
-// import Exercises from "./components/Exercises.tsx";
 import Exercise from "./components/Exercise.tsx";
 import ExercisesManager from "./components/ExercisesManager.tsx";
 import ExercisesMenu from "./components/ExercisesMenu.tsx";
 
 function App() {
   const [exercises, setExercises] = useState<Array<ExerciseObject>>([]);
-
   const [currentExerciseID, setCurrentExerciseID] = useState<string>("");
-
-  const setCurrentExerciseIDFromMenu = (currentExerciseIDFromMenu: string) => {
-    setCurrentExerciseID(currentExerciseIDFromMenu);
-  };
 
   useEffect(() => {
     const q = query(collection(db, "exercises"), orderBy("order", "asc"));
@@ -57,7 +51,12 @@ function App() {
   return (
     <div className="flex h-full flex-col bg-gray-200 p-1">
       <ExercisesManager {...{ exercises }} />
-      <ExercisesMenu {...{ exercises }} {...{ setCurrentExerciseIDFromMenu }} />
+      <ExercisesMenu
+        {...{ exercises }}
+        setCurrentExerciseIDFromMenu={(exerciseIDFromMenu) => {
+          setCurrentExerciseID(exerciseIDFromMenu);
+        }}
+      />
       {exercises
         .filter((item) => item.id === currentExerciseID)
         .map((item, index) => (

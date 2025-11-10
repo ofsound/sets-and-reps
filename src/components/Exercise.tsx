@@ -96,7 +96,7 @@ function Exercise({ exerciseObject }: ExerciseProps) {
         {exerciseObject.name}
       </h1>
 
-      <div className="flex-1 overflow-auto">
+      <div className="flex-1 overflow-auto pt-4">
         {exerciseObject.attempts.map((item, index) => (
           <Attempt attempt={item} key={index} />
         ))}
