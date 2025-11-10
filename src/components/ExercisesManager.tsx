@@ -61,7 +61,7 @@ function ExercisesManager({ exercises }: ExercisesManagerProps) {
   };
 
   return (
-    <div className="mb-4 hidden border-b-2 border-gray-300 bg-gray-500 p-4">
+    <div className="hidden border-b-2 border-gray-300 bg-gray-500 p-4">
       <ExerciseAdder handleExerciseAdded={handleExerciseAdded} />
       <ExercisesIndex exercises={exercises} deleteExercise={deleteExercise} />
     </div>

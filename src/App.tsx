@@ -55,18 +55,14 @@ function App() {
   }, []);
 
   return (
-    <div className="h-full bg-gray-200 p-1">
+    <div className="flex h-full flex-col bg-gray-200 p-1">
       <ExercisesManager {...{ exercises }} />
-
       <ExercisesMenu {...{ exercises }} {...{ setCurrentExerciseIDFromMenu }} />
-      {/* <Exercises {...{ exercises }} {...{ currentExerciseID }} /> */}
-      <div>
-        {exercises
-          .filter((item) => item.id === currentExerciseID)
-          .map((item, index) => (
-            <Exercise exerciseData={item} key={index} />
-          ))}
-      </div>
+      {exercises
+        .filter((item) => item.id === currentExerciseID)
+        .map((item, index) => (
+          <Exercise exerciseObject={item} key={index} />
+        ))}
     </div>
   );
 }
