@@ -59,12 +59,12 @@ function SetAdder({
   }, [previousReps]);
 
   return (
-    <div className="mx-auto mt-4 flex w-full flex-col border-t-1 border-white bg-gray-500 py-4">
-      <div className="flex justify-center pt-3 pb-6">
+    <div className="mx-auto flex w-full flex-col border-t-1 border-white bg-gray-500 py-2">
+      <div className="flex justify-center pt-3 pb-3">
         <div className="flex w-full flex-1 flex-col pl-4">
-          <div className="mb-6 text-center text-sm font-bold">Reps</div>
+          <div className="mb-3 text-center text-sm font-bold">Reps</div>
           <div className="flex w-full">
-            <div className="flex flex-col gap-3">
+            <div className="flex flex-col gap-2">
               <button
                 className="block h-10 w-10 rounded-sm border border-gray-900 bg-gray-100 text-xl font-bold shadow-md"
                 onClick={() => trySetReps(reps + 1)}
@@ -89,7 +89,7 @@ function SetAdder({
         </div>
         <div className="h-full w-0.5 bg-gray-200"></div>
         <div className="flex flex-1 flex-col border-gray-300 pr-4">
-          <div className="mb-6 text-center text-sm font-bold">Weight</div>
+          <div className="mb-3 text-center text-sm font-bold">Weight</div>
           <div className="flex">
             <input
               id="weight"
@@ -98,7 +98,7 @@ function SetAdder({
               value={weight + "lbs"}
               onChange={handleChange}
             />
-            <div className="flex flex-col gap-3">
+            <div className="flex flex-col gap-2">
               <button
                 className="block h-10 w-10 rounded-sm border-1 border-gray-900 bg-gray-100 text-xl font-bold shadow-md"
                 onClick={() => trySetWeight(weight + 1)}
@@ -130,7 +130,7 @@ function SetAdder({
           </button>
         </div>
       </div>
-      <div className="flex border-t-1 border-gray-400 px-6 py-4 grayscale-70">
+      <div className="flex border-t-1 border-gray-400 px-6 py-3">
         <div className="flex max-h-max w-full self-center-safe">
           <div className="mt-3 w-12 pr-4 text-sm font-bold">Notes</div>
           <input
@@ -142,9 +142,9 @@ function SetAdder({
           />
         </div>
       </div>
-      <div className="border-t-1 border-gray-400 pt-4">
+      <div className="border-t-1 border-gray-400 px-6 pt-2">
         <button
-          className={`mx-auto block h-12 w-9/10 rounded-md border-1 border-gray-500 bg-green-600 font-black text-white shadow-md`}
+          className="mx-auto block h-9 w-full rounded-md border-1 border-gray-500 bg-green-600 font-black text-white shadow-md"
           onClick={() => {
             handleNewSet({
               reps: reps,

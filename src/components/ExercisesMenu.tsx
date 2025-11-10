@@ -10,7 +10,7 @@ function ExercisesMenu({
   setCurrentExerciseIDFromMenu,
 }: ExercisesMenuProps) {
   return (
-    <div className="border-b-2 border-gray-300 bg-gray-500 p-4">
+    <div className="border-b-2 border-gray-300 bg-gray-500 px-4 py-2">
       {exercises.map((item, index) => (
         <button
           key={index}

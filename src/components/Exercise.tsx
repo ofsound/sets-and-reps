@@ -91,12 +91,12 @@ function Exercise({ exerciseObject }: ExerciseProps) {
   }, [exerciseObject.attempts]);
 
   return (
-    <div className="flex min-h-0 flex-1 flex-col bg-amber-200">
+    <div className="flex min-h-0 flex-1 flex-col">
       <h1 className="my-6 hidden text-center text-2xl font-black">
         {exerciseObject.name}
       </h1>
 
-      <div className="flex-1 overflow-auto pt-4">
+      <div className="flex-1 overflow-auto">
         {exerciseObject.attempts.map((item, index) => (
           <Attempt attempt={item} key={index} />
         ))}
