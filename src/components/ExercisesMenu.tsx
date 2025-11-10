@@ -17,16 +17,16 @@ function ExercisesMenu({
   return (
     <div>
       <div className="flex justify-between border-b-2 border-gray-300 bg-gray-500 px-4 py-2">
-        <div>{currentExerciseName}</div>
+        <div className="text-3xl font-bold">{currentExerciseName}</div>
         <button
           onClick={() => {
             setMenuIsVisible((menuIsVisible) => !menuIsVisible);
           }}
         >
           <svg viewBox="0 0 100 80" width="40" height="40">
-            <rect width="100" height="20"></rect>
-            <rect y="30" width="100" height="20"></rect>
-            <rect y="60" width="100" height="20"></rect>
+            <rect width="100" height="20" rx="10"></rect>
+            <rect y="30" width="100" height="20" rx="10"></rect>
+            <rect y="60" width="100" height="20" rx="10"></rect>
           </svg>
         </button>
       </div>

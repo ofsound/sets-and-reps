@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 
 import { doc, updateDoc } from "firebase/firestore";
 
@@ -14,6 +14,19 @@ type ExerciseProps = {
 };
 
 function Exercise({ exerciseObject }: ExerciseProps) {
+  const scroller = useRef(null);
+
+  const updateScroller = () => {
+    setTimeout(() => {
+      const thisScroller = scroller.current;
+      if (thisScroller) {
+        (thisScroller as HTMLElement).scrollTop = (
+          thisScroller as HTMLElement
+        ).scrollHeight;
+      }
+    });
+  };
+
   const [lastReps, setLastReps] = useState(3);
   const [lastWeight, setLastWeight] = useState(50);
 
@@ -48,6 +61,8 @@ function Exercise({ exerciseObject }: ExerciseProps) {
 
       updateDoc(exerciseRef, newFirestoreDocData);
     }
+
+    updateScroller();
   };
 
   const handleNewSet = (newSet: SetObject) => {
@@ -73,6 +88,8 @@ function Exercise({ exerciseObject }: ExerciseProps) {
     const exerciseRef = doc(db, "exercises", exerciseObject.id);
 
     updateDoc(exerciseRef, newFirestoreDocData);
+
+    updateScroller();
   };
 
   handleNewAttempt();
@@ -92,11 +109,7 @@ function Exercise({ exerciseObject }: ExerciseProps) {
 
   return (
     <div className="flex min-h-0 flex-1 flex-col">
-      <h1 className="my-6 hidden text-center text-2xl font-black">
-        {exerciseObject.name}
-      </h1>
-
-      <div className="flex-1 overflow-auto">
+      <div className="flex-1 overflow-auto" ref={scroller}>
         {exerciseObject.attempts.map((item, index) => (
           <Attempt attempt={item} key={index} />
         ))}
