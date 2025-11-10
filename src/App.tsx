@@ -6,7 +6,8 @@ import { db } from "./firebase-config.ts";
 
 import type { ExerciseObject, SetObject } from "./interfaces.ts";
 
-import Exercises from "./components/Exercises.tsx";
+// import Exercises from "./components/Exercises.tsx";
+import Exercise from "./components/Exercise.tsx";
 import ExercisesManager from "./components/ExercisesManager.tsx";
 import ExercisesMenu from "./components/ExercisesMenu.tsx";
 
@@ -58,7 +59,14 @@ function App() {
       <ExercisesManager {...{ exercises }} />
 
       <ExercisesMenu {...{ exercises }} {...{ setCurrentExerciseIDFromMenu }} />
-      <Exercises {...{ currentExerciseID }} />
+      {/* <Exercises {...{ exercises }} {...{ currentExerciseID }} /> */}
+      <div>
+        {exercises
+          .filter((item) => item.id === currentExerciseID)
+          .map((item, index) => (
+            <Exercise exerciseData={item} key={index} />
+          ))}
+      </div>
     </div>
   );
 }
