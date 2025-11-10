@@ -20,8 +20,8 @@ import type {
 
 import Exercise from "../components/Exercise.tsx";
 import SetAdder from "../components/SetAdder.tsx";
-import ExercisesMenu from "./ExercisesMenu.tsx";
-import ExercisesManager from "./ExercisesManager.tsx";
+// import ExercisesMenu from "./ExercisesMenu.tsx";
+// import ExercisesManager from "./ExercisesManager.tsx";
 
 function Exercises() {
   const exercisesTotalRef = useRef(0);
@@ -36,8 +36,6 @@ function Exercises() {
 
   const [exercises, setExercises] = useState<Array<ExerciseObject>>([]);
 
-  const [managerVisible, setManagerVisible] = useState(false);
-
   const [lastReps, setLastReps] = useState(3);
   const [lastWeight, setLastWeight] = useState(50);
 
@@ -50,10 +48,6 @@ function Exercises() {
         ).scrollHeight;
       }
     });
-  };
-
-  const setExerciseIndexFromMenu = (newExerciseIndex: number) => {
-    setExerciseIndex(newExerciseIndex);
   };
 
   const handleNewAttempt = (index: number) => {
@@ -189,17 +183,6 @@ function Exercises() {
 
   return (
     <div className="flex h-full flex-col">
-      <ExercisesMenu
-        exercises={exercises}
-        setExerciseIndexFromMenu={setExerciseIndexFromMenu}
-      />
-      <button
-        onClick={() => setManagerVisible(!managerVisible)}
-        className="max-w-max rounded-md border-white bg-black px-4 py-2 text-white"
-      >
-        Toggle Full Index
-      </button>
-      {managerVisible && <ExercisesManager exercises={exercises} />}
       <div
         ref={scroller}
         className="[&>*]:last]:animate-pulse max-h-full flex-1 overflow-y-auto"

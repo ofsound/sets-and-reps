@@ -2,12 +2,12 @@ import type { ExerciseObject } from "../interfaces.ts";
 
 type ExercisesMenuProps = {
   exercises: ExerciseObject[];
-  setExerciseIndexFromMenu: (exerciseIndex: number) => void;
+  setCurrentExerciseIDFromMenu: (exerciseID: string) => void;
 };
 
 function ExercisesMenu({
   exercises,
-  setExerciseIndexFromMenu,
+  setCurrentExerciseIDFromMenu,
 }: ExercisesMenuProps) {
   return (
     <div className="mb-4 border-b-2 border-gray-300 bg-gray-500 p-4">
@@ -16,7 +16,7 @@ function ExercisesMenu({
           key={index}
           className="mr-2 rounded-md border-1 border-white px-3 py-1 text-lg text-white"
           onClick={() => {
-            setExerciseIndexFromMenu(index);
+            setCurrentExerciseIDFromMenu(item.id);
           }}
         >
           {item.name}
