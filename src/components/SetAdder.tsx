@@ -60,9 +60,9 @@ function SetAdder({
 
   return (
     <div className="mx-auto flex w-full flex-col border-t-1 border-white bg-gray-500 py-2">
-      <div className="flex justify-center pt-3 pb-3">
+      <div className="flex justify-center pt-1 pb-3">
         <div className="flex w-full flex-1 flex-col pl-4">
-          <div className="mb-3 text-center text-sm font-bold">Reps</div>
+          <div className="mb-1 text-center text-sm font-bold">Reps</div>
           <div className="flex w-full">
             <div className="flex flex-col gap-2">
               <button
@@ -87,9 +87,9 @@ function SetAdder({
             />
           </div>
         </div>
-        <div className="h-full w-0.5 bg-gray-200"></div>
+        <div className="mr-4 h-full w-px bg-gray-200/30"></div>
         <div className="flex flex-1 flex-col border-gray-300 pr-4">
-          <div className="mb-3 text-center text-sm font-bold">Weight</div>
+          <div className="mb-1 text-center text-sm font-bold">Weight</div>
           <div className="flex">
             <input
               id="weight"
@@ -130,19 +130,18 @@ function SetAdder({
           </button>
         </div>
       </div>
-      <div className="flex border-t-1 border-gray-400 px-6 py-3">
-        <div className="flex max-h-max w-full self-center-safe">
-          <div className="mt-3 w-12 pr-4 text-sm font-bold">Notes</div>
-          <input
-            type="text"
-            id="notes"
-            className="ml-4 h-full w-full rounded-md border-1 border-dotted bg-gray-100 p-3 text-left text-base font-bold tabular-nums"
-            value={notes}
-            onChange={handleChange}
-          />
-        </div>
+
+      <div className="flex max-h-max w-full self-center-safe px-6 py-3">
+        <div className="mt-1 w-12 pr-4 text-sm font-bold">Notes</div>
+        <input
+          type="text"
+          id="notes"
+          className="ml-1 h-full w-full rounded-md border-1 border-dotted bg-gray-100 px-2 py-1 text-left text-sm font-bold tabular-nums"
+          value={notes}
+          onChange={handleChange}
+        />
       </div>
-      <div className="border-t-1 border-gray-400 px-6 pt-2">
+      <div className="px-6 pt-2">
         <button
           className="mx-auto block h-9 w-full rounded-md border-1 border-gray-500 bg-green-600 font-black text-white shadow-md"
           onClick={() => {
