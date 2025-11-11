@@ -29,7 +29,7 @@ function ExercisesManager({ exercises }: ExercisesManagerProps) {
     const newExercise = {
       id: docRef.id,
       name: newExerciseName,
-      attempts: [{}],
+      attempts: [],
       order: exercisesTotal,
     };
 

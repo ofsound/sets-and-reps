@@ -14,61 +14,12 @@ type ExerciseProps = {
 };
 
 function Exercise({ exerciseObject }: ExerciseProps) {
-  const isFirstRenderRef = useRef(true);
-
-  if (isFirstRenderRef.current) {
-    const lastAttempt =
-      exerciseObject.attempts[exerciseObject.attempts.length - 1];
-
-    if (lastAttempt?.length !== 0) {
-      exerciseObject.attempts.push([]);
-
-      const attemptArray: Dictionary[] = [];
-
-      exerciseObject.attempts.forEach((attempt) => {
-        const myObject: Dictionary = {};
-
-        attempt.forEach((value, index) => {
-          const indexString = index.toString();
-          myObject[indexString] = value;
-        });
-
-        attemptArray.push(myObject);
-      });
-
-      const newFirestoreDocData = {
-        attempts: attemptArray,
-      };
-
-      const exerciseRef = doc(db, "exercises", exerciseObject.id);
-
-      updateDoc(exerciseRef, newFirestoreDocData);
-    }
-
-    isFirstRenderRef.current = false;
-  }
-
-  const scroller = useRef(null);
-
-  const updateScroller = () => {
-    setTimeout(() => {
-      const thisScroller = scroller.current;
-      if (thisScroller) {
-        (thisScroller as HTMLElement).scrollTop = (
-          thisScroller as HTMLElement
-        ).scrollHeight;
-      }
-    });
-  };
-
   const [lastReps, setLastReps] = useState(3);
   const [lastUnit, setLastUnit] = useState("20lbs");
 
-  // const handleNewAttempt = () => {};
+  const scroller = useRef(null);
 
-  const handleNewSet = (newSet: SetObject) => {
-    exerciseObject.attempts[exerciseObject.attempts.length - 1].push(newSet);
-
+  const updateExerciseAttemptsInDatabase = (exerciseObject: ExerciseObject) => {
     const attemptArray: Dictionary[] = [];
 
     exerciseObject.attempts.forEach((attempt) => {
@@ -87,9 +38,37 @@ function Exercise({ exerciseObject }: ExerciseProps) {
     };
 
     const exerciseRef = doc(db, "exercises", exerciseObject.id);
-
     updateDoc(exerciseRef, newFirestoreDocData);
+  };
 
+  const updateScroller = () => {
+    setTimeout(() => {
+      const thisScroller = scroller.current;
+      if (thisScroller) {
+        (thisScroller as HTMLElement).scrollTop = (
+          thisScroller as HTMLElement
+        ).scrollHeight;
+      }
+    });
+  };
+
+  const isFirstRenderRef = useRef(true);
+
+  if (isFirstRenderRef.current) {
+    const lastAttempt =
+      exerciseObject.attempts[exerciseObject.attempts.length - 1];
+
+    // On mount, create an empty attempt, except if it already exists
+    if (lastAttempt?.length !== 0) {
+      exerciseObject.attempts.push([]);
+      updateExerciseAttemptsInDatabase(exerciseObject);
+    }
+    isFirstRenderRef.current = false;
+  }
+
+  const handleNewSet = (newSet: SetObject) => {
+    exerciseObject.attempts[exerciseObject.attempts.length - 1].push(newSet);
+    updateExerciseAttemptsInDatabase(exerciseObject);
     updateScroller();
   };
 
@@ -105,6 +84,7 @@ function Exercise({ exerciseObject }: ExerciseProps) {
         lastAttemptWithData[lastAttemptWithData.length - 1];
       setLastReps(lastSetInAttempt.reps);
       setLastUnit(lastSetInAttempt.unit);
+      console.log("setLastUnit hit" + lastSetInAttempt.unit);
     }
   }, [exerciseObject.attempts]);
 

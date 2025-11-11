@@ -37,6 +37,15 @@ function SetAdder({ handleNewSet, previousReps, previousUnit }: SetAdderProps) {
     }
   };
 
+  const thisUnitType = unit.replace(/[0-9]/g, "");
+  let unitInputValue = "";
+
+  if (thisUnitType === "lbs") {
+    unitInputValue = unit.replace(/\D/g, "") + "lbs";
+  } else if (thisUnitType === "s") {
+    unitInputValue = unit.replace(/\D/g, "") + "s";
+  }
+
   const trySetReps = (newValue: number) => {
     if (newValue >= 1 && newValue <= 99) {
       setReps(newValue);
@@ -77,17 +86,9 @@ function SetAdder({ handleNewSet, previousReps, previousUnit }: SetAdderProps) {
     }
   };
 
-  const determineUnitInputValue = () => {
-    if (unitType === "") {
-      return "";
-    } else if (unitType === "lbs") {
-      return unit.replace(/\D/g, "") + "lbs";
-    } else if (unitType === "s") {
-      return unit.replace(/\D/g, "") + "s";
-    }
-  };
-
   useEffect(() => {
+    console.log("useEffect previouUnit:" + previousUnit);
+
     setUnit(previousUnit);
   }, [previousUnit]);
 
@@ -138,11 +139,11 @@ function SetAdder({ handleNewSet, previousReps, previousUnit }: SetAdderProps) {
             <input
               id="unit"
               type="text"
-              className={`mt-4 mr-6 ml-auto h-10 w-26 rounded-md border-1 border-dotted bg-gray-100 pr-5 text-right text-xl font-bold tabular-nums ${determineUnitInputValue() === "" && "hidden"}`}
-              value={determineUnitInputValue()}
+              className={`mt-4 mr-6 ml-auto h-10 w-26 rounded-md border-1 border-dotted bg-gray-100 pr-5 text-right text-xl font-bold tabular-nums ${unitInputValue === "" && "hidden"}`}
+              value={unitInputValue}
               onChange={handleChange}
             />
-            {determineUnitInputValue() !== "" && (
+            {unitInputValue !== "" && (
               <div className="flex flex-col gap-2">
                 <button
                   className="block h-10 w-10 rounded-sm border-1 border-gray-900 bg-gray-100 text-xl font-bold shadow-md"
