@@ -55,7 +55,7 @@ function App() {
     <div className="flex h-full flex-col bg-gray-200">
       <AppHeader
         {...{ exercises }}
-        setCurrentExerciseIDFromMenu={(exerciseIDFromMenu) => {
+        setCurrentExerciseID={(exerciseIDFromMenu) => {
           setCurrentExerciseID(exerciseIDFromMenu);
         }}
       />

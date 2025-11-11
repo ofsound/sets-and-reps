@@ -7,13 +7,10 @@ import ExercisesManager from "./ExercisesManager.tsx";
 
 type AppHeaderProps = {
   exercises: ExerciseObject[];
-  setCurrentExerciseIDFromMenu: (exerciseID: string) => void;
+  setCurrentExerciseID: (exerciseID: string) => void;
 };
 
-function AppHeader({
-  exercises,
-  setCurrentExerciseIDFromMenu,
-}: AppHeaderProps) {
+function AppHeader({ exercises, setCurrentExerciseID }: AppHeaderProps) {
   const [menuIsVisible, setMenuIsVisible] = useState(false);
   const [managerIsVisible, setManagerIsVisible] = useState(false);
   const [currentExerciseName, setCurrentExerciseName] =
@@ -25,6 +22,10 @@ function AppHeader({
 
   const hideManager = () => {
     setManagerIsVisible(false);
+  };
+
+  const hideMenu = () => {
+    setMenuIsVisible(false);
   };
 
   return (
@@ -50,9 +51,10 @@ function AppHeader({
       {menuIsVisible && (
         <ExercisesMenu
           {...{ exercises }}
-          {...{ setCurrentExerciseIDFromMenu }}
+          {...{ setCurrentExerciseID }}
           {...{ setCurrentExerciseName }}
           {...{ showManager }}
+          {...{ hideMenu }}
         />
       )}
       {managerIsVisible && (

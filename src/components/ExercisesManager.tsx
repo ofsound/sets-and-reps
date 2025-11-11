@@ -33,11 +33,11 @@ function ExercisesManager({ exercises, hideManager }: ExercisesManagerProps) {
 
   return (
     <div>
-      <ExercisesIndex exercises={exercises} />
       <ExerciseAdder handleExerciseAdded={handleExerciseAdded} />
+      <ExercisesIndex exercises={exercises} />
       <button
         onClick={hideManager}
-        className="absolute right-14 z-101 cursor-pointer text-black"
+        className="mx-auto block w-max cursor-pointer rounded-sm border-1 bg-gray-600 px-3 py-1 text-white"
       >
         Close
       </button>
