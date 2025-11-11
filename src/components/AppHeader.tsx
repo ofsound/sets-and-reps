@@ -31,21 +31,20 @@ function AppHeader({ exercises, setCurrentExerciseID }: AppHeaderProps) {
   return (
     <div>
       <div className="flex h-12 justify-between px-4 py-2">
-        <div className="flex-1 text-center text-lg font-bold text-black">
-          {currentExerciseName}
+        <div
+          onClick={() => {
+            setMenuIsVisible((menuIsVisible) => !menuIsVisible);
+          }}
+          className="flex-1 cursor-pointer text-center text-lg font-bold text-black select-none"
+        >
+          {currentExerciseName} ⏷
         </div>
         <button
           onClick={() => {
             setMenuIsVisible((menuIsVisible) => !menuIsVisible);
           }}
           className="absolute right-4 cursor-pointer"
-        >
-          <svg viewBox="0 0 100 80" width="23" height="23">
-            <rect fill="black" width="100" height="20" rx="10"></rect>
-            <rect fill="black" y="30" width="100" height="20" rx="10"></rect>
-            <rect fill="black" y="60" width="100" height="20" rx="10"></rect>
-          </svg>
-        </button>
+        ></button>
       </div>
 
       {menuIsVisible && (

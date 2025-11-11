@@ -15,7 +15,7 @@ function ExerciseAdder({ handleExerciseAdded }: ExerciseAdderProps) {
   };
 
   return (
-    <div className="flex bg-gray-500 p-4 shadow-md">
+    <div className="mx-4 flex rounded-sm bg-gray-500 p-4">
       <input
         id="name"
         type="text"
