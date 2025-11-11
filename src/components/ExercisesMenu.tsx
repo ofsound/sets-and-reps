@@ -4,12 +4,14 @@ type ExercisesMenuProps = {
   exercises: ExerciseObject[];
   setCurrentExerciseIDFromMenu: (exerciseID: string) => void;
   setCurrentExerciseName: (exerciseName: string) => void;
+  showManager: () => void;
 };
 
 function ExercisesMenu({
   exercises,
   setCurrentExerciseIDFromMenu,
   setCurrentExerciseName,
+  showManager,
 }: ExercisesMenuProps) {
   return (
     <div className="absolute z-100 h-[calc(100vh-48px)] w-full bg-gray-200 pt-6">
@@ -25,6 +27,12 @@ function ExercisesMenu({
           {item.name}
         </button>
       ))}
+      <button
+        onClick={showManager}
+        className="absolute right-14 z-101 cursor-pointer text-black"
+      >
+        Edit
+      </button>
     </div>
   );
 }

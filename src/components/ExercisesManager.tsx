@@ -9,9 +9,10 @@ import ExerciseAdder from "../components/ExerciseAdder.tsx";
 
 type ExercisesManagerProps = {
   exercises: ExerciseObject[];
+  hideManager: () => void;
 };
 
-function ExercisesManager({ exercises }: ExercisesManagerProps) {
+function ExercisesManager({ exercises, hideManager }: ExercisesManagerProps) {
   const handleExerciseAdded = async (newExerciseName: string) => {
     const docRef = doc(collection(db, "exercises"));
 
@@ -31,9 +32,15 @@ function ExercisesManager({ exercises }: ExercisesManagerProps) {
   };
 
   return (
-    <div className="">
+    <div>
       <ExercisesIndex exercises={exercises} />
       <ExerciseAdder handleExerciseAdded={handleExerciseAdded} />
+      <button
+        onClick={hideManager}
+        className="absolute right-14 z-101 cursor-pointer text-black"
+      >
+        Close
+      </button>
     </div>
   );
 }

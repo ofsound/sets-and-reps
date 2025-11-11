@@ -16,8 +16,16 @@ function AppHeader({
 }: AppHeaderProps) {
   const [menuIsVisible, setMenuIsVisible] = useState(false);
   const [managerIsVisible, setManagerIsVisible] = useState(false);
+  const [currentExerciseName, setCurrentExerciseName] =
+    useState("Sets And Reps");
 
-  const [currentExerciseName, setCurrentExerciseName] = useState("");
+  const showManager = () => {
+    setManagerIsVisible(true);
+  };
+
+  const hideManager = () => {
+    setManagerIsVisible(false);
+  };
 
   return (
     <div>
@@ -37,26 +45,19 @@ function AppHeader({
             <rect fill="black" y="60" width="100" height="20" rx="10"></rect>
           </svg>
         </button>
-        <button
-          onClick={() => {
-            setManagerIsVisible((managerIsVisible) => !managerIsVisible);
-          }}
-          className="absolute right-14 z-101 cursor-pointer text-black"
-        >
-          Edit
-        </button>
       </div>
 
       {menuIsVisible && (
         <ExercisesMenu
           {...{ exercises }}
-          setCurrentExerciseIDFromMenu={setCurrentExerciseIDFromMenu}
-          setCurrentExerciseName={setCurrentExerciseName}
+          {...{ setCurrentExerciseIDFromMenu }}
+          {...{ setCurrentExerciseName }}
+          {...{ showManager }}
         />
       )}
       {managerIsVisible && (
         <div className="absolute z-100 h-[calc(100vh-48px)] w-full bg-gray-200 pt-6">
-          <ExercisesManager {...{ exercises }} />
+          <ExercisesManager {...{ exercises }} hideManager={hideManager} />
         </div>
       )}
     </div>
