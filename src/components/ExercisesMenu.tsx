@@ -46,7 +46,7 @@ function ExercisesMenu({
       </div>
 
       {menuIsVisible && (
-        <div className="absolute z-100 h-[calc(100vh-48px)] w-full bg-white pt-6">
+        <div className="absolute z-100 h-[calc(100vh-48px)] w-full bg-gray-200 pt-6">
           {exercises.map((item, index) => (
             <button
               key={index}
@@ -63,7 +63,7 @@ function ExercisesMenu({
         </div>
       )}
       {managerIsVisible && (
-        <div className="absolute z-100 h-[calc(100vh-48px)] w-full bg-white pt-6">
+        <div className="absolute z-100 h-[calc(100vh-48px)] w-full bg-gray-200 pt-6">
           <ExercisesManager {...{ exercises }} />
         </div>
       )}

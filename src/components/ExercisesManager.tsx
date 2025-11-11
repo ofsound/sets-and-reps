@@ -1,9 +1,4 @@
-import {
-  collection,
-  doc,
-  setDoc,
-  getCountFromServer,
-} from "firebase/firestore";
+import { collection, doc, setDoc } from "firebase/firestore";
 
 import { db } from "../firebase-config.ts";
 
@@ -18,18 +13,13 @@ type ExercisesManagerProps = {
 
 function ExercisesManager({ exercises }: ExercisesManagerProps) {
   const handleExerciseAdded = async (newExerciseName: string) => {
-    const collectionRef = collection(db, "exercises");
-    const snapshot = await getCountFromServer(collectionRef);
-    // does this await just pause the code right here?
-    const exercisesTotal = snapshot.data().count;
-
-    const docRef = doc(collectionRef);
+    const docRef = doc(collection(db, "exercises"));
 
     const newExercise = {
       id: docRef.id,
       name: newExerciseName,
       attempts: [],
-      order: exercisesTotal,
+      order: exercises.length,
     };
 
     try {
@@ -41,9 +31,9 @@ function ExercisesManager({ exercises }: ExercisesManagerProps) {
   };
 
   return (
-    <div className="bg-gray-500">
-      <ExerciseAdder handleExerciseAdded={handleExerciseAdded} />
+    <div className="">
       <ExercisesIndex exercises={exercises} />
+      <ExerciseAdder handleExerciseAdded={handleExerciseAdded} />
     </div>
   );
 }

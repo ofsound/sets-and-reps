@@ -53,7 +53,7 @@ function ExercisesIndexItem({ name, id }: ExercisesIndexItemProps) {
     }
   };
 
-  const handleKeyPress = (e: KeyboardEvent<HTMLInputElement>) => {
+  const handleKeyDown = (e: KeyboardEvent<HTMLInputElement>) => {
     if (e.key === "Enter") {
       renameExercise();
     }
@@ -62,14 +62,14 @@ function ExercisesIndexItem({ name, id }: ExercisesIndexItemProps) {
   return (
     <div
       className={
-        "my-3 flex rounded-md border-1 border-white px-3 py-1 text-lg text-white"
+        "my-3 flex rounded-md border-1 border-white bg-gray-500 px-3 py-1 text-lg text-white"
       }
     >
       <input
         type="text"
         value={exerciseName}
         onChange={handleChange}
-        onKeyPress={handleKeyPress}
+        onKeyDown={handleKeyDown}
         className=""
       ></input>
       <input type="checkbox" value="optionValue" className="ml-auto"></input>

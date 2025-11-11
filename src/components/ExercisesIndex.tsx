@@ -8,7 +8,7 @@ type ExercisesIndexProps = {
 
 function ExercisesIndex({ exercises }: ExercisesIndexProps) {
   return (
-    <div className="bg-gray-500 p-4">
+    <div className="p-4">
       {exercises.map((item) => (
         <ExercisesIndexItem key={item.id} name={item.name} id={item.id} />
       ))}
