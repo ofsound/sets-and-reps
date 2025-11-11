@@ -2,6 +2,8 @@ import { useState } from "react";
 
 import type { ExerciseObject } from "../interfaces.ts";
 
+import ExercisesManager from "./ExercisesManager.tsx";
+
 type ExercisesMenuProps = {
   exercises: ExerciseObject[];
   setCurrentExerciseIDFromMenu: (exerciseID: string) => void;
@@ -12,6 +14,7 @@ function ExercisesMenu({
   setCurrentExerciseIDFromMenu,
 }: ExercisesMenuProps) {
   const [menuIsVisible, setMenuIsVisible] = useState(false);
+  const [managerIsVisible, setManagerIsVisible] = useState(false);
   const [currentExerciseName, setCurrentExerciseName] = useState("");
 
   return (
@@ -32,7 +35,16 @@ function ExercisesMenu({
             <rect fill="white" y="60" width="100" height="20" rx="10"></rect>
           </svg>
         </button>
+        <button
+          onClick={() => {
+            setManagerIsVisible((managerIsVisible) => !managerIsVisible);
+          }}
+          className="absolute right-14 z-101 cursor-pointer text-white"
+        >
+          Edit
+        </button>
       </div>
+
       {menuIsVisible && (
         <div className="absolute z-100 h-[calc(100vh-48px)] w-full bg-white pt-6">
           {exercises.map((item, index) => (
@@ -48,6 +60,11 @@ function ExercisesMenu({
               {item.name}
             </button>
           ))}
+        </div>
+      )}
+      {managerIsVisible && (
+        <div className="absolute z-100 h-[calc(100vh-48px)] w-full bg-white pt-6">
+          <ExercisesManager {...{ exercises }} />
         </div>
       )}
     </div>

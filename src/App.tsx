@@ -7,7 +7,6 @@ import { db } from "./firebase-config.ts";
 import type { ExerciseObject, SetObject } from "./interfaces.ts";
 
 import Exercise from "./components/Exercise.tsx";
-import ExercisesManager from "./components/ExercisesManager.tsx";
 import ExercisesMenu from "./components/ExercisesMenu.tsx";
 
 function App() {
@@ -54,7 +53,6 @@ function App() {
 
   return (
     <div className="flex h-full flex-col bg-gray-200 p-1">
-      <ExercisesManager {...{ exercises }} />
       <ExercisesMenu
         {...{ exercises }}
         setCurrentExerciseIDFromMenu={(exerciseIDFromMenu) => {
