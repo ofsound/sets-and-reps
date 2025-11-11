@@ -1,31 +1,16 @@
 import type { ExerciseObject } from "../interfaces.ts";
 
+import ExercisesIndexItem from "../components/ExercisesIndexItem.tsx";
+
 type ExercisesIndexProps = {
   exercises: ExerciseObject[];
-  deleteExercise: (exerciseID: string) => void;
 };
 
-function ExercisesIndex({ exercises, deleteExercise }: ExercisesIndexProps) {
+function ExercisesIndex({ exercises }: ExercisesIndexProps) {
   return (
     <div className="bg-gray-500 p-4">
       {exercises.map((item) => (
-        <div
-          key={item.id}
-          className={
-            "my-3 flex rounded-md border-1 border-white px-3 py-1 text-lg text-white"
-          }
-        >
-          {item.name} : {item.id}
-          <input
-            type="checkbox"
-            name="optionName"
-            value="optionValue"
-            className="ml-auto"
-          ></input>
-          <button onClick={() => deleteExercise(item.id)} className="ml-10">
-            ❌
-          </button>
-        </div>
+        <ExercisesIndexItem key={item.id} name={item.name} id={item.id} />
       ))}
     </div>
   );

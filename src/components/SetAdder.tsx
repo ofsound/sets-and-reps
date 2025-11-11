@@ -16,7 +16,9 @@ function SetAdder({ handleNewSet, previousReps, previousUnit }: SetAdderProps) {
   const [notes, setNotes] = useState("");
 
   const [unitType, setUnitType] = useState("lbs");
-  const [unitLabel, setUnitLabel] = useState("Weight");
+  // const [unitLabel, setUnitLabel] = useState("Weight");
+
+  let unitLabel = "";
 
   const handleChange = (
     event: ChangeEvent<HTMLInputElement> | ChangeEvent<HTMLTextAreaElement>,
@@ -42,8 +44,12 @@ function SetAdder({ handleNewSet, previousReps, previousUnit }: SetAdderProps) {
 
   if (thisUnitType === "lbs") {
     unitInputValue = unit.replace(/\D/g, "") + "lbs";
+    unitLabel = "Weight";
   } else if (thisUnitType === "s") {
     unitInputValue = unit.replace(/\D/g, "") + "s";
+    unitLabel = "Time";
+  } else {
+    unitLabel = "Action";
   }
 
   const trySetReps = (newValue: number) => {
@@ -78,11 +84,12 @@ function SetAdder({ handleNewSet, previousReps, previousUnit }: SetAdderProps) {
     }
 
     if (unitLabel === "Weight") {
-      setUnitLabel("Time");
+      unitLabel = "Time";
+      // setUnitLabel("Time");
     } else if (unitLabel === "Time") {
-      setUnitLabel("Action");
+      unitLabel = "Action";
     } else if (unitLabel === "Action") {
-      setUnitLabel("Weight");
+      unitLabel = "Weight";
     }
   };
 
@@ -137,32 +144,32 @@ function SetAdder({ handleNewSet, previousReps, previousUnit }: SetAdderProps) {
             <input
               id="unit"
               type="text"
-              className={`mt-4 mr-6 ml-auto h-10 w-26 rounded-md border-1 border-dotted bg-gray-100 pr-5 text-right text-xl font-bold tabular-nums ${unitInputValue === "" && "hidden"}`}
+              className={`mt-4 mr-6 ml-auto h-10 w-26 rounded-md border-1 border-dotted bg-gray-100 pr-5 text-right text-xl font-bold tabular-nums ${unitInputValue === "" && "opacity-40 blur-sm"}`}
               value={unitInputValue}
               onChange={handleChange}
             />
-            {unitInputValue !== "" && (
-              <div className="flex flex-col gap-2">
-                <button
-                  className="block h-10 w-10 rounded-sm border-1 border-gray-900 bg-gray-100 text-xl font-bold shadow-md"
-                  onClick={() => {
-                    const numericString = parseInt(unit.replace(/\D/g, ""));
-                    trySetUnitFromIncDec(numericString + 1);
-                  }}
-                >
-                  <div className="relative -top-[2px]">+</div>
-                </button>
-                <button
-                  className="block h-10 w-10 rounded-sm border-1 border-gray-900 bg-gray-100 text-xl font-bold shadow-md"
-                  onClick={() => {
-                    const numericString = parseInt(unit.replace(/\D/g, ""));
-                    trySetUnitFromIncDec(numericString - 1);
-                  }}
-                >
-                  <div className="relative -top-[1px]">–</div>
-                </button>
-              </div>
-            )}
+            <div
+              className={`flex flex-col gap-2 ${unitInputValue === "" && "opacity-40 blur-sm"}`}
+            >
+              <button
+                className="block h-10 w-10 rounded-sm border-1 border-gray-900 bg-gray-100 text-xl font-bold shadow-md"
+                onClick={() => {
+                  const numericString = parseInt(unit.replace(/\D/g, ""));
+                  trySetUnitFromIncDec(numericString + 1);
+                }}
+              >
+                <div className="relative -top-[2px]">+</div>
+              </button>
+              <button
+                className="block h-10 w-10 rounded-sm border-1 border-gray-900 bg-gray-100 text-xl font-bold shadow-md"
+                onClick={() => {
+                  const numericString = parseInt(unit.replace(/\D/g, ""));
+                  trySetUnitFromIncDec(numericString - 1);
+                }}
+              >
+                <div className="relative -top-[1px]">–</div>
+              </button>
+            </div>
           </div>
         </div>
         <div className="hidden p-4">

@@ -3,7 +3,6 @@ import {
   doc,
   setDoc,
   getCountFromServer,
-  deleteDoc,
 } from "firebase/firestore";
 
 import { db } from "../firebase-config.ts";
@@ -41,29 +40,10 @@ function ExercisesManager({ exercises }: ExercisesManagerProps) {
     }
   };
 
-  // how is this async not at the root, but inside ExercisesManager
-  const deleteExercise = async (exerciseID: string) => {
-    const confirmed = window.confirm(
-      `Are you sure you want to delete this Exercise?`,
-    );
-
-    if (confirmed) {
-      const docRef = doc(db, "exercises", exerciseID);
-      try {
-        await deleteDoc(docRef);
-        console.log("Document successfully deleted!");
-      } catch (error) {
-        console.error("Error removing document: ", error);
-      }
-    } else {
-      console.log("Deletion cancelled.");
-    }
-  };
-
   return (
     <div className="bg-gray-500">
       <ExerciseAdder handleExerciseAdded={handleExerciseAdded} />
-      <ExercisesIndex exercises={exercises} deleteExercise={deleteExercise} />
+      <ExercisesIndex exercises={exercises} />
     </div>
   );
 }

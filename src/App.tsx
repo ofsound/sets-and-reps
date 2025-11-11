@@ -52,14 +52,14 @@ function App() {
   );
 
   return (
-    <div className="flex h-full flex-col bg-gray-200 p-1">
+    <div className="flex h-full flex-col bg-gray-200">
       <ExercisesMenu
         {...{ exercises }}
         setCurrentExerciseIDFromMenu={(exerciseIDFromMenu) => {
           setCurrentExerciseID(exerciseIDFromMenu);
         }}
       />
-      {currentExercise && ( // Check if data is defined
+      {currentExercise && (
         <Exercise exerciseObject={currentExercise} key={currentExercise?.id} />
       )}
     </div>
