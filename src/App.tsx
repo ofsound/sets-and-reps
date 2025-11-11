@@ -7,7 +7,7 @@ import { db } from "./firebase-config.ts";
 import type { ExerciseObject, SetObject } from "./interfaces.ts";
 
 import Exercise from "./components/Exercise.tsx";
-import ExercisesMenu from "./components/ExercisesMenu.tsx";
+import AppHeader from "./components/AppHeader.tsx";
 
 function App() {
   const [exercises, setExercises] = useState<Array<ExerciseObject>>([]);
@@ -53,7 +53,7 @@ function App() {
 
   return (
     <div className="flex h-full flex-col bg-gray-200">
-      <ExercisesMenu
+      <AppHeader
         {...{ exercises }}
         setCurrentExerciseIDFromMenu={(exerciseIDFromMenu) => {
           setCurrentExerciseID(exerciseIDFromMenu);
