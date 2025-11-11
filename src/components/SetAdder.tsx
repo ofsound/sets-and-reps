@@ -87,8 +87,6 @@ function SetAdder({ handleNewSet, previousReps, previousUnit }: SetAdderProps) {
   };
 
   useEffect(() => {
-    console.log("useEffect previouUnit:" + previousUnit);
-
     setUnit(previousUnit);
   }, [previousUnit]);
 

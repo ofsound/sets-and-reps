@@ -64,6 +64,8 @@ function Exercise({ exerciseObject }: ExerciseProps) {
       updateExerciseAttemptsInDatabase(exerciseObject);
     }
     isFirstRenderRef.current = false;
+
+    updateScroller();
   }
 
   const handleNewSet = (newSet: SetObject) => {
@@ -73,8 +75,6 @@ function Exercise({ exerciseObject }: ExerciseProps) {
   };
 
   useEffect(() => {
-    updateScroller();
-
     if (exerciseObject.attempts.length > 1) {
       const arrayIndexForLastAttemptWithData =
         exerciseObject.attempts.length - 2;
@@ -84,7 +84,8 @@ function Exercise({ exerciseObject }: ExerciseProps) {
         lastAttemptWithData[lastAttemptWithData.length - 1];
       setLastReps(lastSetInAttempt.reps);
       setLastUnit(lastSetInAttempt.unit);
-      console.log("setLastUnit hit" + lastSetInAttempt.unit);
+
+      updateScroller();
     }
   }, [exerciseObject.attempts]);
 
