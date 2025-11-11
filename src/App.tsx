@@ -48,6 +48,10 @@ function App() {
     return () => unsubscribe();
   }, []);
 
+  const currentExercise = exercises.find(
+    (item) => item.id === currentExerciseID,
+  );
+
   return (
     <div className="flex h-full flex-col bg-gray-200 p-1">
       <ExercisesManager {...{ exercises }} />
@@ -57,11 +61,9 @@ function App() {
           setCurrentExerciseID(exerciseIDFromMenu);
         }}
       />
-      {exercises
-        .filter((item) => item.id === currentExerciseID)
-        .map((item, index) => (
-          <Exercise exerciseObject={item} key={index} />
-        ))}
+      {currentExercise && ( // Check if data is defined
+        <Exercise exerciseObject={currentExercise} key={currentExercise?.id} />
+      )}
     </div>
   );
 }

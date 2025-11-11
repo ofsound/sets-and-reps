@@ -14,23 +14,9 @@ type ExerciseProps = {
 };
 
 function Exercise({ exerciseObject }: ExerciseProps) {
-  const scroller = useRef(null);
+  const isFirstRenderRef = useRef(true);
 
-  const updateScroller = () => {
-    setTimeout(() => {
-      const thisScroller = scroller.current;
-      if (thisScroller) {
-        (thisScroller as HTMLElement).scrollTop = (
-          thisScroller as HTMLElement
-        ).scrollHeight;
-      }
-    });
-  };
-
-  const [lastReps, setLastReps] = useState(3);
-  const [lastUnit, setLastUnit] = useState("");
-
-  const handleNewAttempt = () => {
+  if (isFirstRenderRef.current) {
     const lastAttempt =
       exerciseObject.attempts[exerciseObject.attempts.length - 1];
 
@@ -51,10 +37,7 @@ function Exercise({ exerciseObject }: ExerciseProps) {
       });
 
       const newFirestoreDocData = {
-        id: exerciseObject.id,
-        name: exerciseObject.name,
         attempts: attemptArray,
-        order: exerciseObject.order,
       };
 
       const exerciseRef = doc(db, "exercises", exerciseObject.id);
@@ -62,8 +45,26 @@ function Exercise({ exerciseObject }: ExerciseProps) {
       updateDoc(exerciseRef, newFirestoreDocData);
     }
 
-    updateScroller();
+    isFirstRenderRef.current = false;
+  }
+
+  const scroller = useRef(null);
+
+  const updateScroller = () => {
+    setTimeout(() => {
+      const thisScroller = scroller.current;
+      if (thisScroller) {
+        (thisScroller as HTMLElement).scrollTop = (
+          thisScroller as HTMLElement
+        ).scrollHeight;
+      }
+    });
   };
+
+  const [lastReps, setLastReps] = useState(3);
+  const [lastUnit, setLastUnit] = useState("20lbs");
+
+  // const handleNewAttempt = () => {};
 
   const handleNewSet = (newSet: SetObject) => {
     exerciseObject.attempts[exerciseObject.attempts.length - 1].push(newSet);
@@ -92,19 +93,19 @@ function Exercise({ exerciseObject }: ExerciseProps) {
     updateScroller();
   };
 
-  handleNewAttempt();
-  // this seems like overkill, to always, try mostly fail, just to always have a new attempt started when opening an exercise – better way to always have an open blank last attempt?
-
   useEffect(() => {
-    const arrayIndexForLastAttemptWithData = exerciseObject.attempts.length - 2;
-    const lastAttemptWithData =
-      exerciseObject.attempts[arrayIndexForLastAttemptWithData];
+    updateScroller();
 
-    const lastSetInAttempt =
-      lastAttemptWithData[lastAttemptWithData.length - 1];
-
-    setLastReps(lastSetInAttempt.reps);
-    setLastUnit(lastSetInAttempt.unit);
+    if (exerciseObject.attempts.length > 1) {
+      const arrayIndexForLastAttemptWithData =
+        exerciseObject.attempts.length - 2;
+      const lastAttemptWithData =
+        exerciseObject.attempts[arrayIndexForLastAttemptWithData];
+      const lastSetInAttempt =
+        lastAttemptWithData[lastAttemptWithData.length - 1];
+      setLastReps(lastSetInAttempt.reps);
+      setLastUnit(lastSetInAttempt.unit);
+    }
   }, [exerciseObject.attempts]);
 
   return (

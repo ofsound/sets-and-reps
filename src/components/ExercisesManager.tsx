@@ -29,7 +29,7 @@ function ExercisesManager({ exercises }: ExercisesManagerProps) {
     const newExercise = {
       id: docRef.id,
       name: newExerciseName,
-      attempts: [],
+      attempts: [{}],
       order: exercisesTotal,
     };
 
@@ -61,7 +61,7 @@ function ExercisesManager({ exercises }: ExercisesManagerProps) {
   };
 
   return (
-    <div className="hidden border-b-2 border-gray-300 bg-gray-500 p-4">
+    <div className="border-b-2 border-gray-300 bg-gray-500 p-4">
       <ExerciseAdder handleExerciseAdded={handleExerciseAdded} />
       <ExercisesIndex exercises={exercises} deleteExercise={deleteExercise} />
     </div>
