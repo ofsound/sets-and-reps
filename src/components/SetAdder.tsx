@@ -50,12 +50,22 @@ function SetAdder({ handleNewSet, previousReps, previousUnit }: SetAdderProps) {
   };
 
   const toggleUnit = () => {
+    let newUnitType = "";
+
     if (unitType === "lbs") {
-      setUnitType("s");
+      newUnitType = "s";
     } else if (unitType === "s") {
-      setUnitType("");
+      newUnitType = "";
     } else if (unitType === "") {
-      setUnitType("lbs");
+      newUnitType = "lbs";
+    }
+
+    setUnitType(newUnitType);
+
+    if (newUnitType === "") {
+      setUnit("");
+    } else {
+      setUnit("10" + newUnitType);
     }
 
     if (unitLabel === "Weight") {
@@ -69,7 +79,7 @@ function SetAdder({ handleNewSet, previousReps, previousUnit }: SetAdderProps) {
 
   const determineUnitInputValue = () => {
     if (unitType === "") {
-      return 0;
+      return "";
     } else if (unitType === "lbs") {
       return unit.replace(/\D/g, "") + "lbs";
     } else if (unitType === "s") {
@@ -128,11 +138,11 @@ function SetAdder({ handleNewSet, previousReps, previousUnit }: SetAdderProps) {
             <input
               id="unit"
               type="text"
-              className={`mt-4 mr-6 ml-auto h-10 w-26 rounded-md border-1 border-dotted bg-gray-100 pr-5 text-right text-xl font-bold tabular-nums ${determineUnitInputValue() === 0 && "hidden"}`}
+              className={`mt-4 mr-6 ml-auto h-10 w-26 rounded-md border-1 border-dotted bg-gray-100 pr-5 text-right text-xl font-bold tabular-nums ${determineUnitInputValue() === "" && "hidden"}`}
               value={determineUnitInputValue()}
               onChange={handleChange}
             />
-            {determineUnitInputValue() !== 0 && (
+            {determineUnitInputValue() !== "" && (
               <div className="flex flex-col gap-2">
                 <button
                   className="block h-10 w-10 rounded-sm border-1 border-gray-900 bg-gray-100 text-xl font-bold shadow-md"

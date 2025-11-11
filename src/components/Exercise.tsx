@@ -93,11 +93,9 @@ function Exercise({ exerciseObject }: ExerciseProps) {
   };
 
   handleNewAttempt();
-  // this seems like overkill, to always try mostly fail, just trying to always have a new attempt started when open an exercise, better way to always have an open blank last attempt?
+  // this seems like overkill, to always, try mostly fail, just to always have a new attempt started when opening an exercise – better way to always have an open blank last attempt?
 
   useEffect(() => {
-    console.log(exerciseObject.attempts);
-
     const arrayIndexForLastAttemptWithData = exerciseObject.attempts.length - 2;
     const lastAttemptWithData =
       exerciseObject.attempts[arrayIndexForLastAttemptWithData];
