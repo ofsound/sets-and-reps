@@ -137,7 +137,7 @@ function SetAdder({ handleNewSet, previousReps, previousUnit }: SetAdderProps) {
               onClick={toggleUnit}
               className="rounded-sm bg-gray-200/40 px-2 py-1"
             >
-              {unitLabel}
+              {unitLabel} ⏷
             </button>
           </div>
           <div className="flex">
