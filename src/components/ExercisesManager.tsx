@@ -1,7 +1,3 @@
-import { collection, doc, setDoc } from "firebase/firestore";
-
-import { db } from "../firebase-config.ts";
-
 import type { ExerciseObject } from "../interfaces.ts";
 
 import ExercisesIndex from "../components/ExercisesIndex.tsx";
@@ -13,27 +9,9 @@ type ExercisesManagerProps = {
 };
 
 function ExercisesManager({ exercises, hideManager }: ExercisesManagerProps) {
-  const handleExerciseAdded = async (newExerciseName: string) => {
-    const docRef = doc(collection(db, "exercises"));
-
-    const newExercise = {
-      id: docRef.id,
-      name: newExerciseName,
-      attempts: [],
-      order: exercises.length,
-    };
-
-    try {
-      await setDoc(docRef, newExercise);
-      console.log("Document successfully added!");
-    } catch (error) {
-      console.error("Error adding document: ", error);
-    }
-  };
-
   return (
     <div>
-      <ExerciseAdder handleExerciseAdded={handleExerciseAdded} />
+      <ExerciseAdder {...{ exercises }} />
       <ExercisesIndex exercises={exercises} />
       <button
         onClick={hideManager}

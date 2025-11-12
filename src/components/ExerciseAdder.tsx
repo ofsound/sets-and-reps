@@ -2,11 +2,17 @@ import { useState } from "react";
 
 import type { ChangeEvent } from "react";
 
+import type { ExerciseObject } from "../interfaces.ts";
+
+import { collection, doc, setDoc } from "firebase/firestore";
+
+import { db } from "../firebase-config.ts";
+
 type ExerciseAdderProps = {
-  handleExerciseAdded: (newExerciseName: string) => void;
+  exercises: ExerciseObject[];
 };
 
-function ExerciseAdder({ handleExerciseAdded }: ExerciseAdderProps) {
+function ExerciseAdder({ exercises }: ExerciseAdderProps) {
   const [newExerciseName, setNewExerciseName] = useState("");
 
   const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
@@ -14,23 +20,42 @@ function ExerciseAdder({ handleExerciseAdded }: ExerciseAdderProps) {
     setNewExerciseName(newExerciseNameInput.value);
   };
 
+  const handleExerciseAdded = async (newExerciseName: string) => {
+    const docRef = doc(collection(db, "exercises"));
+
+    const newExercise = {
+      id: docRef.id,
+      name: newExerciseName,
+      attempts: [],
+      order: exercises.length,
+      isCurrent: true,
+    };
+
+    try {
+      await setDoc(docRef, newExercise);
+      console.log("Document successfully added!");
+    } catch (error) {
+      console.error("Error adding document: ", error);
+    }
+  };
+
   return (
-    <div className="mx-4 flex rounded-sm bg-gray-500 p-4">
+    <div className="mx-4 flex rounded-sm p-4">
       <input
         id="name"
         type="text"
-        className="text-md mr-4 ml-auto h-8 w-full rounded-md border-1 border-dotted bg-gray-100 p-3 text-left font-bold tabular-nums"
+        className="mr-4 ml-auto w-full rounded-md border-1 border-dotted bg-gray-100 p-3 font-bold tabular-nums"
         onChange={handleChange}
         value={newExerciseName}
       />
       <button
-        className="block h-8 rounded-md border-1 px-3 text-white"
+        className="block rounded-md border-1 bg-gray-500 px-3 text-white"
         onClick={() => {
           handleExerciseAdded(newExerciseName);
           setNewExerciseName("");
         }}
       >
-        Add&nbsp;Exercise
+        New&nbsp;Exercise
       </button>
     </div>
   );
