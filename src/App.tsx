@@ -8,8 +8,9 @@ import type { ExerciseObject } from "./interfaces.ts";
 
 import { firestoreMapAttemptsToArrayAttempts } from "./utils/dataConversion.ts";
 
-import Exercise from "./components/Exercise.tsx";
+import AppWelcome from "./components/AppWelcome.tsx";
 import AppHeader from "./components/AppHeader.tsx";
+import Exercise from "./components/Exercise.tsx";
 
 function App() {
   const [exercises, setExercises] = useState<Array<ExerciseObject>>([]);
@@ -57,6 +58,7 @@ function App() {
           setCurrentExerciseID(exerciseIDFromMenu);
         }}
       />
+      {!currentExercise && <AppWelcome {...{ exercises }} />}
       {currentExercise && (
         <Exercise exerciseObject={currentExercise} key={currentExercise?.id} />
       )}
