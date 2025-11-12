@@ -22,12 +22,10 @@ function Exercise({ exerciseObject }: ExerciseProps) {
   const scroller = useRef(null);
 
   const updateExerciseAttemptsInDatabase = (exerciseObject: ExerciseObject) => {
-    const newFirestoreDocData = {
+    const exerciseDocRef = doc(db, "exercises", exerciseObject.id);
+    updateDoc(exerciseDocRef, {
       attempts: arrayAttemptsToFirestoreMapAttempts(exerciseObject.attempts),
-    };
-
-    const exerciseRef = doc(db, "exercises", exerciseObject.id);
-    updateDoc(exerciseRef, newFirestoreDocData);
+    });
   };
 
   const updateScroller = () => {

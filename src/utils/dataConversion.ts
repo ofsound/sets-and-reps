@@ -4,18 +4,18 @@ import type { SetObject, Dictionary } from "../interfaces.ts";
 export const firestoreMapAttemptsToArrayAttempts = (
     attempts: DocumentData[string],
 ): SetObject[][] => {
-    const thisExerciseAttempts: SetObject[][] = [];
+    const arrayAttempts: SetObject[][] = [];
     attempts.forEach(
         (attempt: { [s: string]: unknown } | ArrayLike<unknown>) => {
             const sets = Object.values(attempt) as SetObject[];
-            thisExerciseAttempts.push(sets);
+            arrayAttempts.push(sets);
         },
     );
-    return thisExerciseAttempts;
+    return arrayAttempts;
 };
 
 export const arrayAttemptsToFirestoreMapAttempts = (attempts: SetObject[][]): DocumentData[string] => {
-    const attemptArray: Dictionary[] = [];
+    const firestoreMapAttempts: Dictionary[] = [];
 
     attempts.forEach((attempt: SetObject[]) => {
         const myObject: Dictionary = {};
@@ -24,7 +24,7 @@ export const arrayAttemptsToFirestoreMapAttempts = (attempts: SetObject[][]): Do
             const indexString = index.toString();
             myObject[indexString] = value;
         });
-        attemptArray.push(myObject);
+        firestoreMapAttempts.push(myObject);
     });
-    return attemptArray;
+    return firestoreMapAttempts;
 };
