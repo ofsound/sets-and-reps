@@ -16,7 +16,6 @@ function SetAdder({ handleNewSet, previousReps, previousUnit }: SetAdderProps) {
   const [notes, setNotes] = useState("");
 
   const [unitType, setUnitType] = useState("lbs");
-  // const [unitLabel, setUnitLabel] = useState("Weight");
 
   let unitLabel = "";
 
@@ -85,7 +84,6 @@ function SetAdder({ handleNewSet, previousReps, previousUnit }: SetAdderProps) {
 
     if (unitLabel === "Weight") {
       unitLabel = "Time";
-      // setUnitLabel("Time");
     } else if (unitLabel === "Time") {
       unitLabel = "Action";
     } else if (unitLabel === "Action") {
@@ -188,7 +186,6 @@ function SetAdder({ handleNewSet, previousReps, previousUnit }: SetAdderProps) {
           </button>
         </div>
       </div>
-
       <div className="flex max-h-max w-full self-center-safe px-6 py-3">
         <div className="mt-1 w-12 pr-4 text-sm font-bold">Notes</div>
         <input
