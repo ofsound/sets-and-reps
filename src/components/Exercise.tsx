@@ -4,7 +4,9 @@ import { doc, updateDoc } from "firebase/firestore";
 
 import { db } from "../firebase-config.ts";
 
-import type { ExerciseObject, SetObject, Dictionary } from "../interfaces.ts";
+import type { ExerciseObject, SetObject } from "../interfaces.ts";
+
+import { arrayAttemptsToFirestoreMapAttempts } from "../utils/dataConversion.ts";
 
 import Attempt from "../components/Attempt.tsx";
 import SetAdder from "../components/SetAdder.tsx";
@@ -20,21 +22,8 @@ function Exercise({ exerciseObject }: ExerciseProps) {
   const scroller = useRef(null);
 
   const updateExerciseAttemptsInDatabase = (exerciseObject: ExerciseObject) => {
-    const attemptArray: Dictionary[] = [];
-
-    exerciseObject.attempts.forEach((attempt) => {
-      const myObject: Dictionary = {};
-
-      attempt.forEach((value, index) => {
-        const indexString = index.toString();
-        myObject[indexString] = value;
-      });
-
-      attemptArray.push(myObject);
-    });
-
     const newFirestoreDocData = {
-      attempts: attemptArray,
+      attempts: arrayAttemptsToFirestoreMapAttempts(exerciseObject.attempts),
     };
 
     const exerciseRef = doc(db, "exercises", exerciseObject.id);
@@ -58,7 +47,7 @@ function Exercise({ exerciseObject }: ExerciseProps) {
     const lastAttempt =
       exerciseObject.attempts[exerciseObject.attempts.length - 1];
 
-    // On mount, create an empty attempt, except if it already exists
+    // When switching to an Exercise, create an empty attempt – except if it already exists
     if (lastAttempt?.length !== 0) {
       exerciseObject.attempts.push([]);
       updateExerciseAttemptsInDatabase(exerciseObject);

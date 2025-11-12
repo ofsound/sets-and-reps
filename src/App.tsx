@@ -4,7 +4,9 @@ import { collection, onSnapshot, query, orderBy } from "firebase/firestore";
 
 import { db } from "./firebase-config.ts";
 
-import type { ExerciseObject, SetObject } from "./interfaces.ts";
+import type { ExerciseObject } from "./interfaces.ts";
+
+import { firestoreMapAttemptsToArrayAttempts } from "./utils/dataConversion.ts";
 
 import Exercise from "./components/Exercise.tsx";
 import AppHeader from "./components/AppHeader.tsx";
@@ -20,15 +22,10 @@ function App() {
       const dataFromFirestore: ExerciseObject[] = [];
 
       querySnapshot.forEach((doc) => {
-        const thisExerciseAttempts: Array<Array<SetObject>> = [];
-
         const thisExercise = doc.data();
 
-        thisExercise.attempts.forEach(
-          (attempt: { [s: string]: unknown } | ArrayLike<unknown>) => {
-            const valuesArray = Object.values(attempt) as SetObject[];
-            thisExerciseAttempts.push(valuesArray);
-          },
+        const thisExerciseAttempts = firestoreMapAttemptsToArrayAttempts(
+          thisExercise.attempts,
         );
 
         const rowFromFirestore: ExerciseObject = {
