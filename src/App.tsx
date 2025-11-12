@@ -36,6 +36,7 @@ function App() {
           name: thisExercise.name,
           attempts: thisExerciseAttempts,
           order: thisExercise.order,
+          isCurrent: thisExercise.isCurrent,
         };
 
         dataFromFirestore.push(rowFromFirestore);

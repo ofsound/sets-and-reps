@@ -2,7 +2,8 @@ export interface ExerciseObject {
     id: string;
     name: string;
     attempts: SetObject[][];
-    order: number
+    order: number;
+    isCurrent: boolean
 }
 
 export interface SetObject {
