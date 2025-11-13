@@ -6,6 +6,7 @@ type SetProps = {
   editModeEnabled: boolean;
   deleteSet: (setIndex: number) => void;
   armSetForUpdate: (setIndex: number) => void;
+  isArmedSet: boolean;
 };
 
 function Set({
@@ -14,6 +15,7 @@ function Set({
   editModeEnabled,
   deleteSet,
   armSetForUpdate,
+  isArmedSet,
 }: SetProps) {
   const dateToTime = (dateNumber: number): string => {
     const date = new Date(dateNumber);
@@ -26,10 +28,16 @@ function Set({
   };
 
   return (
-    <div className={`my-1 flex items-baseline px-3`}>
+    <div
+      className={`my-1 flex items-baseline px-3 ${editModeEnabled && "cursor-pointer"}`}
+    >
       <div
-        onClick={() => armSetForUpdate(index)}
-        className={`flex flex-1 ${editModeEnabled && "cursor-pointer bg-amber-200"}`}
+        onClick={() => {
+          if (editModeEnabled) {
+            armSetForUpdate(index);
+          }
+        }}
+        className={`flex flex-1 ${editModeEnabled && isArmedSet && "cursor-pointer bg-white"}`}
       >
         <div className="text-base font-black">{set.unit}</div>
         {set.unit !== "" && (

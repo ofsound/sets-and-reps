@@ -1,7 +1,8 @@
+import { useState } from "react";
+
 import type { SetObject } from "../interfaces.ts";
 
 import Set from "../components/Set.tsx";
-import { useState } from "react";
 
 type AttemptProps = {
   attempt: SetObject[];
@@ -22,16 +23,21 @@ function Attempt({
   deleteSetInAttempt,
   armSetInAttemptForUpdate,
 }: AttemptProps) {
+  const [armedSetIndex, setArmedSetIndex] = useState(-1);
+
   const deleteSet = (setIndex: number) => {
     deleteSetInAttempt(index, setIndex);
   };
 
   const armSetForUpdate = (setIndex: number) => {
+    setArmedSetIndex(setIndex);
     armSetInAttemptForUpdate(index, setIndex);
   };
 
   return (
-    <div className="relative mx-4 my-2 min-h-13 rounded-md border border-gray-500 bg-white p-2 shadow-sm last:border-dashed last:bg-blue-100">
+    <div
+      className={`relative mx-4 my-2 min-h-13 rounded-md border border-gray-500 bg-white p-2 shadow-sm last:border-dashed last:bg-blue-100 ${editModeEnabled && "bg-amber-300!"}`}
+    >
       <button
         onClick={() => {
           if (!editModeEnabled) {
@@ -39,10 +45,8 @@ function Attempt({
           } else {
             enterEditMode(-1);
           }
-
-          // setEditModeEnabled((editModeEnabled) => !editModeEnabled);
         }}
-        className="absolute right-0 bottom-0 cursor-pointer"
+        className={`absolute right-0 bottom-0 cursor-pointer ${attempt.length === 0 && "hidden"}`}
       >
         <svg
           width="24"
@@ -85,6 +89,7 @@ function Attempt({
           {...{ editModeEnabled }}
           {...{ deleteSet }}
           {...{ armSetForUpdate }}
+          isArmedSet={armedSetIndex === index}
         />
       ))}
     </div>

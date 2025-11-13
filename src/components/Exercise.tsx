@@ -25,6 +25,8 @@ function Exercise({ exerciseObject }: ExerciseProps) {
 
   const [attemptIndexForUpdate, setAttemptIndexForUpdate] = useState(0);
   const [setIndexForUpdate, setSetIndexForUpdate] = useState(0);
+  // Could these just be the Set object to update, and not use state?\
+  // could just be a useRef? log to see when this component is re-rendered
 
   const scroller = useRef(null);
 
@@ -119,18 +121,11 @@ function Exercise({ exerciseObject }: ExerciseProps) {
     setAttemptIndexForUpdate(attemptIndex);
     setSetIndexForUpdate(setIndex);
 
-    // maybe the state value should be this object below
-
-    const setToUpdate =
-      exerciseObject.attempts[attemptIndexForUpdate][setIndexForUpdate];
+    const setToUpdate = exerciseObject.attempts[attemptIndex][setIndex];
 
     setLastReps(setToUpdate.reps);
     setLastUnit(setToUpdate.unit);
     setLastNotes(setToUpdate.notes);
-
-    // combine these a
-    // exerciseObject.attempts[attemptIndex].splice(setIndex, 1);
-    // updateExerciseAttemptsInDatabase(exerciseObject);
   };
 
   useEffect(() => {
