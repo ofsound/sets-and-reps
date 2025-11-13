@@ -25,8 +25,8 @@ function Exercise({ exerciseObject }: ExerciseProps) {
 
   const [attemptIndexForUpdate, setAttemptIndexForUpdate] = useState(0);
   const [setIndexForUpdate, setSetIndexForUpdate] = useState(0);
-  // Could these just be the Set object to update, and not use state?\
-  // could just be a useRef? log to see when this component is re-rendered
+  // Could these just be the Set Object to update, and not use useState?
+  // could just be a useRef – log to see when this component is re-rendered
 
   const scroller = useRef(null);
 
