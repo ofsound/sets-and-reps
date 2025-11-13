@@ -44,12 +44,12 @@ function ExerciseAdder({ exercises }: ExerciseAdderProps) {
       <input
         id="name"
         type="text"
-        className="mr-4 ml-auto w-full rounded-md border-1 border-dotted bg-gray-100 p-3 font-bold tabular-nums"
+        className="mr-4 ml-auto w-full rounded-md border border-dotted bg-gray-100 p-3 font-bold tabular-nums"
         onChange={handleChange}
         value={newExerciseName}
       />
       <button
-        className="block rounded-md border-1 bg-gray-500 px-3 text-white"
+        className="block rounded-md border bg-gray-500 px-3 text-white"
         onClick={() => {
           handleExerciseAdded(newExerciseName);
           setNewExerciseName("");

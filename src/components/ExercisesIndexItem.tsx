@@ -76,7 +76,7 @@ function ExercisesIndexItem({ name, id, isCurrent }: ExercisesIndexItemProps) {
   return (
     <div
       className={
-        "my-3 flex rounded-md border-1 border-white bg-gray-500 px-3 py-1 text-lg text-white"
+        "my-3 flex rounded-md border border-white bg-gray-500 px-3 py-1 text-lg text-white"
       }
     >
       <input
