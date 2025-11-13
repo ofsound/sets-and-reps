@@ -110,13 +110,6 @@ function SetAdder({ handleNewSet, previousReps, previousUnit }: SetAdderProps) {
             </button>
           </div>
           <div className="flex">
-            <input
-              id="unit"
-              type="text"
-              className={`mt-4 mr-6 ml-auto h-10 w-26 rounded-md border-1 border-dotted bg-gray-100 pr-5 text-right text-xl font-bold tabular-nums ${unitLabel === "Action" && "opacity-60 blur-sm brightness-70"}`}
-              value={unitInputValue}
-              onChange={handleChange}
-            />
             <div
               className={`flex flex-col gap-2 ${unitLabel === "Action" && "opacity-60 blur-sm brightness-70"}`}
             >
@@ -137,12 +130,26 @@ function SetAdder({ handleNewSet, previousReps, previousUnit }: SetAdderProps) {
                 <div className="relative -top-[1px]">–</div>
               </button>
             </div>
+            <input
+              id="unit"
+              type="text"
+              className={`mt-4 mr-6 ml-auto h-10 w-26 rounded-md border-1 border-dotted bg-gray-100 pr-5 text-right text-xl font-bold tabular-nums ${unitLabel === "Action" && "opacity-60 blur-sm brightness-70"}`}
+              value={unitInputValue}
+              onChange={handleChange}
+            />
           </div>
         </div>
         <div className="mr-4 h-full w-px bg-gray-200/30"></div>
         <div className="flex w-full flex-1 flex-col pl-4">
           <div className="mb-1 text-center text-sm font-bold">Reps</div>
           <div className="flex w-full">
+            <input
+              id="reps"
+              type="text"
+              className="mt-4 ml-6 h-10 w-12 rounded-md border-1 border-dotted bg-gray-100 pr-3 text-right text-xl font-bold tabular-nums"
+              value={reps}
+              onChange={handleChange}
+            />
             <div className="flex flex-col gap-2">
               <button
                 className="block h-10 w-10 rounded-sm border border-gray-900 bg-gray-100 text-xl font-bold shadow-md"
@@ -157,13 +164,6 @@ function SetAdder({ handleNewSet, previousReps, previousUnit }: SetAdderProps) {
                 <div className="relative -top-[1px]">–</div>
               </button>
             </div>
-            <input
-              id="reps"
-              type="text"
-              className="mt-4 ml-6 h-10 w-12 rounded-md border-1 border-dotted bg-gray-100 pr-3 text-right text-xl font-bold tabular-nums"
-              value={reps}
-              onChange={handleChange}
-            />
           </div>
         </div>
 
