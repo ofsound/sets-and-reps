@@ -13,8 +13,7 @@ type AppHeaderProps = {
 function AppHeader({ exercises, setCurrentExerciseID }: AppHeaderProps) {
   const [menuIsVisible, setMenuIsVisible] = useState(false);
   const [managerIsVisible, setManagerIsVisible] = useState(false);
-  const [currentExerciseName, setCurrentExerciseName] =
-    useState("Sets And Reps");
+  const [currentExerciseName, setCurrentExerciseName] = useState("Exercises");
 
   const showManager = () => {
     setManagerIsVisible(true);
@@ -34,17 +33,12 @@ function AppHeader({ exercises, setCurrentExerciseID }: AppHeaderProps) {
         <div
           onClick={() => {
             setMenuIsVisible((menuIsVisible) => !menuIsVisible);
+            setCurrentExerciseName("Exercises");
           }}
           className="flex-1 cursor-pointer text-center text-lg font-bold text-black select-none"
         >
           {currentExerciseName} ⏷
         </div>
-        <button
-          onClick={() => {
-            setMenuIsVisible((menuIsVisible) => !menuIsVisible);
-          }}
-          className="absolute right-4 cursor-pointer"
-        ></button>
       </div>
 
       {menuIsVisible && (
