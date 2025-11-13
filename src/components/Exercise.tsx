@@ -16,8 +16,12 @@ type ExerciseProps = {
 };
 
 function Exercise({ exerciseObject }: ExerciseProps) {
+  const [editModeEnabled, setEditModeEnabled] = useState(false);
+  const [attemptIndexForEditMode, setAttemptIndexForEditMode] = useState(-1);
+
   const [lastReps, setLastReps] = useState(3);
   const [lastUnit, setLastUnit] = useState("20lbs");
+  const [lastNotes, setLastNotes] = useState("");
 
   const [attemptIndexForUpdate, setAttemptIndexForUpdate] = useState(0);
   const [setIndexForUpdate, setSetIndexForUpdate] = useState(0);
@@ -58,9 +62,22 @@ function Exercise({ exerciseObject }: ExerciseProps) {
     updateScroller();
   }
 
-  const handleNewSet = (newSet: SetObject) => {
-    // exerciseObject.attempts[exerciseObject.attempts.length - 1].push(newSet);
+  const enterEditMode = (attemptIndex: number) => {
+    if (attemptIndex === -1) {
+      setEditModeEnabled(false);
+    } else {
+      setEditModeEnabled(true);
+    }
+    setAttemptIndexForEditMode(attemptIndex);
+  };
 
+  const appendNewSet = (newSet: SetObject) => {
+    exerciseObject.attempts[exerciseObject.attempts.length - 1].push(newSet);
+    updateExerciseAttemptsInDatabase(exerciseObject);
+    updateScroller();
+  };
+
+  const updateArmedSet = (newSet: SetObject) => {
     const setToUpdate =
       exerciseObject.attempts[attemptIndexForUpdate][setIndexForUpdate];
 
@@ -109,6 +126,7 @@ function Exercise({ exerciseObject }: ExerciseProps) {
 
     setLastReps(setToUpdate.reps);
     setLastUnit(setToUpdate.unit);
+    setLastNotes(setToUpdate.notes);
 
     // combine these a
     // exerciseObject.attempts[attemptIndex].splice(setIndex, 1);
@@ -138,6 +156,8 @@ function Exercise({ exerciseObject }: ExerciseProps) {
             attempt={item}
             key={index}
             {...{ index }}
+            {...{ enterEditMode }}
+            editModeEnabled={index === attemptIndexForEditMode}
             {...{ deleteAttempt }}
             {...{ deleteSetInAttempt }}
             {...{ armSetInAttemptForUpdate }}
@@ -145,9 +165,12 @@ function Exercise({ exerciseObject }: ExerciseProps) {
         ))}
       </div>
       <SetAdder
-        handleNewSet={handleNewSet}
+        {...{ appendNewSet }}
+        {...{ updateArmedSet }}
+        {...{ editModeEnabled }}
         previousReps={lastReps}
         previousUnit={lastUnit}
+        previousNotes={lastNotes}
       />
     </div>
   );

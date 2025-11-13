@@ -11,12 +11,22 @@ import {
 } from "../utils/dataConversion.ts";
 
 type SetAdderProps = {
-  handleNewSet: (object: SetObject) => void;
+  appendNewSet: (object: SetObject) => void;
+  updateArmedSet: (object: SetObject) => void;
+  editModeEnabled: boolean;
   previousReps: number;
   previousUnit: string;
+  previousNotes: string;
 };
 
-function SetAdder({ handleNewSet, previousReps, previousUnit }: SetAdderProps) {
+function SetAdder({
+  appendNewSet,
+  updateArmedSet,
+  editModeEnabled,
+  previousReps,
+  previousUnit,
+  previousNotes,
+}: SetAdderProps) {
   const [reps, setReps] = useState(3);
   const [unit, setUnit] = useState("");
   const [notes, setNotes] = useState("");
@@ -89,6 +99,9 @@ function SetAdder({ handleNewSet, previousReps, previousUnit }: SetAdderProps) {
     }
   };
 
+  // do these have to be "watching?", what if this component is
+  // being re-rendered at the same time as these values changing?
+  // try these without useEffect
   useEffect(() => {
     setUnit(previousUnit);
   }, [previousUnit]);
@@ -96,6 +109,10 @@ function SetAdder({ handleNewSet, previousReps, previousUnit }: SetAdderProps) {
   useEffect(() => {
     setReps(previousReps);
   }, [previousReps]);
+
+  useEffect(() => {
+    setNotes(previousNotes);
+  }, [previousNotes]);
 
   return (
     <div className="border-torder-white mx-auto flex w-full flex-col bg-gray-500 py-2">
@@ -166,22 +183,6 @@ function SetAdder({ handleNewSet, previousReps, previousUnit }: SetAdderProps) {
             </div>
           </div>
         </div>
-
-        <div className="hidden p-4">
-          <button
-            className={`block h-full w-25 flex-1 shrink-0 rounded-md border border-gray-500 bg-green-600 font-black text-white shadow-md`}
-            onClick={() => {
-              handleNewSet({
-                reps: reps,
-                unit: unit,
-                notes: notes,
-                date: Date.now(),
-              });
-            }}
-          >
-            Add Set
-          </button>
-        </div>
       </div>
       <div className="flex max-h-max w-full self-center-safe px-6 py-3">
         <div className="mt-1 w-12 pr-4 text-sm font-bold">Notes</div>
@@ -194,19 +195,36 @@ function SetAdder({ handleNewSet, previousReps, previousUnit }: SetAdderProps) {
         />
       </div>
       <div className="px-6 pt-2">
-        <button
-          className="mx-auto block h-9 w-full rounded-md border border-gray-500 bg-green-600 font-black text-white shadow-md"
-          onClick={() => {
-            handleNewSet({
-              reps: reps,
-              unit: unit,
-              notes: notes,
-              date: Date.now(),
-            });
-          }}
-        >
-          Add Set
-        </button>
+        {!editModeEnabled && (
+          <button
+            className="mx-auto block h-9 w-full rounded-md border border-gray-500 bg-green-600 font-black text-white shadow-md"
+            onClick={() => {
+              appendNewSet({
+                reps: reps,
+                unit: unit,
+                notes: notes,
+                date: Date.now(),
+              });
+            }}
+          >
+            Add Set
+          </button>
+        )}
+        {editModeEnabled && (
+          <button
+            className="mx-auto block h-9 w-full rounded-md border border-gray-500 bg-green-600 font-black text-white shadow-md"
+            onClick={() => {
+              updateArmedSet({
+                reps: reps,
+                unit: unit,
+                notes: notes,
+                date: Date.now(),
+              });
+            }}
+          >
+            Update Set
+          </button>
+        )}
       </div>
     </div>
   );
