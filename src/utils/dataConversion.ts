@@ -29,9 +29,6 @@ export const arrayAttemptsToFirestoreMapAttempts = (attempts: SetObject[][]): Do
     return firestoreMapAttempts;
 };
 
-
-
-
 export const unitTypeFromUnit = (unit: string): string => {
     return unit.replace(/[0-9]/g, "");
 }

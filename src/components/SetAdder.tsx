@@ -98,7 +98,7 @@ function SetAdder({ handleNewSet, previousReps, previousUnit }: SetAdderProps) {
   }, [previousReps]);
 
   return (
-    <div className="mx-auto flex w-full flex-col border-t-1 border-white bg-gray-500 py-2">
+    <div className="border-torder-white mx-auto flex w-full flex-col bg-gray-500 py-2">
       <div className="flex justify-center pt-1 pb-3">
         <div className="flex flex-1 flex-col pr-4">
           <div className="mb-1 text-center text-sm font-bold">
@@ -114,26 +114,26 @@ function SetAdder({ handleNewSet, previousReps, previousUnit }: SetAdderProps) {
               className={`flex flex-col gap-2 ${unitLabel === "Action" && "opacity-60 blur-sm brightness-70"}`}
             >
               <button
-                className="block h-10 w-10 rounded-sm border-1 border-gray-900 bg-gray-100 text-xl font-bold shadow-md"
+                className="borderorder-gray-900 block h-10 w-10 rounded-sm bg-gray-100 text-xl font-bold shadow-md"
                 onClick={() => {
                   trySetUnitFromIncDec(unitNumericValueFromUnit(unit) + 1);
                 }}
               >
-                <div className="relative -top-[2px]">+</div>
+                <div className="relative -top-0.5">+</div>
               </button>
               <button
-                className="block h-10 w-10 rounded-sm border-1 border-gray-900 bg-gray-100 text-xl font-bold shadow-md"
+                className="block h-10 w-10 rounded-sm border border-gray-900 bg-gray-100 text-xl font-bold shadow-md"
                 onClick={() => {
                   trySetUnitFromIncDec(unitNumericValueFromUnit(unit) - 1);
                 }}
               >
-                <div className="relative -top-[1px]">–</div>
+                <div className="relative -top-px">–</div>
               </button>
             </div>
             <input
               id="unit"
               type="text"
-              className={`mt-4 mr-6 ml-auto h-10 w-26 rounded-md border-1 border-dotted bg-gray-100 pr-5 text-right text-xl font-bold tabular-nums ${unitLabel === "Action" && "opacity-60 blur-sm brightness-70"}`}
+              className={`borderorder-dotted mt-4 mr-6 ml-auto h-10 w-26 rounded-md bg-gray-100 pr-5 text-right text-xl font-bold tabular-nums ${unitLabel === "Action" && "opacity-60 blur-sm brightness-70"}`}
               value={unitInputValue}
               onChange={handleChange}
             />
@@ -146,7 +146,7 @@ function SetAdder({ handleNewSet, previousReps, previousUnit }: SetAdderProps) {
             <input
               id="reps"
               type="text"
-              className="mt-4 ml-6 h-10 w-12 rounded-md border-1 border-dotted bg-gray-100 pr-3 text-right text-xl font-bold tabular-nums"
+              className="borderorder-dotted mt-4 ml-6 h-10 w-12 rounded-md bg-gray-100 pr-3 text-right text-xl font-bold tabular-nums"
               value={reps}
               onChange={handleChange}
             />
@@ -155,13 +155,13 @@ function SetAdder({ handleNewSet, previousReps, previousUnit }: SetAdderProps) {
                 className="block h-10 w-10 rounded-sm border border-gray-900 bg-gray-100 text-xl font-bold shadow-md"
                 onClick={() => trySetReps(reps + 1)}
               >
-                <div className="relative -top-[2px]">+</div>
+                <div className="relative -top-0.5">+</div>
               </button>
               <button
                 className="block h-10 w-10 rounded-sm border border-gray-900 bg-gray-100 text-xl font-bold shadow-md"
                 onClick={() => trySetReps(reps - 1)}
               >
-                <div className="relative -top-[1px]">–</div>
+                <div className="relative -top-px">–</div>
               </button>
             </div>
           </div>
@@ -169,7 +169,7 @@ function SetAdder({ handleNewSet, previousReps, previousUnit }: SetAdderProps) {
 
         <div className="hidden p-4">
           <button
-            className={`block h-full w-25 flex-1 shrink-0 rounded-md border-1 border-gray-500 bg-green-600 font-black text-white shadow-md`}
+            className={`block h-full w-25 flex-1 shrink-0 rounded-md border border-gray-500 bg-green-600 font-black text-white shadow-md`}
             onClick={() => {
               handleNewSet({
                 reps: reps,
@@ -188,14 +188,14 @@ function SetAdder({ handleNewSet, previousReps, previousUnit }: SetAdderProps) {
         <input
           type="text"
           id="notes"
-          className="ml-1 h-full w-full rounded-md border-1 border-dotted bg-gray-100 px-2 py-1 text-left text-sm font-bold tabular-nums"
+          className="ml-1 h-full w-full rounded-md border border-dotted bg-gray-100 px-2 py-1 text-left text-sm font-bold tabular-nums"
           value={notes}
           onChange={handleChange}
         />
       </div>
       <div className="px-6 pt-2">
         <button
-          className="mx-auto block h-9 w-full rounded-md border-1 border-gray-500 bg-green-600 font-black text-white shadow-md"
+          className="mx-auto block h-9 w-full rounded-md border border-gray-500 bg-green-600 font-black text-white shadow-md"
           onClick={() => {
             handleNewSet({
               reps: reps,

@@ -15,7 +15,7 @@ function ExercisesManager({ exercises, hideManager }: ExercisesManagerProps) {
       <ExercisesIndex {...{ exercises }} />
       <button
         onClick={hideManager}
-        className="absolute right-0 bottom-6 left-0 mx-auto block w-max cursor-pointer rounded-sm border-1 bg-gray-600 px-3 py-1 text-lg text-white"
+        className="absolute right-0 bottom-6 left-0 mx-auto block w-max cursor-pointer rounded-sm border bg-gray-600 px-3 py-1 text-lg text-white"
       >
         Close Editor
       </button>
