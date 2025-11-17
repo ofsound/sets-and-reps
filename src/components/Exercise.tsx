@@ -42,7 +42,7 @@ function Exercise({ exercise }: ExerciseProps) {
   const [editModeEnabled, setEditModeEnabled] = useState(false);
   const [attemptIndexForEditMode, setAttemptIndexForEditMode] = useState(-1);
 
-  const scroller = useRef(null);
+  const scroller = useRef<HTMLInputElement>(null);
 
   const updateExerciseAttemptsInDatabase = (exercise: ExerciseObject) => {
     const exerciseDocRef = doc(db, "exercises", exercise.id);
@@ -52,14 +52,10 @@ function Exercise({ exercise }: ExerciseProps) {
   };
 
   const updateScroller = () => {
-    setTimeout(() => {
-      const thisScroller = scroller.current;
-      if (thisScroller) {
-        (thisScroller as HTMLElement).scrollTop = (
-          thisScroller as HTMLElement
-        ).scrollHeight;
-      }
-    });
+    const thisScroller = scroller.current;
+    if (thisScroller) {
+      thisScroller.scrollTop = thisScroller.scrollHeight;
+    }
   };
 
   const isFirstRenderRef = useRef(true);
