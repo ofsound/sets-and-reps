@@ -92,6 +92,8 @@ function SetAdder({
   };
 
   const trySetMeasurementFromIncDec = (newValue: number) => {
+    console.log(newValue);
+
     if (newValue >= 0 && newValue <= 300) {
       setMeasurement(newValue.toString() + measurementUnit);
     }
@@ -125,11 +127,10 @@ function SetAdder({
           </div>
           <div className="flex">
             <IncrementDecrement
-              value={measurementNumericValueFromMeasurement(measurement) + 1}
+              value={measurementNumericValueFromMeasurement(measurement)}
               trySetValue={trySetMeasurementFromIncDec}
             />
             <input
-              id="measurement"
               type="text"
               className={`mt-4 ml-auto h-10 w-26 rounded-md border border-dotted bg-gray-100 pr-5 text-right text-xl font-bold tabular-nums ${measurementLabel === "Action" && "opacity-60 blur-sm brightness-70"}`}
               value={measurementInputValue}
@@ -142,7 +143,6 @@ function SetAdder({
           <div className="mb-1 text-center text-sm font-bold">Reps</div>
           <div className="flex w-full">
             <input
-              id="reps"
               type="text"
               className="mt-4 mr-auto h-10 w-12 rounded-md border border-dotted bg-gray-100 text-right text-xl font-bold tabular-nums"
               value={reps}
@@ -156,7 +156,6 @@ function SetAdder({
         <div className="mt-1 w-12 pr-4 text-sm font-bold">Notes</div>
         <input
           type="text"
-          id="notes"
           className="ml-1 h-full w-full rounded-md border border-dotted bg-gray-100 px-2 py-1 text-left text-sm font-bold tabular-nums"
           value={notes}
           onChange={handleNotesChange}
