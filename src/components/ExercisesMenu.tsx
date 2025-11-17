@@ -4,7 +4,6 @@ type ExercisesMenuProps = {
   exercises: ExerciseObject[];
   setCurrentExerciseID: (exerciseID: string) => void;
   setCurrentExerciseName: (exerciseName: string) => void;
-  showManager: () => void;
   hideMenu: () => void;
 };
 
@@ -12,7 +11,6 @@ function ExercisesMenu({
   exercises,
   setCurrentExerciseID,
   setCurrentExerciseName,
-  showManager,
   hideMenu,
 }: ExercisesMenuProps) {
   return (
@@ -32,12 +30,6 @@ function ExercisesMenu({
             {item.name}
           </button>
         ))}
-      <button
-        onClick={showManager}
-        className="absolute right-0 bottom-6 left-0 mx-auto block w-max cursor-pointer rounded-sm border bg-gray-600 px-3 py-1 text-lg text-white"
-      >
-        Edit Exercises
-      </button>
     </div>
   );
 }

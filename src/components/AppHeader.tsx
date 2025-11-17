@@ -40,19 +40,34 @@ function AppHeader({ exercises, setCurrentExerciseID }: AppHeaderProps) {
           {currentExerciseName} ⏷
         </div>
       </div>
-
+      {menuIsVisible && !managerIsVisible && (
+        <button
+          onClick={showManager}
+          className="absolute top-0 right-0 mx-auto block w-max cursor-pointer rounded-sm border bg-gray-600 px-3 py-1 text-lg text-white"
+        >
+          Edit Exercises
+        </button>
+      )}
+      {managerIsVisible && (
+        <button
+          onClick={hideManager}
+          className="absolute top-0 right-0 mx-auto block w-max cursor-pointer rounded-sm border bg-gray-600 px-3 py-1 text-lg text-white"
+        >
+          Close Editor
+        </button>
+      )}
+      s
       {menuIsVisible && (
         <ExercisesMenu
           {...{ exercises }}
           {...{ setCurrentExerciseID }}
           {...{ setCurrentExerciseName }}
-          {...{ showManager }}
           {...{ hideMenu }}
         />
       )}
       {managerIsVisible && (
         <div className="absolute z-100 h-[calc(100vh-48px)] w-full bg-gray-200 pt-6">
-          <ExercisesManager {...{ exercises }} hideManager={hideManager} />
+          <ExercisesManager {...{ exercises }} />
         </div>
       )}
     </div>
