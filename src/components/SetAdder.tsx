@@ -33,18 +33,8 @@ function SetAdder({
   const [measurement, setMeasurement] = useState("");
   const [notes, setNotes] = useState("");
 
-  const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
-    const thisInput = event.target as HTMLInputElement;
-    const newValue = parseInt(thisInput.value, 10);
-
-    switch (thisInput.id) {
-      case "reps":
-        setReps(newValue);
-        break;
-      case "measurement":
-        setMeasurement(thisInput.value);
-        break;
-    }
+  const handleMeasurementChange = (event: ChangeEvent<HTMLInputElement>) => {
+    setMeasurement(event.target.value);
   };
 
   const handleRepsChange = (event: ChangeEvent<HTMLInputElement>) => {
@@ -107,9 +97,8 @@ function SetAdder({
     }
   };
 
-  // do these have to be "watching?", what if this component is
-  // being re-rendered at the same time as these values changing?
-  // try these without useEffect
+  // do these have to be "watching"?, what if this component is
+  // already being re-rendered every single time these values change?
   useEffect(() => {
     setMeasurement(previousMeasurement);
   }, [previousMeasurement]);
@@ -144,7 +133,7 @@ function SetAdder({
               type="text"
               className={`mt-4 ml-auto h-10 w-26 rounded-md border border-dotted bg-gray-100 pr-5 text-right text-xl font-bold tabular-nums ${measurementLabel === "Action" && "opacity-60 blur-sm brightness-70"}`}
               value={measurementInputValue}
-              onChange={handleChange}
+              onChange={handleMeasurementChange}
             />
           </div>
         </div>
