@@ -16,6 +16,8 @@ type ExerciseProps = {
 };
 
 function Exercise({ exerciseObject }: ExerciseProps) {
+  console.log("Exercise rendered!");
+
   const [editModeEnabled, setEditModeEnabled] = useState(false);
   const [attemptIndexForEditMode, setAttemptIndexForEditMode] = useState(-1);
 
@@ -23,8 +25,12 @@ function Exercise({ exerciseObject }: ExerciseProps) {
   const [lastMeasurement, setLastMeasurement] = useState("20lbs");
   const [lastNotes, setLastNotes] = useState("");
 
-  const [attemptIndexForUpdate, setAttemptIndexForUpdate] = useState(0);
-  const [setIndexForUpdate, setSetIndexForUpdate] = useState(0);
+  // const [attemptIndexForUpdate, setAttemptIndexForUpdate] = useState(0);
+  // const [setIndexForUpdate, setSetIndexForUpdate] = useState(0);
+
+  const [setToUpdate, setSetToUpdate] = useState<SetObject>();
+
+  // exerciseObject.attempts[attemptIndexForUpdate][setIndexForUpdate];
   // Could these just be the Set Object to update, and not use useState?
   // could just be a useRef – log to see when this component is re-rendered
 
@@ -80,15 +86,16 @@ function Exercise({ exerciseObject }: ExerciseProps) {
   };
 
   const updateArmedSet = (newSet: SetObject) => {
-    const setToUpdate =
-      exerciseObject.attempts[attemptIndexForUpdate][setIndexForUpdate];
+    // const setToUpdate =
+    //   exerciseObject.attempts[attemptIndexForUpdate][setIndexForUpdate];
+    if (setToUpdate) {
+      setToUpdate.reps = newSet.reps;
+      setToUpdate.measurement = newSet.measurement;
+      setToUpdate.notes = newSet.notes;
 
-    setToUpdate.reps = newSet.reps;
-    setToUpdate.measurement = newSet.measurement;
-    setToUpdate.notes = newSet.notes;
-
-    updateExerciseAttemptsInDatabase(exerciseObject);
-    updateScroller();
+      updateExerciseAttemptsInDatabase(exerciseObject);
+      updateScroller();
+    }
   };
 
   const deleteAttempt = (attemptIndex: number) => {
@@ -118,10 +125,12 @@ function Exercise({ exerciseObject }: ExerciseProps) {
   };
 
   const armSetInAttemptForUpdate = (attemptIndex: number, setIndex: number) => {
-    setAttemptIndexForUpdate(attemptIndex);
-    setSetIndexForUpdate(setIndex);
+    // setAttemptIndexForUpdate(attemptIndex);
+    // setSetIndexForUpdate(setIndex);
 
     const setToUpdate = exerciseObject.attempts[attemptIndex][setIndex];
+
+    setSetToUpdate(setToUpdate);
 
     setLastReps(setToUpdate.reps);
     setLastMeasurement(setToUpdate.measurement);

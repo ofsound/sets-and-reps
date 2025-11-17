@@ -29,11 +29,11 @@ export const arrayAttemptsToFirestoreMapAttempts = (attempts: SetObject[][]): Do
     return firestoreMapAttempts;
 };
 
-export const measurementUnitFromMeasurement = (measurement: string): string => {
+export const unitFromMeasurement = (measurement: string): string => {
     return measurement.replace(/[0-9]/g, "");
 }
 
-export const measurementNumericValueFromMeasurement = (measurement: string): number => {
+export const numberFromMeasurement = (measurement: string): number => {
     return parseInt(measurement.replace(/\D/g, ""));
 }
 
