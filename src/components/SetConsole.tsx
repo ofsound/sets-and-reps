@@ -110,6 +110,7 @@ function SetConsole({
               trySetValue={tryToSetMeasurement}
             />
             <input
+              disabled
               type="text"
               className={`mt-4 h-8 w-19 rounded-md border border-dotted bg-gray-100 pr-2 text-right text-lg font-bold tabular-nums`}
               value={measurement}
@@ -124,6 +125,7 @@ function SetConsole({
           </div>
           <div className="mt-2 flex justify-end gap-4 pr-5">
             <input
+              disabled
               type="text"
               className="mt-4 h-8 w-10 rounded-md border border-dotted bg-gray-100 pr-2 text-right text-lg font-bold tabular-nums"
               value={reps}
