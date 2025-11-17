@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 
 import type { ChangeEvent } from "react";
 
@@ -29,8 +29,8 @@ function SetAdder({
   previousMeasurement,
   previousNotes,
 }: SetAdderProps) {
-  const [reps, setReps] = useState(3);
-  const [measurement, setMeasurement] = useState("");
+  const [reps, setReps] = useState(previousReps);
+  const [measurement, setMeasurement] = useState(previousMeasurement);
   const [notes, setNotes] = useState("");
 
   const handleMeasurementChange = (event: ChangeEvent<HTMLInputElement>) => {
@@ -89,20 +89,6 @@ function SetAdder({
       setMeasurement(newValue.toString() + measurementUnit);
     }
   };
-
-  // do these have to be "watching"?, what if this component is
-  // already being re-rendered every single time these values change?
-  useEffect(() => {
-    setMeasurement(previousMeasurement);
-  }, [previousMeasurement]);
-
-  useEffect(() => {
-    setReps(previousReps);
-  }, [previousReps]);
-
-  useEffect(() => {
-    setNotes(previousNotes);
-  }, [previousNotes]);
 
   return (
     <div className="mx-auto flex w-full flex-col border-t border-white bg-gray-500 py-2">

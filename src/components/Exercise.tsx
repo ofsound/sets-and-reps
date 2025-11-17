@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from "react";
+import { useState, useRef } from "react";
 
 import { doc, updateDoc } from "firebase/firestore";
 
@@ -18,14 +18,26 @@ type ExerciseProps = {
 };
 
 function Exercise({ exercise }: ExerciseProps) {
-  const [editModeEnabled, setEditModeEnabled] = useState(false);
-  const [attemptIndexForEditMode, setAttemptIndexForEditMode] = useState(-1);
+  let repsDefault = 3;
+  let measurementDefault = "20lbs";
 
-  const [lastReps, setLastReps] = useState(3);
-  const [lastMeasurement, setLastMeasurement] = useState("20lbs");
+  if (exercise.attempts.length > 1) {
+    const lastAttemptWithData = exercise.attempts[exercise.attempts.length - 2];
+    const lastSetInAttempt =
+      lastAttemptWithData[lastAttemptWithData.length - 1];
+
+    repsDefault = lastSetInAttempt.reps;
+    measurementDefault = lastSetInAttempt.measurement;
+  }
+
+  const [lastReps, setLastReps] = useState(repsDefault);
+  const [lastMeasurement, setLastMeasurement] = useState(measurementDefault);
   const [lastNotes, setLastNotes] = useState("");
 
   const [setToUpdate, setSetToUpdate] = useState<SetObject>();
+
+  const [editModeEnabled, setEditModeEnabled] = useState(false);
+  const [attemptIndexForEditMode, setAttemptIndexForEditMode] = useState(-1);
 
   const scroller = useRef(null);
 
@@ -121,20 +133,6 @@ function Exercise({ exercise }: ExerciseProps) {
     setLastNotes(armedSet.notes);
   };
 
-  useEffect(() => {
-    if (exercise.attempts.length > 1) {
-      const arrayIndexForLastAttemptWithData = exercise.attempts.length - 2;
-      const lastAttemptWithData =
-        exercise.attempts[arrayIndexForLastAttemptWithData];
-      const lastSetInAttempt =
-        lastAttemptWithData[lastAttemptWithData.length - 1];
-      setLastReps(lastSetInAttempt.reps);
-      setLastMeasurement(lastSetInAttempt.measurement);
-
-      updateScroller();
-    }
-  }, [exercise.attempts]);
-
   return (
     <div className="flex min-h-0 flex-1 flex-col">
       <div className="flex-1 overflow-auto" ref={scroller}>
@@ -146,7 +144,6 @@ function Exercise({ exercise }: ExerciseProps) {
             {...{ enterEditMode }}
             editModeEnabled={index === attemptIndexForEditMode}
             {...{ deleteAttempt }}
-            // {...{ deleteSetInAttempt }}
             {...{ deleteSet }}
             {...{ armThisSetForUpdate }}
           />
