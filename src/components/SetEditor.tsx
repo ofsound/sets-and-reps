@@ -12,26 +12,26 @@ import {
 
 import IncrementDecrement from "./IncrementDecrement.tsx";
 
-type SetAdderProps = {
+type SetEditorProps = {
   appendNewSet: (object: SetObject) => void;
   updateArmedSet: (object: SetObject) => void;
   editModeEnabled: boolean;
-  previousReps: number;
-  previousMeasurement: string;
-  previousNotes: string;
+  initialReps: number;
+  initialMeasurement: string;
+  initialNotes: string;
 };
 
-function SetAdder({
+function SetEditor({
   appendNewSet,
   updateArmedSet,
   editModeEnabled,
-  previousReps,
-  previousMeasurement,
-  previousNotes,
-}: SetAdderProps) {
-  const [reps, setReps] = useState(previousReps);
-  const [measurement, setMeasurement] = useState(previousMeasurement);
-  const [notes, setNotes] = useState("");
+  initialReps,
+  initialMeasurement,
+  initialNotes,
+}: SetEditorProps) {
+  const [reps, setReps] = useState(initialReps);
+  const [measurement, setMeasurement] = useState(initialMeasurement);
+  const [notes, setNotes] = useState(initialNotes);
 
   const handleMeasurementChange = (event: ChangeEvent<HTMLInputElement>) => {
     setMeasurement(event.target.value);
@@ -176,4 +176,4 @@ function SetAdder({
   );
 }
 
-export default SetAdder;
+export default SetEditor;

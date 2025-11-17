@@ -11,13 +11,15 @@ import { arrayAttemptsToFirestoreMapAttempts } from "../utils/dataConversions.ts
 import { deleteSetFromAttempts } from "../utils/arrayFunctions.ts";
 
 import Attempt from "../components/Attempt.tsx";
-import SetAdder from "../components/SetAdder.tsx";
+import SetEditor from "../components/SetEditor.tsx";
 
 type ExerciseProps = {
   exercise: ExerciseObject;
 };
 
 function Exercise({ exercise }: ExerciseProps) {
+  const [setAdderKey, setSetEditorKey] = useState(0);
+
   let repsDefault = 3;
   let measurementDefault = "20lbs";
 
@@ -30,9 +32,10 @@ function Exercise({ exercise }: ExerciseProps) {
     measurementDefault = lastSetInAttempt.measurement;
   }
 
-  const [lastReps, setLastReps] = useState(repsDefault);
-  const [lastMeasurement, setLastMeasurement] = useState(measurementDefault);
-  const [lastNotes, setLastNotes] = useState("");
+  const [initialReps, setInitialReps] = useState(repsDefault);
+  const [initialMeasurement, setInitialMeasurement] =
+    useState(measurementDefault);
+  const [initialNotes, setInitialNotes] = useState("");
 
   const [setToUpdate, setSetToUpdate] = useState<SetObject>();
 
@@ -89,17 +92,6 @@ function Exercise({ exercise }: ExerciseProps) {
     updateScroller();
   };
 
-  const updateArmedSet = (armedSet: SetObject) => {
-    if (setToUpdate) {
-      setToUpdate.reps = armedSet.reps;
-      setToUpdate.measurement = armedSet.measurement;
-      setToUpdate.notes = armedSet.notes;
-
-      updateExerciseAttemptsInDatabase(exercise);
-      updateScroller();
-    }
-  };
-
   const deleteAttempt = (attemptIndex: number) => {
     const confirmed = window.confirm(
       `Are you sure you want to delete this Attempt?`,
@@ -127,10 +119,22 @@ function Exercise({ exercise }: ExerciseProps) {
   };
 
   const armThisSetForUpdate = (armedSet: SetObject) => {
+    setSetEditorKey((prevKey) => prevKey + 1);
     setSetToUpdate(armedSet);
-    setLastReps(armedSet.reps);
-    setLastMeasurement(armedSet.measurement);
-    setLastNotes(armedSet.notes);
+    setInitialReps(armedSet.reps);
+    setInitialMeasurement(armedSet.measurement);
+    setInitialNotes(armedSet.notes);
+  };
+
+  const updateArmedSet = (armedSet: SetObject) => {
+    if (setToUpdate) {
+      setToUpdate.reps = armedSet.reps;
+      setToUpdate.measurement = armedSet.measurement;
+      setToUpdate.notes = armedSet.notes;
+
+      updateExerciseAttemptsInDatabase(exercise);
+      updateScroller();
+    }
   };
 
   return (
@@ -149,13 +153,14 @@ function Exercise({ exercise }: ExerciseProps) {
           />
         ))}
       </div>
-      <SetAdder
+      <SetEditor
+        key={setAdderKey}
         {...{ appendNewSet }}
         {...{ updateArmedSet }}
         {...{ editModeEnabled }}
-        previousReps={lastReps}
-        previousMeasurement={lastMeasurement}
-        previousNotes={lastNotes}
+        {...{ initialReps }}
+        {...{ initialMeasurement }}
+        {...{ initialNotes }}
       />
     </div>
   );
