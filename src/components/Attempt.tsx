@@ -11,7 +11,7 @@ type AttemptProps = {
   editModeEnabled: boolean;
   deleteAttempt: (attemptIndex: number) => void;
   deleteSetInAttempt: (attemptIndex: number, setIndex: number) => void;
-  armSetInAttemptForUpdate: (attemptIndex: number, setIndex: number) => void;
+  armThisSetForUpdate: (set: SetObject) => void;
 };
 
 function Attempt({
@@ -21,7 +21,7 @@ function Attempt({
   editModeEnabled,
   deleteAttempt,
   deleteSetInAttempt,
-  armSetInAttemptForUpdate,
+  armThisSetForUpdate,
 }: AttemptProps) {
   const [armedSetIndex, setArmedSetIndex] = useState(-1);
 
@@ -29,9 +29,10 @@ function Attempt({
     deleteSetInAttempt(index, setIndex);
   };
 
-  const armSetForUpdate = (setIndex: number) => {
-    setArmedSetIndex(setIndex);
-    armSetInAttemptForUpdate(index, setIndex);
+  const armSetForUpdate = (set: SetObject) => {
+    setArmedSetIndex(attempt.indexOf(set));
+
+    armThisSetForUpdate(set);
   };
 
   return (

@@ -124,17 +124,22 @@ function Exercise({ exerciseObject }: ExerciseProps) {
     }
   };
 
-  const armSetInAttemptForUpdate = (attemptIndex: number, setIndex: number) => {
-    // setAttemptIndexForUpdate(attemptIndex);
-    // setSetIndexForUpdate(setIndex);
+  // const armSetInAttemptForUpdate = (attemptIndex: number, setIndex: number) => {
+  //   const setToUpdate = exerciseObject.attempts[attemptIndex][setIndex];
 
-    const setToUpdate = exerciseObject.attempts[attemptIndex][setIndex];
+  //   setSetToUpdate(setToUpdate);
 
+  //   setLastReps(setToUpdate.reps);
+  //   setLastMeasurement(setToUpdate.measurement);
+  //   setLastNotes(setToUpdate.notes);
+  // };
+
+  const armThisSetForUpdate = (armedSet: SetObject) => {
     setSetToUpdate(setToUpdate);
 
-    setLastReps(setToUpdate.reps);
-    setLastMeasurement(setToUpdate.measurement);
-    setLastNotes(setToUpdate.notes);
+    setLastReps(armedSet.reps);
+    setLastMeasurement(armedSet.measurement);
+    setLastNotes(armedSet.notes);
   };
 
   useEffect(() => {
@@ -152,6 +157,10 @@ function Exercise({ exerciseObject }: ExerciseProps) {
     }
   }, [exerciseObject.attempts]);
 
+  useEffect(() => {
+    console.log("Exercise component mounted");
+  }, []);
+
   return (
     <div className="flex min-h-0 flex-1 flex-col">
       <div className="flex-1 overflow-auto" ref={scroller}>
@@ -164,7 +173,7 @@ function Exercise({ exerciseObject }: ExerciseProps) {
             editModeEnabled={index === attemptIndexForEditMode}
             {...{ deleteAttempt }}
             {...{ deleteSetInAttempt }}
-            {...{ armSetInAttemptForUpdate }}
+            {...{ armThisSetForUpdate }}
           />
         ))}
       </div>

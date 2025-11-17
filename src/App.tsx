@@ -14,7 +14,7 @@ import Exercise from "./components/Exercise.tsx";
 
 function App() {
   const [exercises, setExercises] = useState<Array<ExerciseObject>>([]);
-  const [currentExerciseID, setCurrentExerciseID] = useState<string>("");
+  const [currentExerciseID, setCurrentExerciseID] = useState("");
 
   useEffect(() => {
     const q = query(collection(db, "exercises"), orderBy("order", "asc"));
@@ -23,18 +23,18 @@ function App() {
       const dataFromFirestore: ExerciseObject[] = [];
 
       querySnapshot.forEach((doc) => {
-        const thisExercise = doc.data();
+        const exercise = doc.data();
 
-        const thisExerciseAttempts = firestoreMapAttemptsToArrayAttempts(
-          thisExercise.attempts,
+        const exerciseAttempts = firestoreMapAttemptsToArrayAttempts(
+          exercise.attempts,
         );
 
         const rowFromFirestore: ExerciseObject = {
-          id: thisExercise.id,
-          name: thisExercise.name,
-          attempts: thisExerciseAttempts,
-          order: thisExercise.order,
-          isCurrent: thisExercise.isCurrent,
+          id: exercise.id,
+          name: exercise.name,
+          attempts: exerciseAttempts,
+          order: exercise.order,
+          isCurrent: exercise.isCurrent,
         };
 
         dataFromFirestore.push(rowFromFirestore);

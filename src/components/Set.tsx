@@ -5,7 +5,7 @@ type SetProps = {
   index: number;
   editModeEnabled: boolean;
   deleteSet: (setIndex: number) => void;
-  armSetForUpdate: (setIndex: number) => void;
+  armSetForUpdate: (set: SetObject) => void;
   isArmedSet: boolean;
 };
 
@@ -34,7 +34,7 @@ function Set({
       <div
         onClick={() => {
           if (editModeEnabled) {
-            armSetForUpdate(index);
+            armSetForUpdate(set);
           }
         }}
         className={`flex flex-1 ${editModeEnabled && isArmedSet && "cursor-pointer bg-white"}`}
