@@ -11,14 +11,14 @@ import { arrayAttemptsToFirestoreMapAttempts } from "../utils/dataConversions.ts
 import { deleteSetFromAttempts } from "../utils/arrayFunctions.ts";
 
 import Attempt from "../components/Attempt.tsx";
-import SetEditor from "../components/SetEditor.tsx";
+import SetConsole from "../components/SetConsole.tsx";
 
 type ExerciseProps = {
   exercise: ExerciseObject;
 };
 
 function Exercise({ exercise }: ExerciseProps) {
-  const [setAdderKey, setSetEditorKey] = useState(0);
+  const [setAdderKey, setSetConsoleKey] = useState(0);
 
   let repsDefault = 3;
   let measurementDefault = "20lbs";
@@ -115,7 +115,7 @@ function Exercise({ exercise }: ExerciseProps) {
   };
 
   const armThisSetForUpdate = (armedSet: SetObject) => {
-    setSetEditorKey((prevKey) => prevKey + 1);
+    setSetConsoleKey((prevKey) => prevKey + 1);
     setSetToUpdate(armedSet);
     setInitialReps(armedSet.reps);
     setInitialMeasurement(armedSet.measurement);
@@ -149,7 +149,7 @@ function Exercise({ exercise }: ExerciseProps) {
           />
         ))}
       </div>
-      <SetEditor
+      <SetConsole
         key={setAdderKey}
         {...{ appendNewSet }}
         {...{ updateArmedSet }}

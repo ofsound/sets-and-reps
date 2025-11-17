@@ -12,7 +12,7 @@ import {
 
 import IncrementDecrement from "./IncrementDecrement.tsx";
 
-type SetEditorProps = {
+type SetConsoleProps = {
   appendNewSet: (object: SetObject) => void;
   updateArmedSet: (object: SetObject) => void;
   editModeEnabled: boolean;
@@ -21,14 +21,14 @@ type SetEditorProps = {
   initialNotes: string;
 };
 
-function SetEditor({
+function SetConsole({
   appendNewSet,
   updateArmedSet,
   editModeEnabled,
   initialReps,
   initialMeasurement,
   initialNotes,
-}: SetEditorProps) {
+}: SetConsoleProps) {
   const [reps, setReps] = useState(initialReps);
   const [measurement, setMeasurement] = useState(initialMeasurement);
   const [notes, setNotes] = useState(initialNotes);
@@ -91,10 +91,10 @@ function SetEditor({
   };
 
   return (
-    <div className="mx-auto flex w-full flex-col border-t border-white bg-gray-500 py-2">
-      <div className="flex justify-center bg-amber-200 pt-1 pb-3">
-        <div className="flex flex-1 flex-col bg-blue-200">
-          <div className="mb-1 h-8 border text-center text-sm font-bold">
+    <div className="mx-auto flex w-full flex-col bg-gray-500 pb-3">
+      <div className="flex justify-center bg-linear-to-t from-gray-500 to-slate-400 pt-3">
+        <div className="flex flex-1 flex-col">
+          <div className="mb-1 h-8 text-center text-sm font-bold">
             <button
               onClick={toggleMeasurement}
               className="rounded-sm bg-gray-200/40 px-2 py-1"
@@ -102,28 +102,30 @@ function SetEditor({
               {measurementLabel} ⏷
             </button>
           </div>
-          <div className="flex">
+          <div
+            className={`mt-2 flex gap-4 pl-5 ${measurementLabel === "Action" && "opacity-60 blur-sm brightness-70"}`}
+          >
             <IncrementDecrement
               value={numberFromMeasurement(measurement)}
               trySetValue={tryToSetMeasurement}
             />
             <input
               type="text"
-              className={`mt-4 ml-auto h-10 w-26 rounded-md border border-dotted bg-gray-100 pr-5 text-right text-xl font-bold tabular-nums ${measurementLabel === "Action" && "opacity-60 blur-sm brightness-70"}`}
+              className={`mt-4 h-8 w-19 rounded-md border border-dotted bg-gray-100 pr-2 text-right text-lg font-bold tabular-nums`}
               value={measurement}
               onChange={handleMeasurementChange}
             />
           </div>
         </div>
-        <div className="mx-4 h-full w-px bg-gray-200/30"></div>
-        <div className="flex w-full flex-1 flex-col bg-red-50">
-          <div className="mb-1 flex h-8 items-center border text-center text-sm font-bold">
+        <div className="relative top-[10%] h-8/10 w-px bg-gray-200/30"></div>
+        <div className="flex w-full flex-1 flex-col">
+          <div className="mb-1 flex h-8 items-center text-center text-sm font-bold">
             <div className="w-full text-center">Reps</div>
           </div>
-          <div className="flex w-full">
+          <div className="mt-2 flex justify-end gap-4 pr-5">
             <input
               type="text"
-              className="mt-4 mr-auto h-10 w-12 rounded-md border border-dotted bg-gray-100 text-right text-xl font-bold tabular-nums"
+              className="mt-4 h-8 w-10 rounded-md border border-dotted bg-gray-100 pr-2 text-right text-lg font-bold tabular-nums"
               value={reps}
               onChange={handleRepsChange}
             />
@@ -131,11 +133,11 @@ function SetEditor({
           </div>
         </div>
       </div>
-      <div className="flex max-h-max w-full self-center-safe px-6 py-3">
-        <div className="mt-1 w-12 pr-4 text-sm font-bold">Notes</div>
+      <div className="flex max-h-max w-full self-center-safe px-6 pt-4 pb-1">
+        <div className="mt-[5px] w-12 text-sm font-bold">Notes</div>
         <input
           type="text"
-          className="ml-1 h-full w-full rounded-md border border-dotted bg-gray-100 px-2 py-1 text-left text-sm font-bold tabular-nums"
+          className="ml-3 h-full w-full rounded-md border border-dotted bg-gray-100 px-2 py-1 text-left text-sm tabular-nums"
           value={notes}
           onChange={handleNotesChange}
         />
@@ -143,7 +145,7 @@ function SetEditor({
       <div className="px-6 pt-2">
         {!editModeEnabled && (
           <button
-            className="mx-auto block h-9 w-full rounded-md border border-gray-500 bg-green-600 font-black text-white shadow-md"
+            className="mx-auto block h-9 w-full rounded-md border border-gray-500 bg-green-600 font-bold text-white shadow-md"
             onClick={() => {
               appendNewSet({
                 reps: reps,
@@ -151,6 +153,7 @@ function SetEditor({
                 notes: notes,
                 date: Date.now(),
               });
+              setNotes("");
             }}
           >
             Add Set
@@ -158,7 +161,7 @@ function SetEditor({
         )}
         {editModeEnabled && (
           <button
-            className="mx-auto block h-9 w-full rounded-md border border-gray-500 bg-green-600 font-black text-white shadow-md"
+            className="mx-auto block h-9 w-full rounded-md border border-gray-500 bg-green-600 font-bold text-white shadow-md"
             onClick={() => {
               updateArmedSet({
                 reps: reps,
@@ -176,4 +179,4 @@ function SetEditor({
   );
 }
 
-export default SetEditor;
+export default SetConsole;
