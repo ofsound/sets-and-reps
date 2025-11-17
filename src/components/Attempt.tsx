@@ -10,7 +10,6 @@ type AttemptProps = {
   enterEditMode: (attemptIndex: number) => void;
   editModeEnabled: boolean;
   deleteAttempt: (attemptIndex: number) => void;
-  // deleteSetInAttempt: (attemptIndex: number, setIndex: number) => void;
   deleteSet: (set: SetObject) => void;
   armThisSetForUpdate: (set: SetObject) => void;
 };
@@ -21,15 +20,10 @@ function Attempt({
   enterEditMode,
   editModeEnabled,
   deleteAttempt,
-  // deleteSetInAttempt,
   deleteSet,
   armThisSetForUpdate,
 }: AttemptProps) {
   const [armedSetIndex, setArmedSetIndex] = useState(-1);
-
-  // const deleteSet = (setIndex: number) => {
-  //   deleteSetInAttempt(index, setIndex);
-  // };
 
   const armSetForUpdate = (set: SetObject) => {
     setArmedSetIndex(attempt.indexOf(set));

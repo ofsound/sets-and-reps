@@ -6,7 +6,7 @@ import { db } from "./firebase-config.ts";
 
 import type { ExerciseObject } from "./interfaces.ts";
 
-import { firestoreMapAttemptsToArrayAttempts } from "./utils/dataConversion.ts";
+import { firestoreMapAttemptsToArrayAttempts } from "./utils/dataConversions.ts";
 
 import AppWelcome from "./components/AppWelcome.tsx";
 import AppHeader from "./components/AppHeader.tsx";

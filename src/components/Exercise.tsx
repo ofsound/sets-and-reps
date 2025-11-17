@@ -6,10 +6,9 @@ import { db } from "../firebase-config.ts";
 
 import type { ExerciseObject, SetObject } from "../interfaces.ts";
 
-import {
-  arrayAttemptsToFirestoreMapAttempts,
-  findAndDeleteSet,
-} from "../utils/dataConversion.ts";
+import { arrayAttemptsToFirestoreMapAttempts } from "../utils/dataConversions.ts";
+
+import { deleteSetFromAttempts } from "../utils/arrayFunctions.ts";
 
 import Attempt from "../components/Attempt.tsx";
 import SetAdder from "../components/SetAdder.tsx";
@@ -108,7 +107,7 @@ function Exercise({ exercise }: ExerciseProps) {
     );
 
     if (confirmed) {
-      findAndDeleteSet(exercise.attempts, set);
+      deleteSetFromAttempts(exercise.attempts, set);
       updateExerciseAttemptsInDatabase(exercise);
     } else {
       console.log("Deletion cancelled.");
@@ -116,8 +115,6 @@ function Exercise({ exercise }: ExerciseProps) {
   };
 
   const armThisSetForUpdate = (armedSet: SetObject) => {
-    console.log(armedSet);
-
     setSetToUpdate(armedSet);
     setLastReps(armedSet.reps);
     setLastMeasurement(armedSet.measurement);

@@ -8,7 +8,7 @@ import {
   numberFromMeasurement,
   unitFromMeasurement,
   isMeasurementAnInteger,
-} from "../utils/dataConversion.ts";
+} from "../utils/dataConversions.ts";
 
 import IncrementDecrement from "./IncrementDecrement.tsx";
 
