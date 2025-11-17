@@ -8,7 +8,7 @@ export interface ExerciseObject {
 
 export interface SetObject {
     reps: number;
-    unit: string;
+    measurement: string;
     notes: string;
     date: number;
 }

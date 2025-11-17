@@ -39,8 +39,8 @@ function Set({
         }}
         className={`flex flex-1 ${editModeEnabled && isArmedSet && "cursor-pointer bg-white"}`}
       >
-        <div className="text-base font-black">{set.unit}</div>
-        {set.unit !== "" && (
+        <div className="text-base font-black">{set.measurement}</div>
+        {set.measurement !== "" && (
           <div className="text-base font-black">&nbsp;x&nbsp;</div>
         )}
         <div className="text-base font-black">{set.reps}</div>

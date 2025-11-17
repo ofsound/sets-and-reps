@@ -5,9 +5,9 @@ import type { ChangeEvent } from "react";
 import type { SetObject } from "../interfaces.ts";
 
 import {
-  unitNumericValueFromUnit,
-  unitTypeFromUnit,
-  isUnitAnInteger,
+  measurementNumericValueFromMeasurement,
+  measurementUnitFromMeasurement,
+  isMeasurementAnInteger,
 } from "../utils/dataConversion.ts";
 
 import IncrementDecrement from "./IncrementDecrement.tsx";
@@ -17,7 +17,7 @@ type SetAdderProps = {
   updateArmedSet: (object: SetObject) => void;
   editModeEnabled: boolean;
   previousReps: number;
-  previousUnit: string;
+  previousMeasurement: string;
   previousNotes: string;
 };
 
@@ -26,11 +26,11 @@ function SetAdder({
   updateArmedSet,
   editModeEnabled,
   previousReps,
-  previousUnit,
+  previousMeasurement,
   previousNotes,
 }: SetAdderProps) {
   const [reps, setReps] = useState(3);
-  const [unit, setUnit] = useState("");
+  const [measurement, setMeasurement] = useState("");
   const [notes, setNotes] = useState("");
 
   const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
@@ -41,8 +41,8 @@ function SetAdder({
       case "reps":
         setReps(newValue);
         break;
-      case "unit":
-        setUnit(thisInput.value);
+      case "measurement":
+        setMeasurement(thisInput.value);
         break;
     }
   };
@@ -61,46 +61,49 @@ function SetAdder({
     }
   };
 
-  let unitType = unitTypeFromUnit(unit);
-  let unitLabel = "";
-  let unitInputValue = "";
+  let measurementUnit = measurementUnitFromMeasurement(measurement);
+  let measurementLabel = "";
+  let measurementInputValue = "";
 
-  if (unitType === "lbs") {
-    unitInputValue = unitNumericValueFromUnit(unit) + "lbs";
-    unitLabel = "Weight";
-  } else if (unitType === "s") {
-    unitInputValue = unitNumericValueFromUnit(unit) + "s";
-    unitLabel = "Time";
-  } else if (isUnitAnInteger(unit)) {
-    unitInputValue = unitNumericValueFromUnit(unit) + "";
-    unitLabel = "Setting";
+  if (measurementUnit === "lbs") {
+    measurementInputValue =
+      measurementNumericValueFromMeasurement(measurement) + "lbs";
+    measurementLabel = "Weight";
+  } else if (measurementUnit === "s") {
+    measurementInputValue =
+      measurementNumericValueFromMeasurement(measurement) + "s";
+    measurementLabel = "Time";
+  } else if (isMeasurementAnInteger(measurement)) {
+    measurementInputValue =
+      measurementNumericValueFromMeasurement(measurement) + "";
+    measurementLabel = "Setting";
   } else {
-    unitLabel = "Action";
+    measurementLabel = "Action";
   }
 
-  const toggleUnit = () => {
-    if (unitLabel === "Weight") {
-      unitType = "s";
-      unitLabel = "Time";
-      setUnit("10" + unitType);
-    } else if (unitLabel === "Time") {
-      unitType = "";
-      unitLabel = "Setting";
-      setUnit("10");
-    } else if (unitLabel === "Setting") {
-      unitType = "";
-      unitLabel = "Action";
-      setUnit("");
-    } else if (unitLabel === "Action") {
-      unitType = "lbs";
-      unitLabel = "Weight";
-      setUnit("10" + unitType);
+  const toggleMeasurement = () => {
+    if (measurementLabel === "Weight") {
+      measurementUnit = "s";
+      measurementLabel = "Time";
+      setMeasurement("10" + measurementUnit);
+    } else if (measurementLabel === "Time") {
+      measurementUnit = "";
+      measurementLabel = "Setting";
+      setMeasurement("10");
+    } else if (measurementLabel === "Setting") {
+      measurementUnit = "";
+      measurementLabel = "Action";
+      setMeasurement("");
+    } else if (measurementLabel === "Action") {
+      measurementUnit = "lbs";
+      measurementLabel = "Weight";
+      setMeasurement("10" + measurementUnit);
     }
   };
 
-  const trySetUnitFromIncDec = (newValue: number) => {
+  const trySetMeasurementFromIncDec = (newValue: number) => {
     if (newValue >= 0 && newValue <= 300) {
-      setUnit(newValue.toString() + unitType);
+      setMeasurement(newValue.toString() + measurementUnit);
     }
   };
 
@@ -108,8 +111,8 @@ function SetAdder({
   // being re-rendered at the same time as these values changing?
   // try these without useEffect
   useEffect(() => {
-    setUnit(previousUnit);
-  }, [previousUnit]);
+    setMeasurement(previousMeasurement);
+  }, [previousMeasurement]);
 
   useEffect(() => {
     setReps(previousReps);
@@ -125,38 +128,22 @@ function SetAdder({
         <div className="flex flex-1 flex-col bg-blue-200">
           <div className="mb-1 text-center text-sm font-bold">
             <button
-              onClick={toggleUnit}
+              onClick={toggleMeasurement}
               className="rounded-sm bg-gray-200/40 px-2 py-1"
             >
-              {unitLabel} ⏷
+              {measurementLabel} ⏷
             </button>
           </div>
           <div className="flex">
-            <div
-              className={`flex flex-col gap-2 ${unitLabel === "Action" && "opacity-60 blur-sm brightness-70"}`}
-            >
-              <button
-                className="borderorder-gray-900 block h-10 w-10 rounded-sm bg-gray-100 text-xl font-bold shadow-md"
-                onClick={() => {
-                  trySetUnitFromIncDec(unitNumericValueFromUnit(unit) + 1);
-                }}
-              >
-                <div className="relative -top-0.5">+</div>
-              </button>
-              <button
-                className="block h-10 w-10 rounded-sm border border-gray-900 bg-gray-100 text-xl font-bold shadow-md"
-                onClick={() => {
-                  trySetUnitFromIncDec(unitNumericValueFromUnit(unit) - 1);
-                }}
-              >
-                <div className="relative -top-px">–</div>
-              </button>
-            </div>
+            <IncrementDecrement
+              value={measurementNumericValueFromMeasurement(measurement) + 1}
+              trySetValue={trySetMeasurementFromIncDec}
+            />
             <input
-              id="unit"
+              id="measurement"
               type="text"
-              className={`mt-4 ml-auto h-10 w-26 rounded-md border-dotted bg-gray-100 pr-5 text-right text-xl font-bold tabular-nums ${unitLabel === "Action" && "opacity-60 blur-sm brightness-70"}`}
-              value={unitInputValue}
+              className={`mt-4 ml-auto h-10 w-26 rounded-md border border-dotted bg-gray-100 pr-5 text-right text-xl font-bold tabular-nums ${measurementLabel === "Action" && "opacity-60 blur-sm brightness-70"}`}
+              value={measurementInputValue}
               onChange={handleChange}
             />
           </div>
@@ -168,7 +155,7 @@ function SetAdder({
             <input
               id="reps"
               type="text"
-              className="borderorder-dotted mt-4 h-10 w-12 rounded-md bg-gray-100 text-right text-xl font-bold tabular-nums"
+              className="mt-4 mr-auto h-10 w-12 rounded-md border border-dotted bg-gray-100 text-right text-xl font-bold tabular-nums"
               value={reps}
               onChange={handleRepsChange}
             />
@@ -194,7 +181,7 @@ function SetAdder({
             onClick={() => {
               appendNewSet({
                 reps: reps,
-                unit: unit,
+                measurement: measurement,
                 notes: notes,
                 date: Date.now(),
               });
@@ -209,7 +196,7 @@ function SetAdder({
             onClick={() => {
               updateArmedSet({
                 reps: reps,
-                unit: unit,
+                measurement: measurement,
                 notes: notes,
                 date: Date.now(),
               });

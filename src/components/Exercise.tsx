@@ -20,7 +20,7 @@ function Exercise({ exerciseObject }: ExerciseProps) {
   const [attemptIndexForEditMode, setAttemptIndexForEditMode] = useState(-1);
 
   const [lastReps, setLastReps] = useState(3);
-  const [lastUnit, setLastUnit] = useState("20lbs");
+  const [lastMeasurement, setLastMeasurement] = useState("20lbs");
   const [lastNotes, setLastNotes] = useState("");
 
   const [attemptIndexForUpdate, setAttemptIndexForUpdate] = useState(0);
@@ -84,7 +84,7 @@ function Exercise({ exerciseObject }: ExerciseProps) {
       exerciseObject.attempts[attemptIndexForUpdate][setIndexForUpdate];
 
     setToUpdate.reps = newSet.reps;
-    setToUpdate.unit = newSet.unit;
+    setToUpdate.measurement = newSet.measurement;
     setToUpdate.notes = newSet.notes;
 
     updateExerciseAttemptsInDatabase(exerciseObject);
@@ -124,7 +124,7 @@ function Exercise({ exerciseObject }: ExerciseProps) {
     const setToUpdate = exerciseObject.attempts[attemptIndex][setIndex];
 
     setLastReps(setToUpdate.reps);
-    setLastUnit(setToUpdate.unit);
+    setLastMeasurement(setToUpdate.measurement);
     setLastNotes(setToUpdate.notes);
   };
 
@@ -137,7 +137,7 @@ function Exercise({ exerciseObject }: ExerciseProps) {
       const lastSetInAttempt =
         lastAttemptWithData[lastAttemptWithData.length - 1];
       setLastReps(lastSetInAttempt.reps);
-      setLastUnit(lastSetInAttempt.unit);
+      setLastMeasurement(lastSetInAttempt.measurement);
 
       updateScroller();
     }
@@ -164,7 +164,7 @@ function Exercise({ exerciseObject }: ExerciseProps) {
         {...{ updateArmedSet }}
         {...{ editModeEnabled }}
         previousReps={lastReps}
-        previousUnit={lastUnit}
+        previousMeasurement={lastMeasurement}
         previousNotes={lastNotes}
       />
     </div>

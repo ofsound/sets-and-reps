@@ -29,15 +29,15 @@ export const arrayAttemptsToFirestoreMapAttempts = (attempts: SetObject[][]): Do
     return firestoreMapAttempts;
 };
 
-export const unitTypeFromUnit = (unit: string): string => {
-    return unit.replace(/[0-9]/g, "");
+export const measurementUnitFromMeasurement = (measurement: string): string => {
+    return measurement.replace(/[0-9]/g, "");
 }
 
-export const unitNumericValueFromUnit = (unit: string): number => {
-    return parseInt(unit.replace(/\D/g, ""));
+export const measurementNumericValueFromMeasurement = (measurement: string): number => {
+    return parseInt(measurement.replace(/\D/g, ""));
 }
 
-export const isUnitAnInteger = (unit: string): boolean => {
-    const num = +unit;
-    return unit.length > 0 && Number.isFinite(num) && Number.isInteger(num);
+export const isMeasurementAnInteger = (measurement: string): boolean => {
+    const num = +measurement;
+    return measurement.length > 0 && Number.isFinite(num) && Number.isInteger(num);
 }
