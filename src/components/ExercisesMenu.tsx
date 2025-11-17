@@ -20,7 +20,7 @@ function ExercisesMenu({
         .map((item) => (
           <button
             key={item.id}
-            className="mx-auto mb-4 block w-9/10 cursor-pointer rounded-md border border-gray-700 bg-gray-600 px-6 py-3 text-lg font-bold text-white"
+            className="mx-auto mb-3 block w-9/10 cursor-pointer rounded-md border border-gray-700 bg-gray-600 py-2 font-bold text-white"
             onClick={() => {
               setCurrentExerciseID(item.id);
               setCurrentExerciseName(item.name);

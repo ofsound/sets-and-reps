@@ -43,7 +43,7 @@ function AppHeader({ exercises, setCurrentExerciseID }: AppHeaderProps) {
       {menuIsVisible && !managerIsVisible && (
         <button
           onClick={showManager}
-          className="absolute top-0 right-0 mx-auto block w-max cursor-pointer rounded-sm border bg-gray-600 px-3 py-1 text-lg text-white"
+          className="absolute top-2 right-1/20 mx-auto block w-max cursor-pointer rounded-sm border bg-gray-800 px-3 py-1 text-sm text-white"
         >
           Edit Exercises
         </button>
@@ -51,12 +51,11 @@ function AppHeader({ exercises, setCurrentExerciseID }: AppHeaderProps) {
       {managerIsVisible && (
         <button
           onClick={hideManager}
-          className="absolute top-0 right-0 mx-auto block w-max cursor-pointer rounded-sm border bg-gray-600 px-3 py-1 text-lg text-white"
+          className="absolute top-2 right-1/20 mx-auto block w-max cursor-pointer rounded-sm border bg-gray-800 px-3 py-1 text-sm text-white"
         >
           Close Editor
         </button>
       )}
-      s
       {menuIsVisible && (
         <ExercisesMenu
           {...{ exercises }}
