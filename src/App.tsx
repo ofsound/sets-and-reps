@@ -60,7 +60,7 @@ function App() {
       />
       {!currentExercise && <AppWelcome {...{ exercises }} />}
       {currentExercise && (
-        <Exercise exerciseObject={currentExercise} key={currentExercise?.id} />
+        <Exercise exercise={currentExercise} key={currentExercise?.id} />
       )}
     </div>
   );

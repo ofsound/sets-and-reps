@@ -12,12 +12,10 @@ import Attempt from "../components/Attempt.tsx";
 import SetAdder from "../components/SetAdder.tsx";
 
 type ExerciseProps = {
-  exerciseObject: ExerciseObject;
+  exercise: ExerciseObject;
 };
 
-function Exercise({ exerciseObject }: ExerciseProps) {
-  console.log("Exercise rendered!");
-
+function Exercise({ exercise }: ExerciseProps) {
   const [editModeEnabled, setEditModeEnabled] = useState(false);
   const [attemptIndexForEditMode, setAttemptIndexForEditMode] = useState(-1);
 
@@ -25,21 +23,14 @@ function Exercise({ exerciseObject }: ExerciseProps) {
   const [lastMeasurement, setLastMeasurement] = useState("20lbs");
   const [lastNotes, setLastNotes] = useState("");
 
-  // const [attemptIndexForUpdate, setAttemptIndexForUpdate] = useState(0);
-  // const [setIndexForUpdate, setSetIndexForUpdate] = useState(0);
-
   const [setToUpdate, setSetToUpdate] = useState<SetObject>();
-
-  // exerciseObject.attempts[attemptIndexForUpdate][setIndexForUpdate];
-  // Could these just be the Set Object to update, and not use useState?
-  // could just be a useRef – log to see when this component is re-rendered
 
   const scroller = useRef(null);
 
-  const updateExerciseAttemptsInDatabase = (exerciseObject: ExerciseObject) => {
-    const exerciseDocRef = doc(db, "exercises", exerciseObject.id);
+  const updateExerciseAttemptsInDatabase = (exercise: ExerciseObject) => {
+    const exerciseDocRef = doc(db, "exercises", exercise.id);
     updateDoc(exerciseDocRef, {
-      attempts: arrayAttemptsToFirestoreMapAttempts(exerciseObject.attempts),
+      attempts: arrayAttemptsToFirestoreMapAttempts(exercise.attempts),
     });
   };
 
@@ -57,13 +48,12 @@ function Exercise({ exerciseObject }: ExerciseProps) {
   const isFirstRenderRef = useRef(true);
 
   if (isFirstRenderRef.current) {
-    const lastAttempt =
-      exerciseObject.attempts[exerciseObject.attempts.length - 1];
+    const lastAttempt = exercise.attempts[exercise.attempts.length - 1];
 
     // When switching to an Exercise, create an empty attempt – except if it already exists
     if (lastAttempt?.length !== 0) {
-      exerciseObject.attempts.push([]);
-      updateExerciseAttemptsInDatabase(exerciseObject);
+      exercise.attempts.push([]);
+      updateExerciseAttemptsInDatabase(exercise);
     }
     isFirstRenderRef.current = false;
 
@@ -80,20 +70,18 @@ function Exercise({ exerciseObject }: ExerciseProps) {
   };
 
   const appendNewSet = (newSet: SetObject) => {
-    exerciseObject.attempts[exerciseObject.attempts.length - 1].push(newSet);
-    updateExerciseAttemptsInDatabase(exerciseObject);
+    exercise.attempts[exercise.attempts.length - 1].push(newSet);
+    updateExerciseAttemptsInDatabase(exercise);
     updateScroller();
   };
 
-  const updateArmedSet = (newSet: SetObject) => {
-    // const setToUpdate =
-    //   exerciseObject.attempts[attemptIndexForUpdate][setIndexForUpdate];
+  const updateArmedSet = (armedSet: SetObject) => {
     if (setToUpdate) {
-      setToUpdate.reps = newSet.reps;
-      setToUpdate.measurement = newSet.measurement;
-      setToUpdate.notes = newSet.notes;
+      setToUpdate.reps = armedSet.reps;
+      setToUpdate.measurement = armedSet.measurement;
+      setToUpdate.notes = armedSet.notes;
 
-      updateExerciseAttemptsInDatabase(exerciseObject);
+      updateExerciseAttemptsInDatabase(exercise);
       updateScroller();
     }
   };
@@ -104,8 +92,8 @@ function Exercise({ exerciseObject }: ExerciseProps) {
     );
 
     if (confirmed) {
-      exerciseObject.attempts.splice(attemptIndex, 1);
-      updateExerciseAttemptsInDatabase(exerciseObject);
+      exercise.attempts.splice(attemptIndex, 1);
+      updateExerciseAttemptsInDatabase(exercise);
     } else {
       console.log("Deletion cancelled.");
     }
@@ -117,25 +105,15 @@ function Exercise({ exerciseObject }: ExerciseProps) {
     );
 
     if (confirmed) {
-      exerciseObject.attempts[attemptIndex].splice(setIndex, 1);
-      updateExerciseAttemptsInDatabase(exerciseObject);
+      exercise.attempts[attemptIndex].splice(setIndex, 1);
+      updateExerciseAttemptsInDatabase(exercise);
     } else {
       console.log("Deletion cancelled.");
     }
   };
 
-  // const armSetInAttemptForUpdate = (attemptIndex: number, setIndex: number) => {
-  //   const setToUpdate = exerciseObject.attempts[attemptIndex][setIndex];
-
-  //   setSetToUpdate(setToUpdate);
-
-  //   setLastReps(setToUpdate.reps);
-  //   setLastMeasurement(setToUpdate.measurement);
-  //   setLastNotes(setToUpdate.notes);
-  // };
-
   const armThisSetForUpdate = (armedSet: SetObject) => {
-    setSetToUpdate(setToUpdate);
+    setSetToUpdate(armedSet);
 
     setLastReps(armedSet.reps);
     setLastMeasurement(armedSet.measurement);
@@ -143,11 +121,10 @@ function Exercise({ exerciseObject }: ExerciseProps) {
   };
 
   useEffect(() => {
-    if (exerciseObject.attempts.length > 1) {
-      const arrayIndexForLastAttemptWithData =
-        exerciseObject.attempts.length - 2;
+    if (exercise.attempts.length > 1) {
+      const arrayIndexForLastAttemptWithData = exercise.attempts.length - 2;
       const lastAttemptWithData =
-        exerciseObject.attempts[arrayIndexForLastAttemptWithData];
+        exercise.attempts[arrayIndexForLastAttemptWithData];
       const lastSetInAttempt =
         lastAttemptWithData[lastAttemptWithData.length - 1];
       setLastReps(lastSetInAttempt.reps);
@@ -155,16 +132,12 @@ function Exercise({ exerciseObject }: ExerciseProps) {
 
       updateScroller();
     }
-  }, [exerciseObject.attempts]);
-
-  useEffect(() => {
-    console.log("Exercise component mounted");
-  }, []);
+  }, [exercise.attempts]);
 
   return (
     <div className="flex min-h-0 flex-1 flex-col">
       <div className="flex-1 overflow-auto" ref={scroller}>
-        {exerciseObject.attempts.map((item, index) => (
+        {exercise.attempts.map((item, index) => (
           <Attempt
             attempt={item}
             key={index}

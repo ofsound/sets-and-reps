@@ -31,7 +31,6 @@ function Attempt({
 
   const armSetForUpdate = (set: SetObject) => {
     setArmedSetIndex(attempt.indexOf(set));
-
     armThisSetForUpdate(set);
   };
 
