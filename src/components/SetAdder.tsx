@@ -10,6 +10,8 @@ import {
   isUnitAnInteger,
 } from "../utils/dataConversion.ts";
 
+import IncrementDecrement from "./IncrementDecrement.tsx";
+
 type SetAdderProps = {
   appendNewSet: (object: SetObject) => void;
   updateArmedSet: (object: SetObject) => void;
@@ -31,9 +33,7 @@ function SetAdder({
   const [unit, setUnit] = useState("");
   const [notes, setNotes] = useState("");
 
-  const handleChange = (
-    event: ChangeEvent<HTMLInputElement> | ChangeEvent<HTMLTextAreaElement>,
-  ) => {
+  const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
     const thisInput = event.target as HTMLInputElement;
     const newValue = parseInt(thisInput.value, 10);
 
@@ -44,10 +44,15 @@ function SetAdder({
       case "unit":
         setUnit(thisInput.value);
         break;
-      case "notes":
-        setNotes(thisInput.value);
-        break;
     }
+  };
+
+  const handleRepsChange = (event: ChangeEvent<HTMLInputElement>) => {
+    setReps(parseInt(event.target.value, 10));
+  };
+
+  const handleNotesChange = (event: ChangeEvent<HTMLInputElement>) => {
+    setNotes(event.target.value);
   };
 
   const trySetReps = (newValue: number) => {
@@ -115,9 +120,9 @@ function SetAdder({
   }, [previousNotes]);
 
   return (
-    <div className="border-torder-white mx-auto flex w-full flex-col bg-gray-500 py-2">
-      <div className="flex justify-center pt-1 pb-3">
-        <div className="flex flex-1 flex-col pr-4">
+    <div className="mx-auto flex w-full flex-col border-t border-white bg-gray-500 py-2">
+      <div className="flex justify-center bg-amber-200 pt-1 pb-3">
+        <div className="flex flex-1 flex-col bg-blue-200">
           <div className="mb-1 text-center text-sm font-bold">
             <button
               onClick={toggleUnit}
@@ -150,37 +155,24 @@ function SetAdder({
             <input
               id="unit"
               type="text"
-              className={`borderorder-dotted mt-4 mr-6 ml-auto h-10 w-26 rounded-md bg-gray-100 pr-5 text-right text-xl font-bold tabular-nums ${unitLabel === "Action" && "opacity-60 blur-sm brightness-70"}`}
+              className={`mt-4 ml-auto h-10 w-26 rounded-md border-dotted bg-gray-100 pr-5 text-right text-xl font-bold tabular-nums ${unitLabel === "Action" && "opacity-60 blur-sm brightness-70"}`}
               value={unitInputValue}
               onChange={handleChange}
             />
           </div>
         </div>
-        <div className="mr-4 h-full w-px bg-gray-200/30"></div>
-        <div className="flex w-full flex-1 flex-col pl-4">
+        <div className="mx-4 h-full w-px bg-gray-200/30"></div>
+        <div className="flex w-full flex-1 flex-col bg-red-50">
           <div className="mb-1 text-center text-sm font-bold">Reps</div>
           <div className="flex w-full">
             <input
               id="reps"
               type="text"
-              className="borderorder-dotted mt-4 ml-6 h-10 w-12 rounded-md bg-gray-100 pr-3 text-right text-xl font-bold tabular-nums"
+              className="borderorder-dotted mt-4 h-10 w-12 rounded-md bg-gray-100 text-right text-xl font-bold tabular-nums"
               value={reps}
-              onChange={handleChange}
+              onChange={handleRepsChange}
             />
-            <div className="flex flex-col gap-2">
-              <button
-                className="block h-10 w-10 rounded-sm border border-gray-900 bg-gray-100 text-xl font-bold shadow-md"
-                onClick={() => trySetReps(reps + 1)}
-              >
-                <div className="relative -top-0.5">+</div>
-              </button>
-              <button
-                className="block h-10 w-10 rounded-sm border border-gray-900 bg-gray-100 text-xl font-bold shadow-md"
-                onClick={() => trySetReps(reps - 1)}
-              >
-                <div className="relative -top-px">–</div>
-              </button>
-            </div>
+            <IncrementDecrement value={reps} trySetValue={trySetReps} />
           </div>
         </div>
       </div>
@@ -191,10 +183,11 @@ function SetAdder({
           id="notes"
           className="ml-1 h-full w-full rounded-md border border-dotted bg-gray-100 px-2 py-1 text-left text-sm font-bold tabular-nums"
           value={notes}
-          onChange={handleChange}
+          onChange={handleNotesChange}
         />
       </div>
       <div className="px-6 pt-2">
+        s
         {!editModeEnabled && (
           <button
             className="mx-auto block h-9 w-full rounded-md border border-gray-500 bg-green-600 font-black text-white shadow-md"
