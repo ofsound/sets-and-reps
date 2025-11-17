@@ -41,3 +41,29 @@ export const isMeasurementAnInteger = (measurement: string): boolean => {
     const num = +measurement;
     return measurement.length > 0 && Number.isFinite(num) && Number.isInteger(num);
 }
+
+
+export const findAndDeleteSet = (arr2D: SetObject[][], objectToRemove: SetObject) => {
+    for (let i = 0; i < arr2D.length; i++) {
+
+
+
+
+        const innerArray = arr2D[i];
+        const indexInInner = innerArray.findIndex(obj => {
+            // Customize this comparison based on your object's properties
+            // For example, if objects have an 'id' property:
+            console.log(objectToRemove);
+            console.log(obj);
+
+            return obj === objectToRemove
+        });
+
+        if (indexInInner !== -1) {
+            // Object found, remove it using splice
+            innerArray.splice(indexInInner, 1);
+            return true; // Indicate that the object was found and removed
+        }
+    }
+    return false; // Indicate that the object was not found
+}

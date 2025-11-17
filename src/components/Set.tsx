@@ -4,14 +4,13 @@ type SetProps = {
   set: SetObject;
   index: number;
   editModeEnabled: boolean;
-  deleteSet: (setIndex: number) => void;
+  deleteSet: (set: SetObject) => void;
   armSetForUpdate: (set: SetObject) => void;
   isArmedSet: boolean;
 };
 
 function Set({
   set,
-  index,
   editModeEnabled,
   deleteSet,
   armSetForUpdate,
@@ -48,7 +47,7 @@ function Set({
       </div>
       <div className="ml-auto text-sm">{dateToTime(set.date)}</div>
       {editModeEnabled && (
-        <button onClick={() => deleteSet(index)} className="mr-2 ml-4 text-sm">
+        <button onClick={() => deleteSet(set)} className="mr-2 ml-4 text-sm">
           <svg
             className="h-5 w-5"
             fill="none"

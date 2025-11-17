@@ -6,7 +6,10 @@ import { db } from "../firebase-config.ts";
 
 import type { ExerciseObject, SetObject } from "../interfaces.ts";
 
-import { arrayAttemptsToFirestoreMapAttempts } from "../utils/dataConversion.ts";
+import {
+  arrayAttemptsToFirestoreMapAttempts,
+  findAndDeleteSet,
+} from "../utils/dataConversion.ts";
 
 import Attempt from "../components/Attempt.tsx";
 import SetAdder from "../components/SetAdder.tsx";
@@ -99,13 +102,13 @@ function Exercise({ exercise }: ExerciseProps) {
     }
   };
 
-  const deleteSetInAttempt = (attemptIndex: number, setIndex: number) => {
+  const deleteSet = (set: SetObject) => {
     const confirmed = window.confirm(
       `Are you sure you want to delete this Set?`,
     );
 
     if (confirmed) {
-      exercise.attempts[attemptIndex].splice(setIndex, 1);
+      findAndDeleteSet(exercise.attempts, set);
       updateExerciseAttemptsInDatabase(exercise);
     } else {
       console.log("Deletion cancelled.");
@@ -113,8 +116,9 @@ function Exercise({ exercise }: ExerciseProps) {
   };
 
   const armThisSetForUpdate = (armedSet: SetObject) => {
-    setSetToUpdate(armedSet);
+    console.log(armedSet);
 
+    setSetToUpdate(armedSet);
     setLastReps(armedSet.reps);
     setLastMeasurement(armedSet.measurement);
     setLastNotes(armedSet.notes);
@@ -145,7 +149,8 @@ function Exercise({ exercise }: ExerciseProps) {
             {...{ enterEditMode }}
             editModeEnabled={index === attemptIndexForEditMode}
             {...{ deleteAttempt }}
-            {...{ deleteSetInAttempt }}
+            // {...{ deleteSetInAttempt }}
+            {...{ deleteSet }}
             {...{ armThisSetForUpdate }}
           />
         ))}
