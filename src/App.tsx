@@ -13,6 +13,10 @@ import AppHeader from "./components/AppHeader.tsx";
 import Exercise from "./components/Exercise.tsx";
 
 function App() {
+  window.addEventListener("contextmenu", (e) => {
+    e.preventDefault();
+  });
+
   const [exercises, setExercises] = useState<Array<ExerciseObject>>([]);
   const [currentExerciseID, setCurrentExerciseID] = useState("");
 

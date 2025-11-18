@@ -1,7 +1,5 @@
 import { useEffect, useRef, useState } from "react";
 
-import type { MouseEvent } from "react";
-
 type IncrementDecrementProps = {
   value: number;
   trySetValue: (newValue: number) => void;
@@ -15,13 +13,13 @@ function IncrementDecrement({ value, trySetValue }: IncrementDecrementProps) {
   const plusElementRef = useRef(null);
   const minusElementRef = useRef(null);
 
-  const handleMouseDownPlus = (event: MouseEvent) => {
+  const handleMouseDownPlus = () => {
     mouseDownPlusOrMinus.current = "plus";
     mouseDownStartTime.current = Date.now();
     setIsMouseDown(true);
   };
 
-  const handleMouseDownMinus = (event: MouseEvent) => {
+  const handleMouseDownMinus = () => {
     mouseDownPlusOrMinus.current = "minus";
     mouseDownStartTime.current = Date.now();
     setIsMouseDown(true);
@@ -71,32 +69,34 @@ function IncrementDecrement({ value, trySetValue }: IncrementDecrementProps) {
 
   useEffect(() => {
     if (isMouseDown) {
-      window.addEventListener("mouseup", handleMouseUp);
+      window.addEventListener("pointerup", handleMouseUp);
     } else {
-      window.removeEventListener("mouseup", handleMouseUp);
+      window.removeEventListener("pointerup", handleMouseUp);
     }
     return () => {
-      window.removeEventListener("mouseup", handleMouseUp);
+      window.removeEventListener("pointerup", handleMouseUp);
     };
   }, [isMouseDown]);
 
   return (
-    <div className="flex flex-col gap-2">
+    <div className="no-select flex flex-col gap-2">
       <button
         ref={plusElementRef}
-        className="block h-10 w-10 rounded-sm border border-gray-900 bg-gray-100 text-xl font-bold shadow-md"
+        className="block h-11 w-11 rounded-sm border border-gray-900 bg-gray-100 font-bold shadow-md"
         onClick={() => trySetValue(value + 1)}
-        onMouseDown={handleMouseDownPlus}
+        onPointerDown={handleMouseDownPlus}
       >
-        <div className="pointer-events-none relative -top-0.5">+</div>
+        <div className="pointer-events-none relative text-2xl">+</div>
       </button>
       <button
         ref={minusElementRef}
-        className="block h-10 w-10 rounded-sm border border-gray-900 bg-gray-100 text-xl font-bold shadow-md"
+        className="block h-11 w-11 rounded-sm border border-gray-900 bg-gray-100 font-bold shadow-md"
         onClick={() => trySetValue(value - 1)}
-        onMouseDown={handleMouseDownMinus}
+        onPointerDown={handleMouseDownMinus}
       >
-        <div className="pointer-events-none relative -top-px">–</div>
+        <div className="pointer-events-none relative -top-[2px] text-2xl">
+          –
+        </div>
       </button>
     </div>
   );
