@@ -134,7 +134,8 @@ function Exercise({ exercise }: ExerciseProps) {
   };
 
   return (
-    <div className="flex min-h-0 flex-1 flex-col">
+    <div className="relative flex min-h-0 flex-1 flex-col">
+      <div className="absolute -top-4.5 z-100 h-5 w-full bg-gray-200 blur-xs"></div>
       <div className="flex-1 overflow-auto" ref={scroller}>
         {exercise.attempts.map((item, index) => (
           <Attempt

@@ -1,42 +1,29 @@
-import { useState } from "react";
-
-import type { ExerciseObject } from "../interfaces.ts";
-
-import ExercisesMenu from "./ExercisesMenu.tsx";
-import ExercisesManager from "./ExercisesManager.tsx";
-
 type AppHeaderProps = {
-  exercises: ExerciseObject[];
-  setCurrentExerciseID: (exerciseID: string) => void;
+  toggleMenu: () => void;
+  showManager: () => void;
+  hideManager: () => void;
+  currentExerciseName: string;
+  managerIsVisible: boolean;
+  menuIsVisible: boolean;
 };
 
-function AppHeader({ exercises, setCurrentExerciseID }: AppHeaderProps) {
-  const [menuIsVisible, setMenuIsVisible] = useState(false);
-  const [managerIsVisible, setManagerIsVisible] = useState(false);
-  const [currentExerciseName, setCurrentExerciseName] = useState("Exercises");
-
-  const showManager = () => {
-    setManagerIsVisible(true);
-  };
-
-  const hideManager = () => {
-    setManagerIsVisible(false);
-  };
-
-  const hideMenu = () => {
-    setMenuIsVisible(false);
-  };
-
+function AppHeader({
+  showManager,
+  hideManager,
+  toggleMenu,
+  currentExerciseName,
+  managerIsVisible,
+  menuIsVisible,
+}: AppHeaderProps) {
   return (
     <div>
-      <div className="flex h-10 justify-between px-4 pt-2">
+      <div className="relative flex h-11 justify-between px-4 pt-2">
         {!managerIsVisible && (
           <div
             onClick={() => {
-              setMenuIsVisible((menuIsVisible) => !menuIsVisible);
-              setCurrentExerciseName("Exercises");
+              toggleMenu();
             }}
-            className="flex-1 cursor-pointer font-bold text-black select-none"
+            className="relative z-200 flex-1 cursor-pointer font-bold text-black select-none"
           >
             <div className="mx-auto w-max rounded-sm bg-gray-300 px-3 py-px">
               {currentExerciseName} ⏷
@@ -47,7 +34,7 @@ function AppHeader({ exercises, setCurrentExerciseID }: AppHeaderProps) {
       {menuIsVisible && !managerIsVisible && (
         <button
           onClick={showManager}
-          className="absolute top-2 right-1/20 mx-auto flex h-6.5 w-9 cursor-pointer justify-center rounded-sm bg-gray-300 py-1 text-sm text-black"
+          className="absolute top-2 right-1/20 z-200 mx-auto flex h-6.5 w-9 cursor-pointer justify-center rounded-sm bg-gray-300 py-1 text-sm text-black"
         >
           <svg
             width="18"
@@ -65,7 +52,7 @@ function AppHeader({ exercises, setCurrentExerciseID }: AppHeaderProps) {
       {managerIsVisible && (
         <button
           onClick={hideManager}
-          className="absolute top-2 right-1/20 mx-auto flex h-6.5 w-9 cursor-pointer justify-center rounded-sm bg-gray-300 pt-1 text-base font-black text-black"
+          className="absolute top-2 right-1/20 z-200 mx-auto flex h-6.5 w-9 cursor-pointer justify-center rounded-sm bg-gray-300 pt-1 text-base font-black text-black"
         >
           <svg
             className="relative top-1 -left-px"
@@ -86,19 +73,6 @@ function AppHeader({ exercises, setCurrentExerciseID }: AppHeaderProps) {
             />
           </svg>
         </button>
-      )}
-      {menuIsVisible && !managerIsVisible && (
-        <ExercisesMenu
-          {...{ exercises }}
-          {...{ setCurrentExerciseID }}
-          {...{ setCurrentExerciseName }}
-          {...{ hideMenu }}
-        />
-      )}
-      {managerIsVisible && (
-        <div className="absolute z-100 h-[calc(100vh-48px)] w-full bg-gray-200">
-          <ExercisesManager {...{ exercises }} />
-        </div>
       )}
     </div>
   );

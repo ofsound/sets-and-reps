@@ -76,7 +76,7 @@ function ExercisesIndexItem({ name, id, isCurrent }: ExercisesIndexItemProps) {
   return (
     <div
       className={
-        "mx-auto mb-3 block w-9/10 cursor-pointer rounded-lg bg-linear-to-b from-slate-400 via-gray-500 to-neutral-500 px-3 py-1 text-white"
+        "mx-auto mb-3 flex w-9/10 cursor-pointer rounded-lg bg-linear-to-b from-slate-400 via-gray-500 to-neutral-500 px-3 py-1 text-white"
       }
     >
       <input
@@ -92,7 +92,21 @@ function ExercisesIndexItem({ name, id, isCurrent }: ExercisesIndexItemProps) {
         onChange={handleIsCurrentCheckboxChange}
         className="ml-auto"
       ></input>
-      <button onClick={deleteExercise} className="ml-10">
+      <button className="ml-2 flex h-6 w-9 cursor-pointer justify-center rounded-sm py-1 text-sm text-white">
+        <svg
+          width="18"
+          height="18"
+          viewBox="0 0 24 24"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <path
+            fill="currentColor"
+            d="M15.728 9.686l-1.414-1.414L5 17.586V19h1.414l9.314-9.314zm1.414-1.414l1.414-1.414-1.414-1.414-1.414 1.414 1.414 1.414zM7.242 21H3v-4.243L16.435 3.322a1 1 0 0 1 1.414 0l2.829 2.829a1 1 0 0 1 0 1.414L7.243 21z"
+          />
+        </svg>
+      </button>
+
+      <button onClick={deleteExercise} className="ml-2">
         <svg
           className="h-4 w-4"
           fill="none"

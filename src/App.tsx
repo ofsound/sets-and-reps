@@ -8,14 +8,37 @@ import type { ExerciseObject } from "./interfaces.ts";
 
 import { firestoreMapAttemptsToArrayAttempts } from "./utils/dataConversions.ts";
 
-import AppWelcome from "./components/AppWelcome.tsx";
 import AppHeader from "./components/AppHeader.tsx";
+import AppWelcome from "./components/AppWelcome.tsx";
 import Exercise from "./components/Exercise.tsx";
+import ExercisesMenu from "./components/ExercisesMenu.tsx";
+import ExercisesManager from "./components/ExercisesManager.tsx";
 
 function App() {
   window.addEventListener("contextmenu", (e) => {
-    e.preventDefault();
+    // e.preventDefault();
   });
+
+  const [currentExerciseName, setCurrentExerciseName] = useState("Exercises");
+
+  const [menuIsVisible, setMenuIsVisible] = useState(false);
+  const [managerIsVisible, setManagerIsVisible] = useState(false);
+
+  const showManager = () => {
+    setManagerIsVisible(true);
+  };
+
+  const hideManager = () => {
+    setManagerIsVisible(false);
+  };
+
+  const hideMenu = () => {
+    setMenuIsVisible(false);
+  };
+
+  const toggleMenu = () => {
+    setMenuIsVisible((menuIsVisible) => !menuIsVisible);
+  };
 
   const [exercises, setExercises] = useState<Array<ExerciseObject>>([]);
   const [currentExerciseID, setCurrentExerciseID] = useState("");
@@ -58,14 +81,29 @@ function App() {
     <div className="flex h-full flex-col bg-gray-200">
       <AppHeader
         {...{ exercises }}
-        setCurrentExerciseID={(exerciseIDFromMenu) => {
-          setCurrentExerciseID(exerciseIDFromMenu);
-        }}
+        {...{ toggleMenu }}
+        {...{ showManager }}
+        {...{ hideManager }}
+        {...{ hideMenu }}
+        {...{ managerIsVisible }}
+        {...{ menuIsVisible }}
+        {...{ currentExerciseName }}
       />
       {!currentExercise && <AppWelcome {...{ exercises }} />}
       {currentExercise && (
         <Exercise exercise={currentExercise} key={currentExercise?.id} />
       )}
+      {menuIsVisible && !managerIsVisible && (
+        <ExercisesMenu
+          {...{ exercises }}
+          setCurrentExerciseID={(exerciseIDFromMenu) => {
+            setCurrentExerciseID(exerciseIDFromMenu);
+          }}
+          {...{ hideMenu }}
+          {...{ setCurrentExerciseName }}
+        />
+      )}
+      {managerIsVisible && <ExercisesManager {...{ exercises }} />}
     </div>
   );
 }

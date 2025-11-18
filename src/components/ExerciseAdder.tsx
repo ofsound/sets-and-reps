@@ -49,7 +49,7 @@ function ExerciseAdder({ exercises }: ExerciseAdderProps) {
         value={newExerciseName}
       />
       <button
-        className="block rounded-md bg-gray-300 px-3 font-bold text-black"
+        className="block rounded-md bg-gray-300 px-3 font-semibold text-black"
         onClick={() => {
           handleExerciseAdded(newExerciseName);
           setNewExerciseName("");
