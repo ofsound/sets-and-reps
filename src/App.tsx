@@ -20,7 +20,6 @@ function App() {
   // });
 
   const [currentView, setCurrentView] = useState("welcome");
-  // welcome, exercise, menu, manager
 
   const [appHeading, setAppHeading] = useState("Exercises");
 
@@ -30,8 +29,13 @@ function App() {
   };
 
   const showMenu = () => {
-    setCurrentView("menu");
-    setAppHeading("Exercises");
+    if (currentView === "menu" && currentExercise) {
+      setCurrentView("exercise");
+      setAppHeading(currentExercise?.name);
+    } else {
+      setCurrentView("menu");
+      setAppHeading("Exercises");
+    }
   };
 
   const [exercises, setExercises] = useState<Array<ExerciseObject>>([]);
@@ -73,14 +77,9 @@ function App() {
     return () => unsubscribe();
   }, []);
 
-  // const currentExercise = exercises.find(
-  //   (item) => item.id === currentExerciseID,
-  // );
-
   return (
     <div className="flex h-full flex-col bg-gray-200">
       <AppHeader
-        {...{ exercises }}
         {...{ showManager }}
         {...{ showMenu }}
         {...{ currentView }}
@@ -89,7 +88,7 @@ function App() {
       {currentView === "welcome" && <AppWelcome {...{ exercises }} />}
 
       {currentView === "exercise" && currentExercise && (
-        <Exercise exercise={currentExercise} key={currentExercise?.id} />
+        <Exercise exercise={currentExercise} key={currentExercise.id} />
       )}
       {currentView === "menu" && (
         <ExercisesMenu {...{ exercises }} setCurrentExercise={openExercise} />
