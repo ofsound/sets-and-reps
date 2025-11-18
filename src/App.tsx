@@ -19,21 +19,21 @@ function App() {
   //   e.preventDefault();
   // });
 
-  const [currentView, setCurrentView] = useState("welcome");
+  const [currentAppView, setCurrentAppView] = useState("welcome");
 
   const [appHeading, setAppHeading] = useState("Exercises");
 
   const showManager = () => {
-    setCurrentView("manager");
+    setCurrentAppView("manager");
     setAppHeading("Edit Exercises");
   };
 
   const toggleMenu = () => {
-    if (currentView === "menu" && currentExercise) {
-      setCurrentView("exercise");
+    if (currentAppView === "menu" && currentExercise) {
+      setCurrentAppView("exercise");
       setAppHeading(currentExercise?.name);
     } else {
-      setCurrentView("menu");
+      setCurrentAppView("menu");
       setAppHeading("Exercises");
     }
   };
@@ -44,7 +44,7 @@ function App() {
   const openExercise = (exercise: ExerciseObject) => {
     setCurrentExercise(exercise);
     setAppHeading(exercise.name);
-    setCurrentView("exercise");
+    setCurrentAppView("exercise");
   };
 
   useEffect(() => {
@@ -82,18 +82,18 @@ function App() {
       <AppHeader
         {...{ showManager }}
         {...{ toggleMenu }}
-        {...{ currentView }}
+        {...{ currentAppView }}
         {...{ appHeading }}
       />
-      {currentView === "welcome" && <AppWelcome {...{ exercises }} />}
+      {currentAppView === "welcome" && <AppWelcome {...{ exercises }} />}
 
-      {currentView === "exercise" && currentExercise && (
+      {currentAppView === "exercise" && currentExercise && (
         <Exercise exercise={currentExercise} key={currentExercise.id} />
       )}
-      {currentView === "menu" && (
+      {currentAppView === "menu" && (
         <ExercisesMenu {...{ exercises }} setCurrentExercise={openExercise} />
       )}
-      {currentView === "manager" && <ExercisesManager {...{ exercises }} />}
+      {currentAppView === "manager" && <ExercisesManager {...{ exercises }} />}
     </div>
   );
 }
