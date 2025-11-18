@@ -10,8 +10,8 @@ type ExercisesManagerProps = {
 function ExercisesManager({ exercises }: ExercisesManagerProps) {
   return (
     <div>
-      <ExerciseAdder {...{ exercises }} />
       <ExercisesIndex {...{ exercises }} />
+      <ExerciseAdder {...{ exercises }} />
     </div>
   );
 }

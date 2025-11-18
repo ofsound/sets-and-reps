@@ -76,7 +76,7 @@ function ExercisesIndexItem({ name, id, isCurrent }: ExercisesIndexItemProps) {
   return (
     <div
       className={
-        "my-3 flex rounded-md border border-white bg-gray-500 px-3 py-1 text-lg text-white"
+        "mx-auto mb-3 block w-9/10 cursor-pointer rounded-lg bg-linear-to-b from-slate-400 via-gray-500 to-neutral-500 px-3 py-1 text-white"
       }
     >
       <input
@@ -94,7 +94,7 @@ function ExercisesIndexItem({ name, id, isCurrent }: ExercisesIndexItemProps) {
       ></input>
       <button onClick={deleteExercise} className="ml-10">
         <svg
-          className="h-5 w-5"
+          className="h-4 w-4"
           fill="none"
           stroke="currentColor"
           viewBox="0 0 24 24"

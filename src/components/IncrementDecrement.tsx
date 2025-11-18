@@ -94,9 +94,7 @@ function IncrementDecrement({ value, trySetValue }: IncrementDecrementProps) {
         onClick={() => trySetValue(value - 1)}
         onPointerDown={handleMouseDownMinus}
       >
-        <div className="pointer-events-none relative -top-[2px] text-2xl">
-          –
-        </div>
+        <div className="pointer-events-none relative -top-0.5 text-2xl">–</div>
       </button>
     </div>
   );

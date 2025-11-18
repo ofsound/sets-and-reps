@@ -40,22 +40,22 @@ function ExerciseAdder({ exercises }: ExerciseAdderProps) {
   };
 
   return (
-    <div className="mx-4 flex rounded-sm p-4">
+    <div className="mx-auto flex w-9/10 rounded-sm">
       <input
         id="name"
         type="text"
-        className="mr-4 ml-auto w-full rounded-md border border-dotted bg-gray-100 p-3 font-bold tabular-nums"
+        className="mr-4 ml-auto w-full rounded-md border border-dotted bg-gray-100 px-2 py-1 tabular-nums"
         onChange={handleChange}
         value={newExerciseName}
       />
       <button
-        className="block rounded-md border bg-gray-500 px-3 text-white"
+        className="block rounded-md bg-gray-300 px-3 font-bold text-black"
         onClick={() => {
           handleExerciseAdded(newExerciseName);
           setNewExerciseName("");
         }}
       >
-        New&nbsp;Exercise
+        Add&nbsp;Exercise
       </button>
     </div>
   );
