@@ -1,13 +1,13 @@
 type AppHeaderProps = {
   showManager: () => void;
-  showMenu: () => void;
+  toggleMenu: () => void;
   appHeading: string;
   currentView: string;
 };
 
 function AppHeader({
   showManager,
-  showMenu,
+  toggleMenu,
   appHeading,
   currentView,
 }: AppHeaderProps) {
@@ -17,7 +17,7 @@ function AppHeader({
         {currentView !== "manager" && (
           <div
             onClick={() => {
-              showMenu();
+              toggleMenu();
             }}
             className="relative z-200 flex-1 cursor-pointer font-bold text-black select-none"
           >
@@ -47,7 +47,7 @@ function AppHeader({
       )}
       {currentView === "manager" && (
         <button
-          onClick={showMenu}
+          onClick={toggleMenu}
           className="absolute top-2 right-1/20 z-200 mx-auto flex h-6.5 w-9 cursor-pointer justify-center rounded-sm bg-gray-300 pt-1 text-base font-black text-black"
         >
           <svg

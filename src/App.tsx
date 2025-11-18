@@ -28,7 +28,7 @@ function App() {
     setAppHeading("Edit Exercises");
   };
 
-  const showMenu = () => {
+  const toggleMenu = () => {
     if (currentView === "menu" && currentExercise) {
       setCurrentView("exercise");
       setAppHeading(currentExercise?.name);
@@ -81,7 +81,7 @@ function App() {
     <div className="flex h-full flex-col bg-gray-200">
       <AppHeader
         {...{ showManager }}
-        {...{ showMenu }}
+        {...{ toggleMenu }}
         {...{ currentView }}
         {...{ appHeading }}
       />
