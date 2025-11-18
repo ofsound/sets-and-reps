@@ -15,33 +15,33 @@ import ExercisesMenu from "./components/ExercisesMenu.tsx";
 import ExercisesManager from "./components/ExercisesManager.tsx";
 
 function App() {
-  window.addEventListener("contextmenu", (e) => {
-    // e.preventDefault();
-  });
+  // window.addEventListener("contextmenu", (e) => {
+  //   e.preventDefault();
+  // });
 
-  const [currentExerciseName, setCurrentExerciseName] = useState("Exercises");
+  const [currentView, setCurrentView] = useState("welcome");
+  // welcome, exercise, menu, manager
 
-  const [menuIsVisible, setMenuIsVisible] = useState(false);
-  const [managerIsVisible, setManagerIsVisible] = useState(false);
+  const [appHeading, setAppHeading] = useState("Exercises");
 
   const showManager = () => {
-    setManagerIsVisible(true);
+    setCurrentView("manager");
+    setAppHeading("Edit Exercises");
   };
 
-  const hideManager = () => {
-    setManagerIsVisible(false);
-  };
-
-  const hideMenu = () => {
-    setMenuIsVisible(false);
-  };
-
-  const toggleMenu = () => {
-    setMenuIsVisible((menuIsVisible) => !menuIsVisible);
+  const showMenu = () => {
+    setCurrentView("menu");
+    setAppHeading("Exercises");
   };
 
   const [exercises, setExercises] = useState<Array<ExerciseObject>>([]);
-  const [currentExerciseID, setCurrentExerciseID] = useState("");
+  const [currentExercise, setCurrentExercise] = useState<ExerciseObject>();
+
+  const openExercise = (exercise: ExerciseObject) => {
+    setCurrentExercise(exercise);
+    setAppHeading(exercise.name);
+    setCurrentView("exercise");
+  };
 
   useEffect(() => {
     const q = query(collection(db, "exercises"), orderBy("order", "asc"));
@@ -73,39 +73,28 @@ function App() {
     return () => unsubscribe();
   }, []);
 
-  const currentExercise = exercises.find(
-    (item) => item.id === currentExerciseID,
-  );
+  // const currentExercise = exercises.find(
+  //   (item) => item.id === currentExerciseID,
+  // );
 
   return (
     <div className="flex h-full flex-col bg-gray-200">
       <AppHeader
         {...{ exercises }}
-        {...{ toggleMenu }}
         {...{ showManager }}
-        {...{ hideManager }}
-        {...{ hideMenu }}
-        {...{ managerIsVisible }}
-        {...{ menuIsVisible }}
-        {...{ currentExerciseName }}
+        {...{ showMenu }}
+        {...{ currentView }}
+        {...{ appHeading }}
       />
-      {!currentExercise && !managerIsVisible && !menuIsVisible && (
-        <AppWelcome {...{ exercises }} />
-      )}
-      {currentExercise && (
+      {currentView === "welcome" && <AppWelcome {...{ exercises }} />}
+
+      {currentView === "exercise" && currentExercise && (
         <Exercise exercise={currentExercise} key={currentExercise?.id} />
       )}
-      {menuIsVisible && !managerIsVisible && (
-        <ExercisesMenu
-          {...{ exercises }}
-          setCurrentExerciseID={(exerciseIDFromMenu) => {
-            setCurrentExerciseID(exerciseIDFromMenu);
-          }}
-          {...{ hideMenu }}
-          {...{ setCurrentExerciseName }}
-        />
+      {currentView === "menu" && (
+        <ExercisesMenu {...{ exercises }} setCurrentExercise={openExercise} />
       )}
-      {managerIsVisible && <ExercisesManager {...{ exercises }} />}
+      {currentView === "manager" && <ExercisesManager {...{ exercises }} />}
     </div>
   );
 }

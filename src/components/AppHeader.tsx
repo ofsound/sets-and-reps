@@ -1,37 +1,33 @@
 type AppHeaderProps = {
-  toggleMenu: () => void;
   showManager: () => void;
-  hideManager: () => void;
-  currentExerciseName: string;
-  managerIsVisible: boolean;
-  menuIsVisible: boolean;
+  showMenu: () => void;
+  appHeading: string;
+  currentView: string;
 };
 
 function AppHeader({
   showManager,
-  hideManager,
-  toggleMenu,
-  currentExerciseName,
-  managerIsVisible,
-  menuIsVisible,
+  showMenu,
+  appHeading,
+  currentView,
 }: AppHeaderProps) {
   return (
     <div>
       <div className="relative flex h-11 justify-between px-4 pt-2">
-        {!managerIsVisible && (
+        {currentView !== "manager" && (
           <div
             onClick={() => {
-              toggleMenu();
+              showMenu();
             }}
             className="relative z-200 flex-1 cursor-pointer font-bold text-black select-none"
           >
             <div className="mx-auto w-max rounded-sm bg-gray-300 px-3 py-px">
-              {currentExerciseName} ⏷
+              {appHeading} ⏷
             </div>
           </div>
         )}
       </div>
-      {menuIsVisible && !managerIsVisible && (
+      {currentView === "menu" && (
         <button
           onClick={showManager}
           className="absolute top-2 right-1/20 z-200 mx-auto flex h-6.5 w-9 cursor-pointer justify-center rounded-sm bg-gray-300 py-1 text-sm text-black"
@@ -49,9 +45,9 @@ function AppHeader({
           </svg>
         </button>
       )}
-      {managerIsVisible && (
+      {currentView === "manager" && (
         <button
-          onClick={hideManager}
+          onClick={showMenu}
           className="absolute top-2 right-1/20 z-200 mx-auto flex h-6.5 w-9 cursor-pointer justify-center rounded-sm bg-gray-300 pt-1 text-base font-black text-black"
         >
           <svg
@@ -61,15 +57,15 @@ function AppHeader({
             viewBox="0 0 24 24"
             fill="none"
             stroke="#000000"
-            stroke-width="4"
-            stroke-linecap="round"
-            stroke-linejoin="round"
+            strokeWidth="4"
+            strokeLinecap="round"
+            strokeLinejoin="round"
           >
             <path d="M20.29 4.29L12 12.59 7.71 8.29" />
             <path
               d="M20.29 4.29L12 12.59 7.71 8.29"
-              stroke-dasharray="7 7"
-              stroke-dashoffset="7"
+              strokeDasharray="7 7"
+              strokeDashoffset="7"
             />
           </svg>
         </button>
