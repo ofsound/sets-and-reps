@@ -89,7 +89,9 @@ function App() {
         {...{ menuIsVisible }}
         {...{ currentExerciseName }}
       />
-      {!currentExercise && <AppWelcome {...{ exercises }} />}
+      {!currentExercise && !managerIsVisible && !menuIsVisible && (
+        <AppWelcome {...{ exercises }} />
+      )}
       {currentExercise && (
         <Exercise exercise={currentExercise} key={currentExercise?.id} />
       )}

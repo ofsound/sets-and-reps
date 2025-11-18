@@ -8,7 +8,7 @@ type ExercisesIndexProps = {
 
 function ExercisesIndex({ exercises }: ExercisesIndexProps) {
   return (
-    <div className="pt-3">
+    <div className="flex-1 overflow-auto pt-3">
       {exercises.map((item) => (
         <ExercisesIndexItem
           key={item.id}

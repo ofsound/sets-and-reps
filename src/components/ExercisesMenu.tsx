@@ -14,7 +14,7 @@ function ExercisesMenu({
   hideMenu,
 }: ExercisesMenuProps) {
   return (
-    <div className="absolute z-100 h-[calc(100vh-48px)] w-full bg-gray-200 pt-3">
+    <div className="w-full flex-1 overflow-auto bg-gray-200 pt-3">
       {exercises
         .filter((item) => item.isCurrent === true)
         .map((item) => (
