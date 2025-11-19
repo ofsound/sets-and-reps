@@ -33,7 +33,7 @@ function Set({
 
   return (
     <div
-      className={`my-1 flex items-baseline border border-transparent px-1 ${editModeEnabledOnAttempt && "cursor-pointer"} ${editModeEnabledOnAttempt && isArmedSet && "border border-gray-300 bg-white shadow-sm"}`}
+      className={`${editModeEnabledOnAttempt && "cursor-pointer"} my-1 flex items-baseline`}
     >
       <div
         onClick={() => {
@@ -41,13 +41,11 @@ function Set({
             armSetForUpdate(set);
           }
         }}
-        className={`flex flex-1`}
+        className={`${editModeEnabledOnAttempt && isArmedSet && "border border-gray-200! bg-white shadow-sm"} flex flex-1 border border-transparent px-1`}
       >
         <div className="text-base font-bold">{set.measurement}</div>
         {set.measurement !== "" && (
-          <div className="relative top-0.5 text-sm font-semibold">
-            &nbsp;x&nbsp;
-          </div>
+          <div className="relative top-px font-semibold">&nbsp;×&nbsp;</div>
         )}
         <div className="text-base font-bold">{set.reps}</div>
         <div className="ml-4 flex-1 text-sm italic">{set.notes}</div>
@@ -61,11 +59,10 @@ function Set({
         <div>
           <button
             onClick={() => duplicateSet(set)}
-            className="text-sm text-black"
+            className="ml-1 text-sm text-black"
           >
             <svg
-              width="18px"
-              height="18px"
+              className="h-4 w-4"
               viewBox="0 0 48 48"
               fill="none"
               xmlns="http://www.w3.org/2000/svg"
@@ -85,7 +82,7 @@ function Set({
           </button>
           <button onClick={() => deleteSet(set)} className="ml-3 text-sm">
             <svg
-              className="h-5 w-5"
+              className="h-4 w-4"
               fill="none"
               stroke="currentColor"
               viewBox="0 0 24 24"
