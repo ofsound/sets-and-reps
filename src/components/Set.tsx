@@ -20,17 +20,20 @@ function Set({
 }: SetProps) {
   const dateToTime = (dateNumber: number): string => {
     const date = new Date(dateNumber);
-    return date.toLocaleDateString("en-US", {
-      year: "numeric",
-      month: "numeric",
-      day: "numeric",
-      hour: "numeric",
-    });
+    return date
+      .toLocaleDateString("en-US", {
+        // year: "numeric",
+        month: "numeric",
+        day: "numeric",
+        hour: "numeric",
+      })
+      .toLocaleLowerCase()
+      .replace(/ (\s*)pm/g, "pm");
   };
 
   return (
     <div
-      className={`my-1 flex items-baseline px-3 ${editModeEnabledOnAttempt && "cursor-pointer"} ${editModeEnabledOnAttempt && isArmedSet && "cursor-pointer border border-gray-300 bg-white shadow-sm"}`}
+      className={`my-1 flex items-baseline border border-transparent px-1 ${editModeEnabledOnAttempt && "cursor-pointer"} ${editModeEnabledOnAttempt && isArmedSet && "border border-gray-300 bg-white shadow-sm"}`}
     >
       <div
         onClick={() => {
@@ -40,19 +43,25 @@ function Set({
         }}
         className={`flex flex-1`}
       >
-        <div className="text-base font-black">{set.measurement}</div>
+        <div className="text-base font-bold">{set.measurement}</div>
         {set.measurement !== "" && (
-          <div className="text-base font-black">&nbsp;x&nbsp;</div>
+          <div className="relative top-0.5 text-sm font-semibold">
+            &nbsp;x&nbsp;
+          </div>
         )}
-        <div className="text-base font-black">{set.reps}</div>
+        <div className="text-base font-bold">{set.reps}</div>
         <div className="ml-4 flex-1 text-sm italic">{set.notes}</div>
       </div>
-      <div className="ml-auto text-sm">{dateToTime(set.date)}</div>
+      <div
+        className={`ml-auto text-xs ${editModeEnabledOnAttempt && "hidden"}`}
+      >
+        {dateToTime(set.date)}
+      </div>
       {editModeEnabledOnAttempt && (
         <div>
           <button
             onClick={() => duplicateSet(set)}
-            className="mr-2 ml-4 text-sm text-black"
+            className="text-sm text-black"
           >
             <svg
               width="18px"
@@ -74,7 +83,7 @@ function Set({
               </g>
             </svg>
           </button>
-          <button onClick={() => deleteSet(set)} className="mr-2 ml-4 text-sm">
+          <button onClick={() => deleteSet(set)} className="ml-3 text-sm">
             <svg
               className="h-5 w-5"
               fill="none"
