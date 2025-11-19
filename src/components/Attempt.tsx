@@ -1,8 +1,6 @@
-import { useState } from "react";
+import { useState, useEffect, useRef } from "react";
 
 import type { SetObject } from "../interfaces.ts";
-
-import { useLongPress } from "use-long-press";
 
 import Set from "../components/Set.tsx";
 
@@ -13,6 +11,7 @@ type AttemptProps = {
   editModeEnabledOnAttempt: boolean;
   globalEditModeEnabled: boolean;
   deleteAttempt: (attempt: SetObject[]) => void;
+  makeAttemptCurrent: (attempt: SetObject[]) => void;
   deleteSet: (set: SetObject) => void;
   duplicateSet: (set: SetObject) => void;
   armThisSetForUpdate: (set: SetObject) => void;
@@ -25,10 +24,14 @@ function Attempt({
   editModeEnabledOnAttempt,
   globalEditModeEnabled,
   deleteAttempt,
+  makeAttemptCurrent,
   deleteSet,
   duplicateSet,
   armThisSetForUpdate,
 }: AttemptProps) {
+  const [isMouseDown, setIsMouseDown] = useState(false);
+  const mouseDownStartTime = useRef(0);
+
   const [armedSetIndex, setArmedSetIndex] = useState(-1);
 
   const armSetForUpdate = (set: SetObject) => {
@@ -36,20 +39,52 @@ function Attempt({
     armThisSetForUpdate(set);
   };
 
-  const handlers = useLongPress(
-    () => {
-      if (!editModeEnabledOnAttempt) {
-        enterEditMode(index);
-      }
-    },
-    {
-      threshold: 1000,
-    },
-  );
+  const handleMouseDown = () => {
+    mouseDownStartTime.current = Date.now();
+    setIsMouseDown(true);
+  };
+
+  const handleMouseUp = () => {
+    setIsMouseDown(false);
+  };
+
+  useEffect(() => {
+    if (isMouseDown) {
+      const handleDuringMouseDown = () => {
+        const timeSinceMouseDown = Date.now() - mouseDownStartTime.current;
+
+        if (timeSinceMouseDown > 1000) {
+          if (!editModeEnabledOnAttempt) {
+            enterEditMode(index);
+            clearInterval(interval);
+          }
+        }
+      };
+
+      const interval = setInterval(handleDuringMouseDown, 80);
+      return () => clearInterval(interval);
+    }
+  }, [isMouseDown]);
+
+  useEffect(() => {
+    if (isMouseDown) {
+      window.addEventListener("pointerup", handleMouseUp);
+    } else {
+      window.removeEventListener("pointerup", handleMouseUp);
+    }
+    return () => {
+      window.removeEventListener("pointerup", handleMouseUp);
+    };
+  }, [isMouseDown]);
 
   return (
     <div
-      {...handlers()}
+      onClick={() => {
+        if (Date.now() - mouseDownStartTime.current <= 1000) {
+          makeAttemptCurrent(attempt);
+        }
+      }}
+      onPointerDown={handleMouseDown}
       className={`relative mx-4 my-2 min-h-13 rounded-md border border-gray-500 bg-white p-2 shadow-sm last:border-dashed last:bg-blue-100 ${editModeEnabledOnAttempt && "mr-20 bg-yellow-50! shadow-lg"} ${globalEditModeEnabled && !editModeEnabledOnAttempt && "blur-[2px]"}`}
     >
       <button

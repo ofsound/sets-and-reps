@@ -14,6 +14,7 @@ import { duplicateSetInAttempts } from "../utils/arrayFunctions.ts";
 
 import Attempt from "../components/Attempt.tsx";
 import SetConsole from "../components/SetConsole.tsx";
+import { executeQuery } from "firebase/data-connect";
 
 type ExerciseProps = {
   exercise: ExerciseObject;
@@ -91,6 +92,13 @@ function Exercise({ exercise }: ExerciseProps) {
     updateScroller();
   };
 
+  const makeAttemptCurrent = (attempt: SetObject[]) => {
+    if (exercise.attempts.indexOf(attempt) == exercise.attempts.length - 2) {
+      exercise.attempts.pop();
+      updateExerciseAttemptsInDatabase(exercise);
+    }
+  };
+
   const deleteAttempt = (attempt: SetObject[]) => {
     const confirmed = window.confirm(
       `Are you sure you want to delete this Attempt?`,
@@ -154,6 +162,7 @@ function Exercise({ exercise }: ExerciseProps) {
             editModeEnabledOnAttempt={index === attemptIndexForEditMode}
             {...{ globalEditModeEnabled }}
             {...{ deleteAttempt }}
+            {...{ makeAttemptCurrent }}
             {...{ deleteSet }}
             {...{ duplicateSet }}
             {...{ armThisSetForUpdate }}
