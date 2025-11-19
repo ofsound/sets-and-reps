@@ -144,7 +144,6 @@ function Exercise({ exercise }: ExerciseProps) {
       setToUpdate.notes = armedSet.notes;
 
       updateExerciseAttemptsInDatabase(exercise);
-      updateScroller();
     }
   };
 

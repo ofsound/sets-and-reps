@@ -22,13 +22,13 @@ function Set({
     const date = new Date(dateNumber);
     return date
       .toLocaleDateString("en-US", {
-        // year: "numeric",
         month: "numeric",
         day: "numeric",
         hour: "numeric",
       })
       .toLocaleLowerCase()
-      .replace(/ (\s*)pm/g, "pm");
+      .replace(/ (\s*)pm/g, "pm")
+      .replace(/ (\s*)am/g, "am");
   };
 
   return (
@@ -41,18 +41,16 @@ function Set({
             armSetForUpdate(set);
           }
         }}
-        className={`${editModeEnabledOnAttempt && isArmedSet && "border border-gray-200! bg-white shadow-sm"} flex flex-1 border border-transparent px-1`}
+        className={`${editModeEnabledOnAttempt && isArmedSet && "border border-gray-200! bg-white shadow-sm"} flex flex-1 items-baseline border border-transparent px-1`}
       >
         <div className="text-base font-bold">{set.measurement}</div>
         {set.measurement !== "" && (
           <div className="relative top-px font-semibold">&nbsp;×&nbsp;</div>
         )}
         <div className="text-base font-bold">{set.reps}</div>
-        <div className="ml-4 flex-1 text-sm italic">{set.notes}</div>
+        <div className="ml-3 flex-1 text-sm italic">{set.notes}</div>
       </div>
-      <div
-        className={`ml-auto text-xs ${editModeEnabledOnAttempt && "hidden"}`}
-      >
+      <div className={`ml-2 text-xs ${editModeEnabledOnAttempt && "hidden"}`}>
         {dateToTime(set.date)}
       </div>
       {editModeEnabledOnAttempt && (

@@ -103,7 +103,7 @@ function SetConsole({
             </button>
           </div>
           <div
-            className={`mt-2 flex gap-7 pl-3 ${measurementLabel === "Action" && "opacity-60 blur-sm brightness-70"}`}
+            className={`mt-2 flex gap-8 pl-3 ${measurementLabel === "Action" && "opacity-60 blur-sm brightness-70"}`}
           >
             <IncrementDecrement
               value={numberFromMeasurement(measurement)}
@@ -123,7 +123,7 @@ function SetConsole({
           <div className="mb-1 flex h-8 items-center text-center text-sm font-bold">
             <div className="w-full text-center">Reps</div>
           </div>
-          <div className="mt-2 flex justify-end gap-7 pr-3">
+          <div className="mt-2 flex justify-end gap-8 pr-3">
             <input
               disabled
               type="text"
