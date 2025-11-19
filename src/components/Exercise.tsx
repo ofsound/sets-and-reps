@@ -14,7 +14,6 @@ import { duplicateSetInAttempts } from "../utils/arrayFunctions.ts";
 
 import Attempt from "../components/Attempt.tsx";
 import SetConsole from "../components/SetConsole.tsx";
-import { executeQuery } from "firebase/data-connect";
 
 type ExerciseProps = {
   exercise: ExerciseObject;
