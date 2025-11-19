@@ -32,8 +32,12 @@ function ExerciseAdder({ exercises }: ExerciseAdderProps) {
     };
 
     try {
-      await setDoc(docRef, newExercise);
-      console.log("Document successfully added!");
+      if (newExerciseName) {
+        await setDoc(docRef, newExercise);
+        console.log("Document successfully added!");
+      } else {
+        console.error("Exercise name field was left blank.");
+      }
     } catch (error) {
       console.error("Error adding document: ", error);
     }

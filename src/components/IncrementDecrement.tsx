@@ -10,9 +10,6 @@ function IncrementDecrement({ value, trySetValue }: IncrementDecrementProps) {
 
   const mouseDownPlusOrMinus = useRef("minus");
 
-  const plusElementRef = useRef(null);
-  const minusElementRef = useRef(null);
-
   const handleMouseDownPlus = () => {
     mouseDownPlusOrMinus.current = "plus";
     mouseDownStartTime.current = Date.now();
@@ -81,7 +78,6 @@ function IncrementDecrement({ value, trySetValue }: IncrementDecrementProps) {
   return (
     <div className="no-select flex flex-col gap-2">
       <button
-        ref={plusElementRef}
         className="block h-11 w-11 rounded-sm border border-gray-900 bg-gray-100 font-bold shadow-md"
         onClick={() => trySetValue(value + 1)}
         onPointerDown={handleMouseDownPlus}
@@ -89,7 +85,6 @@ function IncrementDecrement({ value, trySetValue }: IncrementDecrementProps) {
         <div className="pointer-events-none relative text-2xl">+</div>
       </button>
       <button
-        ref={minusElementRef}
         className="block h-11 w-11 rounded-sm border border-gray-900 bg-gray-100 font-bold shadow-md"
         onClick={() => trySetValue(value - 1)}
         onPointerDown={handleMouseDownMinus}

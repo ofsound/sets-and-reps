@@ -1,5 +1,5 @@
-import { useState } from "react";
-import type { ChangeEvent, KeyboardEvent } from "react";
+import { useState, useEffect, useRef } from "react";
+import type { ChangeEvent, KeyboardEvent, PointerEvent } from "react";
 
 import { doc, updateDoc, deleteDoc } from "firebase/firestore";
 
@@ -12,6 +12,14 @@ type ExercisesIndexItemProps = {
 };
 
 function ExercisesIndexItem({ name, id, isCurrent }: ExercisesIndexItemProps) {
+  const [isMouseDown, setIsMouseDown] = useState(false);
+
+  const nameInputElementRef = useRef<HTMLInputElement>(null);
+
+  const nameInputIsActive = useRef(false);
+
+  const mouseDownStartTime = useRef(0);
+
   const docRef = doc(db, "exercises", id);
 
   const [exerciseName, setExerciseName] = useState(name);
@@ -49,6 +57,11 @@ function ExercisesIndexItem({ name, id, isCurrent }: ExercisesIndexItemProps) {
     if (confirmed) {
       try {
         updateDoc(docRef, { name: exerciseName });
+
+        if (nameInputElementRef.current) {
+          nameInputElementRef.current.blur();
+          nameInputIsActive.current = false;
+        }
         console.log("Document successfully updated!");
       } catch (error) {
         console.error("Error updating document: ", error);
@@ -73,26 +86,63 @@ function ExercisesIndexItem({ name, id, isCurrent }: ExercisesIndexItemProps) {
     }
   };
 
+  const handleMouseDown = (event: PointerEvent) => {
+    event.preventDefault();
+    mouseDownStartTime.current = Date.now();
+    setIsMouseDown(true);
+  };
+
+  const handleMouseUp = () => {
+    setIsMouseDown(false);
+  };
+
+  useEffect(() => {
+    if (isMouseDown) {
+      const handleDuringMouseDown = () => {
+        const timeSinceMouseDown = Date.now() - mouseDownStartTime.current;
+
+        if (timeSinceMouseDown > 700) {
+          console.log("long press");
+          clearInterval(interval);
+          if (nameInputElementRef.current) {
+            nameInputElementRef.current.focus();
+            nameInputIsActive.current = true;
+          }
+        }
+      };
+
+      const interval = setInterval(handleDuringMouseDown, 80);
+      return () => clearInterval(interval);
+    }
+  }, [isMouseDown]);
+
+  useEffect(() => {
+    if (isMouseDown) {
+      window.addEventListener("pointerup", handleMouseUp);
+    } else {
+      window.removeEventListener("pointerup", handleMouseUp);
+    }
+    return () => {
+      window.removeEventListener("pointerup", handleMouseUp);
+    };
+  }, [isMouseDown]);
+
   return (
     <div
       className={
-        "mx-auto mb-3 flex w-9/10 cursor-pointer rounded-lg bg-linear-to-b from-slate-400 via-gray-500 to-neutral-500 px-3 py-1 text-white"
+        "mx-auto mb-3 flex w-9/10 cursor-pointer rounded-lg bg-linear-to-b from-slate-400 via-gray-500 to-neutral-500 px-2 py-1 text-white"
       }
     >
       <input
         type="text"
         value={exerciseName}
+        ref={nameInputElementRef}
         onChange={handleNameInputChange}
+        onPointerDown={handleMouseDown}
         onKeyDown={handleKeyDown}
-        className=""
+        className="w-full px-1 focus:bg-white focus:text-black"
       ></input>
-      <input
-        type="checkbox"
-        checked={isCurrent}
-        onChange={handleIsCurrentCheckboxChange}
-        className="ml-auto"
-      ></input>
-      <button className="ml-2 flex h-6 w-9 cursor-pointer justify-center rounded-sm py-1 text-sm text-white">
+      {/* <button className="ml-2 flex h-6 w-9 cursor-pointer justify-center rounded-sm py-1 text-sm text-white">
         <svg
           width="18"
           height="18"
@@ -104,7 +154,35 @@ function ExercisesIndexItem({ name, id, isCurrent }: ExercisesIndexItemProps) {
             d="M15.728 9.686l-1.414-1.414L5 17.586V19h1.414l9.314-9.314zm1.414-1.414l1.414-1.414-1.414-1.414-1.414 1.414 1.414 1.414zM7.242 21H3v-4.243L16.435 3.322a1 1 0 0 1 1.414 0l2.829 2.829a1 1 0 0 1 0 1.414L7.243 21z"
           />
         </svg>
-      </button>
+      </button> */}
+      {nameInputIsActive.current && (
+        <button onClick={renameExercise} className="mx-4">
+          <svg
+            className="relative top-1 -left-px"
+            width="18"
+            height="18"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="#FFFFFF"
+            strokeWidth="4"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+          >
+            <path d="M20.29 4.29L12 12.59 7.71 8.29" />
+            <path
+              d="M20.29 4.29L12 12.59 7.71 8.29"
+              strokeDasharray="7 7"
+              strokeDashoffset="7"
+            />
+          </svg>
+        </button>
+      )}
+      <input
+        type="checkbox"
+        checked={isCurrent}
+        onChange={handleIsCurrentCheckboxChange}
+        className="ml-auto"
+      ></input>
 
       <button onClick={deleteExercise} className="ml-2">
         <svg
