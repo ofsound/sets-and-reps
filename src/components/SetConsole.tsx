@@ -15,7 +15,7 @@ import IncrementDecrement from "./IncrementDecrement.tsx";
 type SetConsoleProps = {
   appendNewSet: (object: SetObject) => void;
   updateArmedSet: (object: SetObject) => void;
-  editModeEnabled: boolean;
+  globalEditModeEnabled: boolean;
   initialReps: number;
   initialMeasurement: string;
   initialNotes: string;
@@ -24,7 +24,7 @@ type SetConsoleProps = {
 function SetConsole({
   appendNewSet,
   updateArmedSet,
-  editModeEnabled,
+  globalEditModeEnabled,
   initialReps,
   initialMeasurement,
   initialNotes,
@@ -145,7 +145,7 @@ function SetConsole({
         />
       </div>
       <div className="px-6 pt-2">
-        {!editModeEnabled && (
+        {!globalEditModeEnabled && (
           <button
             className="mx-auto block h-9 w-full rounded-md border border-gray-500 bg-green-600 font-bold text-white shadow-md"
             onClick={() => {
@@ -161,7 +161,7 @@ function SetConsole({
             Add Set
           </button>
         )}
-        {editModeEnabled && (
+        {globalEditModeEnabled && (
           <button
             className="mx-auto block h-9 w-full rounded-md border border-gray-500 bg-green-600 font-bold text-white shadow-md"
             onClick={() => {

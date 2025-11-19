@@ -2,15 +2,19 @@ import { useState } from "react";
 
 import type { SetObject } from "../interfaces.ts";
 
+import { useLongPress } from "use-long-press";
+
 import Set from "../components/Set.tsx";
 
 type AttemptProps = {
   attempt: SetObject[];
   index: number;
   enterEditMode: (attemptIndex: number) => void;
-  editModeEnabled: boolean;
-  deleteAttempt: (attemptIndex: number) => void;
+  editModeEnabledOnAttempt: boolean;
+  globalEditModeEnabled: boolean;
+  deleteAttempt: (attempt: SetObject[]) => void;
   deleteSet: (set: SetObject) => void;
+  duplicateSet: (set: SetObject) => void;
   armThisSetForUpdate: (set: SetObject) => void;
 };
 
@@ -18,9 +22,11 @@ function Attempt({
   attempt,
   index,
   enterEditMode,
-  editModeEnabled,
+  editModeEnabledOnAttempt,
+  globalEditModeEnabled,
   deleteAttempt,
   deleteSet,
+  duplicateSet,
   armThisSetForUpdate,
 }: AttemptProps) {
   const [armedSetIndex, setArmedSetIndex] = useState(-1);
@@ -30,36 +36,53 @@ function Attempt({
     armThisSetForUpdate(set);
   };
 
+  const handlers = useLongPress(
+    () => {
+      if (!editModeEnabledOnAttempt) {
+        enterEditMode(index);
+      }
+    },
+    {
+      threshold: 1000,
+    },
+  );
+
   return (
     <div
-      className={`relative mx-4 my-2 min-h-13 rounded-md border border-gray-500 bg-white p-2 shadow-sm last:border-dashed last:bg-blue-100 ${editModeEnabled && "bg-amber-300!"}`}
+      {...handlers()}
+      className={`relative mx-4 my-2 min-h-13 rounded-md border border-gray-500 bg-white p-2 shadow-sm last:border-dashed last:bg-blue-100 ${editModeEnabledOnAttempt && "mr-20 bg-yellow-50! shadow-lg"} ${globalEditModeEnabled && !editModeEnabledOnAttempt && "blur-[2px]"}`}
     >
       <button
         onClick={() => {
-          if (!editModeEnabled) {
-            enterEditMode(index);
-          } else {
+          if (editModeEnabledOnAttempt) {
             enterEditMode(-1);
           }
         }}
-        className={`absolute right-0 bottom-0 cursor-pointer ${attempt.length === 0 && "hidden"}`}
+        className={`absolute -right-12 bottom-8 cursor-pointer ${attempt.length === 0 && "hidden"}`}
       >
         <svg
-          width="24"
-          height="24"
+          className="relative top-1 -left-px"
+          width="18"
+          height="18"
           viewBox="0 0 24 24"
-          xmlns="http://www.w3.org/2000/svg"
+          fill="none"
+          stroke="#000000"
+          strokeWidth="4"
+          strokeLinecap="round"
+          strokeLinejoin="round"
         >
+          <path d="M20.29 4.29L12 12.59 7.71 8.29" />
           <path
-            fill="currentColor"
-            d="M15.728 9.686l-1.414-1.414L5 17.586V19h1.414l9.314-9.314zm1.414-1.414l1.414-1.414-1.414-1.414-1.414 1.414 1.414 1.414zM7.242 21H3v-4.243L16.435 3.322a1 1 0 0 1 1.414 0l2.829 2.829a1 1 0 0 1 0 1.414L7.243 21z"
+            d="M20.29 4.29L12 12.59 7.71 8.29"
+            strokeDasharray="7 7"
+            strokeDashoffset="7"
           />
         </svg>
       </button>
-      {editModeEnabled && (
+      {editModeEnabledOnAttempt && (
         <button
-          onClick={() => deleteAttempt(index)}
-          className="absolute top-0 right-1"
+          onClick={() => deleteAttempt(attempt)}
+          className="absolute top-4 -right-12"
         >
           <svg
             className="h-5 w-5"
@@ -82,8 +105,9 @@ function Attempt({
           set={item}
           key={index}
           {...{ index }}
-          {...{ editModeEnabled }}
+          {...{ editModeEnabledOnAttempt }}
           {...{ deleteSet }}
+          {...{ duplicateSet }}
           {...{ armSetForUpdate }}
           isArmedSet={armedSetIndex === index}
         />

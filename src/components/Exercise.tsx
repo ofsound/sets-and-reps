@@ -8,7 +8,9 @@ import type { ExerciseObject, SetObject } from "../interfaces.ts";
 
 import { arrayAttemptsToFirestoreMapAttempts } from "../utils/dataConversions.ts";
 
+import { deleteAttemptFromExerciseAttempts } from "../utils/arrayFunctions.ts";
 import { deleteSetFromAttempts } from "../utils/arrayFunctions.ts";
+import { duplicateSetInAttempts } from "../utils/arrayFunctions.ts";
 
 import Attempt from "../components/Attempt.tsx";
 import SetConsole from "../components/SetConsole.tsx";
@@ -39,7 +41,8 @@ function Exercise({ exercise }: ExerciseProps) {
 
   const [setToUpdate, setSetToUpdate] = useState<SetObject>();
 
-  const [editModeEnabled, setEditModeEnabled] = useState(false);
+  const [globalEditModeEnabled, setGlobalEditModeEnabled] = useState(false);
+
   const [attemptIndexForEditMode, setAttemptIndexForEditMode] = useState(-1);
 
   const scroller = useRef<HTMLInputElement>(null);
@@ -75,9 +78,9 @@ function Exercise({ exercise }: ExerciseProps) {
 
   const enterEditMode = (attemptIndex: number) => {
     if (attemptIndex === -1) {
-      setEditModeEnabled(false);
+      setGlobalEditModeEnabled(false);
     } else {
-      setEditModeEnabled(true);
+      setGlobalEditModeEnabled(true);
     }
     setAttemptIndexForEditMode(attemptIndex);
   };
@@ -88,13 +91,13 @@ function Exercise({ exercise }: ExerciseProps) {
     updateScroller();
   };
 
-  const deleteAttempt = (attemptIndex: number) => {
+  const deleteAttempt = (attempt: SetObject[]) => {
     const confirmed = window.confirm(
       `Are you sure you want to delete this Attempt?`,
     );
 
     if (confirmed) {
-      exercise.attempts.splice(attemptIndex, 1);
+      deleteAttemptFromExerciseAttempts(exercise.attempts, attempt);
       updateExerciseAttemptsInDatabase(exercise);
     } else {
       console.log("Deletion cancelled.");
@@ -112,6 +115,11 @@ function Exercise({ exercise }: ExerciseProps) {
     } else {
       console.log("Deletion cancelled.");
     }
+  };
+
+  const duplicateSet = (set: SetObject) => {
+    duplicateSetInAttempts(exercise.attempts, set);
+    updateExerciseAttemptsInDatabase(exercise);
   };
 
   const armThisSetForUpdate = (armedSet: SetObject) => {
@@ -143,9 +151,11 @@ function Exercise({ exercise }: ExerciseProps) {
             key={index}
             {...{ index }}
             {...{ enterEditMode }}
-            editModeEnabled={index === attemptIndexForEditMode}
+            editModeEnabledOnAttempt={index === attemptIndexForEditMode}
+            {...{ globalEditModeEnabled }}
             {...{ deleteAttempt }}
             {...{ deleteSet }}
+            {...{ duplicateSet }}
             {...{ armThisSetForUpdate }}
           />
         ))}
@@ -154,7 +164,7 @@ function Exercise({ exercise }: ExerciseProps) {
         key={setAdderKey}
         {...{ appendNewSet }}
         {...{ updateArmedSet }}
-        {...{ editModeEnabled }}
+        {...{ globalEditModeEnabled }}
         {...{ initialReps }}
         {...{ initialMeasurement }}
         {...{ initialNotes }}
