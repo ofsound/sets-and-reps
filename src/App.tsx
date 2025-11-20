@@ -15,9 +15,9 @@ import ExercisesMenu from "./components/ExercisesMenu.tsx";
 import ExercisesManager from "./components/ExercisesManager.tsx";
 
 function App() {
-  // window.addEventListener("contextmenu", (e) => {
-  //   e.preventDefault();
-  // });
+  window.addEventListener("contextmenu", (e) => {
+    e.preventDefault();
+  });
 
   const [currentAppView, setCurrentAppView] = useState("welcome");
 

@@ -29,63 +29,86 @@ function Attempt({
   duplicateSet,
   armThisSetForUpdate,
 }: AttemptProps) {
-  const [isMouseDown, setIsMouseDown] = useState(false);
+  const longPressDuration = 800;
+
+  const [isPointerDown, setIsPointerDown] = useState(false);
   const mouseDownStartTime = useRef(0);
 
   const [armedSetIndex, setArmedSetIndex] = useState(-1);
+
+  const attemptElementRef = useRef<HTMLInputElement>(null);
 
   const armSetForUpdate = (set: SetObject) => {
     setArmedSetIndex(attempt.indexOf(set));
     armThisSetForUpdate(set);
   };
 
-  const handleMouseDown = () => {
+  const handlePointerDown = () => {
+    console.log("pointer down");
+
+    if (attemptElementRef.current) {
+      attemptElementRef.current.style.touchAction = "none";
+    }
+
     mouseDownStartTime.current = Date.now();
-    setIsMouseDown(true);
+    setIsPointerDown(true);
   };
 
-  const handleMouseUp = () => {
-    setIsMouseDown(false);
+  const handlePointerUp = () => {
+    if (attemptElementRef.current) {
+      attemptElementRef.current.style.touchAction = "auto";
+    }
+
+    setIsPointerDown(false);
+  };
+
+  const handlePointerCancel = () => {
+    handlePointerUp();
   };
 
   useEffect(() => {
-    if (isMouseDown) {
-      const handleDuringMouseDown = () => {
-        const timeSinceMouseDown = Date.now() - mouseDownStartTime.current;
+    if (isPointerDown) {
+      const handleDuringPointerDown = () => {
+        const timeSincePointerDown = Date.now() - mouseDownStartTime.current;
 
-        if (timeSinceMouseDown > 1000) {
+        if (timeSincePointerDown > longPressDuration) {
           if (!editModeEnabledOnAttempt) {
+            setArmedSetIndex(-1);
             enterEditMode(index);
             clearInterval(interval);
           }
         }
       };
 
-      const interval = setInterval(handleDuringMouseDown, 80);
+      const interval = setInterval(handleDuringPointerDown, 80);
       return () => clearInterval(interval);
     }
-  }, [isMouseDown]);
+  }, [isPointerDown]);
 
   useEffect(() => {
-    if (isMouseDown) {
-      window.addEventListener("pointerup", handleMouseUp);
+    if (isPointerDown) {
+      console.log("add pointerup listener");
+
+      window.addEventListener("pointerup", handlePointerUp);
     } else {
-      window.removeEventListener("pointerup", handleMouseUp);
+      window.removeEventListener("pointerup", handlePointerUp);
     }
     return () => {
-      window.removeEventListener("pointerup", handleMouseUp);
+      window.removeEventListener("pointerup", handlePointerUp);
     };
-  }, [isMouseDown]);
+  }, [isPointerDown]);
 
   return (
-    <div className="my-1 flex last:*:border-dashed last:*:bg-blue-100">
+    <div className="my-1 flex last:*:mt-1 last:*:border-dashed last:*:bg-blue-100">
       <div
+        ref={attemptElementRef}
         onClick={() => {
-          if (Date.now() - mouseDownStartTime.current <= 1000) {
+          if (Date.now() - mouseDownStartTime.current <= longPressDuration) {
             makeAttemptCurrent(attempt);
           }
         }}
-        onPointerDown={handleMouseDown}
+        onPointerDown={handlePointerDown}
+        onPointerCancel={handlePointerCancel}
         className={`relative mx-1 min-h-13 flex-1 rounded-md border border-gray-500 bg-white p-2 shadow-sm ${editModeEnabledOnAttempt && "bg-yellow-50! shadow-lg"} ${globalEditModeEnabled && !editModeEnabledOnAttempt && "blur-[2px]"}`}
       >
         {attempt.map((item, index) => (
@@ -102,7 +125,7 @@ function Attempt({
         ))}
       </div>
       {editModeEnabledOnAttempt && (
-        <div className="flex flex-col gap-3 px-1 pt-2">
+        <div className="flex flex-col gap-3.5 px-3 pt-2">
           <button onClick={() => deleteAttempt(attempt)} className="">
             <svg
               className="h-5 w-5"

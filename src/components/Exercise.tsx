@@ -1,4 +1,4 @@
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
 
 import { doc, updateDoc } from "firebase/firestore";
 
@@ -72,8 +72,6 @@ function Exercise({ exercise }: ExerciseProps) {
       updateExerciseAttemptsInDatabase(exercise);
     }
     isFirstRenderRef.current = false;
-
-    updateScroller();
   }
 
   const enterEditMode = (attemptIndex: number) => {
@@ -88,13 +86,12 @@ function Exercise({ exercise }: ExerciseProps) {
   const appendNewSet = (newSet: SetObject) => {
     exercise.attempts[exercise.attempts.length - 1].push(newSet);
     updateExerciseAttemptsInDatabase(exercise);
-    updateScroller();
   };
 
   const makeAttemptCurrent = (attempt: SetObject[]) => {
     if (exercise.attempts.indexOf(attempt) == exercise.attempts.length - 2) {
-      exercise.attempts.pop();
-      updateExerciseAttemptsInDatabase(exercise);
+      // exercise.attempts.pop();
+      // updateExerciseAttemptsInDatabase(exercise);
     }
   };
 
@@ -147,10 +144,14 @@ function Exercise({ exercise }: ExerciseProps) {
     }
   };
 
+  useEffect(() => {
+    updateScroller();
+  }, [exercise]);
+
   return (
     <div className="relative flex min-h-0 flex-1 flex-col">
       <div className="absolute -top-4.5 z-100 h-5 w-full bg-gray-200 blur-xs"></div>
-      <div className="flex-1 overflow-auto" ref={scroller}>
+      <div className="flex-1 overflow-auto pb-2" ref={scroller}>
         {exercise.attempts.map((item, index) => (
           <Attempt
             attempt={item}
