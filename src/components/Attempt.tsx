@@ -44,8 +44,6 @@ function Attempt({
   };
 
   const handlePointerDown = () => {
-    console.log("pointer down");
-
     if (attemptElementRef.current) {
       attemptElementRef.current.style.touchAction = "none";
     }
@@ -87,8 +85,6 @@ function Attempt({
 
   useEffect(() => {
     if (isPointerDown) {
-      console.log("add pointerup listener");
-
       window.addEventListener("pointerup", handlePointerUp);
     } else {
       window.removeEventListener("pointerup", handlePointerUp);

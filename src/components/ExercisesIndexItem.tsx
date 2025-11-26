@@ -102,7 +102,6 @@ function ExercisesIndexItem({ name, id, isCurrent }: ExercisesIndexItemProps) {
         const timeSinceMouseDown = Date.now() - mouseDownStartTime.current;
 
         if (timeSinceMouseDown > 700) {
-          console.log("long press");
           clearInterval(interval);
           if (nameInputElementRef.current) {
             nameInputElementRef.current.focus();
@@ -141,20 +140,7 @@ function ExercisesIndexItem({ name, id, isCurrent }: ExercisesIndexItemProps) {
         onPointerDown={handleMouseDown}
         onKeyDown={handleKeyDown}
         className="w-full px-1 focus:bg-white focus:text-black"
-      ></input>
-      {/* <button className="ml-2 flex h-6 w-9 cursor-pointer justify-center rounded-sm py-1 text-sm text-white">
-        <svg
-          width="18"
-          height="18"
-          viewBox="0 0 24 24"
-          xmlns="http://www.w3.org/2000/svg"
-        >
-          <path
-            fill="currentColor"
-            d="M15.728 9.686l-1.414-1.414L5 17.586V19h1.414l9.314-9.314zm1.414-1.414l1.414-1.414-1.414-1.414-1.414 1.414 1.414 1.414zM7.242 21H3v-4.243L16.435 3.322a1 1 0 0 1 1.414 0l2.829 2.829a1 1 0 0 1 0 1.414L7.243 21z"
-          />
-        </svg>
-      </button> */}
+      />
       {nameInputIsActive.current && (
         <button onClick={renameExercise} className="mx-4">
           <svg
@@ -183,7 +169,6 @@ function ExercisesIndexItem({ name, id, isCurrent }: ExercisesIndexItemProps) {
         onChange={handleIsCurrentCheckboxChange}
         className="ml-auto"
       ></input>
-
       <button onClick={deleteExercise} className="ml-2">
         <svg
           className="h-4 w-4"

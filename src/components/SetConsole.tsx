@@ -112,7 +112,7 @@ function SetConsole({
             <input
               disabled
               type="text"
-              className={`mt-7 h-8 w-20.5 rounded-md border border-dotted bg-gray-100 pr-2.5 text-right text-xl font-bold tabular-nums`}
+              className={`mt-7 h-11 w-20.5 rounded-md border bg-gray-100 pr-2.5 text-right text-xl font-bold tabular-nums`}
               value={measurement}
               onChange={handleMeasurementChange}
             />
@@ -127,7 +127,7 @@ function SetConsole({
             <input
               disabled
               type="text"
-              className="mt-7 h-8 w-11 rounded-md border border-dotted bg-gray-100 pr-2.5 text-right text-xl font-bold tabular-nums"
+              className="mt-7 h-11 w-11 rounded-md border bg-gray-100 pr-2.5 text-right text-xl font-bold tabular-nums"
               value={reps}
               onChange={handleRepsChange}
             />
@@ -139,7 +139,7 @@ function SetConsole({
         <div className="mt-[5px] w-12 text-sm font-bold">Notes</div>
         <input
           type="text"
-          className="ml-3 h-full w-full rounded-md border border-dotted bg-gray-100 px-2 py-1 text-left text-sm tabular-nums"
+          className="ml-3 h-full w-full rounded-md border bg-gray-100 px-2 py-1 text-left text-sm tabular-nums"
           value={notes}
           onChange={handleNotesChange}
         />

@@ -47,14 +47,19 @@ function Exercise({ exercise }: ExerciseProps) {
 
   const scroller = useRef<HTMLInputElement>(null);
 
-  const updateExerciseAttemptsInDatabase = (exercise: ExerciseObject) => {
-    const exerciseDocRef = doc(db, "exercises", exercise.id);
-    updateDoc(exerciseDocRef, {
-      attempts: arrayAttemptsToFirestoreMapAttempts(exercise.attempts),
-    });
+  const updateExerciseAttemptsInDatabase = async (exercise: ExerciseObject) => {
+    try {
+      const exerciseDocRef = doc(db, "exercises", exercise.id);
+      await updateDoc(exerciseDocRef, {
+        attempts: arrayAttemptsToFirestoreMapAttempts(exercise.attempts),
+      });
+      updateScroller();
+    } catch (error) {}
   };
 
   const updateScroller = () => {
+    console.log("updateScroller called!");
+
     const thisScroller = scroller.current;
     if (thisScroller) {
       thisScroller.scrollTop = thisScroller.scrollHeight;
