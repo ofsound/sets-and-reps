@@ -27,8 +27,11 @@ function Exercise({ exercise }: ExerciseProps) {
 
   if (exercise.attempts.length > 1) {
     const lastAttemptWithData = exercise.attempts[exercise.attempts.length - 2];
+
     const lastSetInAttempt =
       lastAttemptWithData[lastAttemptWithData.length - 1];
+
+    console.log(lastSetInAttempt);
 
     repsDefault = lastSetInAttempt.reps;
     measurementDefault = lastSetInAttempt.measurement;
@@ -58,26 +61,11 @@ function Exercise({ exercise }: ExerciseProps) {
   };
 
   const updateScroller = () => {
-    console.log("updateScroller called!");
-
     const thisScroller = scroller.current;
     if (thisScroller) {
       thisScroller.scrollTop = thisScroller.scrollHeight;
     }
   };
-
-  const isFirstRenderRef = useRef(true);
-
-  if (isFirstRenderRef.current) {
-    const lastAttempt = exercise.attempts[exercise.attempts.length - 1];
-
-    // When switching to an Exercise, create an empty attempt – except if it already exists
-    if (lastAttempt?.length !== 0) {
-      exercise.attempts.push([]);
-      updateExerciseAttemptsInDatabase(exercise);
-    }
-    isFirstRenderRef.current = false;
-  }
 
   const enterEditMode = (attemptIndex: number) => {
     if (attemptIndex === -1) {
@@ -152,6 +140,16 @@ function Exercise({ exercise }: ExerciseProps) {
   useEffect(() => {
     updateScroller();
   }, [exercise]);
+
+  useEffect(() => {
+    return () => {
+      const lastAttempt = exercise.attempts[exercise.attempts.length - 1];
+      if (lastAttempt?.length !== 0) {
+        exercise.attempts.push([]);
+        updateExerciseAttemptsInDatabase(exercise);
+      }
+    };
+  }, []);
 
   return (
     <div className="relative flex min-h-0 flex-1 flex-col">
