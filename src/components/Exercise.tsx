@@ -31,8 +31,6 @@ function Exercise({ exercise }: ExerciseProps) {
     const lastSetInAttempt =
       lastAttemptWithData[lastAttemptWithData.length - 1];
 
-    console.log(lastSetInAttempt);
-
     repsDefault = lastSetInAttempt.reps;
     measurementDefault = lastSetInAttempt.measurement;
   }
@@ -77,6 +75,22 @@ function Exercise({ exercise }: ExerciseProps) {
   };
 
   const appendNewSet = (newSet: SetObject) => {
+    const lastChildElement =
+      scroller.current?.lastElementChild?.lastElementChild;
+
+    if (lastChildElement?.childElementCount) {
+      const currentHeight = window.getComputedStyle(
+        lastChildElement as HTMLElement,
+      ).height;
+
+      const currentHeightValue = parseInt(currentHeight, 10);
+      const newHeightValue = currentHeightValue + 30;
+
+      (lastChildElement as HTMLElement).style.height = `${newHeightValue}px`;
+
+      updateScroller();
+    }
+
     exercise.attempts[exercise.attempts.length - 1].push(newSet);
     updateExerciseAttemptsInDatabase(exercise);
   };
