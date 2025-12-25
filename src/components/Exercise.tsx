@@ -87,12 +87,13 @@ function Exercise({ exercise }: ExerciseProps) {
       const newHeightValue = currentHeightValue + 30;
 
       (lastChildElement as HTMLElement).style.height = `${newHeightValue}px`;
-
-      updateScroller();
     }
+    updateScroller();
 
-    exercise.attempts[exercise.attempts.length - 1].push(newSet);
-    updateExerciseAttemptsInDatabase(exercise);
+    setTimeout(() => {
+      exercise.attempts[exercise.attempts.length - 1].push(newSet);
+      updateExerciseAttemptsInDatabase(exercise);
+    }, 100);
   };
 
   const makeAttemptCurrent = (attempt: SetObject[]) => {
