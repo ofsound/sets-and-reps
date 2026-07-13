@@ -19,6 +19,7 @@ type SetConsoleProps = {
   initialReps: number;
   initialMeasurement: string;
   initialNotes: string;
+  onSetLogged: (date: number) => void;
 };
 
 function SetConsole({
@@ -28,6 +29,7 @@ function SetConsole({
   initialReps,
   initialMeasurement,
   initialNotes,
+  onSetLogged,
 }: SetConsoleProps) {
   const [reps, setReps] = useState(initialReps);
   const [measurement, setMeasurement] = useState(initialMeasurement);
@@ -85,7 +87,9 @@ function SetConsole({
   };
 
   const tryToSetMeasurement = (newValue: number) => {
-    if (newValue >= 0 && newValue <= 300) {
+    const maximumValue = measurementUnit === "lbs" ? 500 : 300;
+
+    if (newValue >= 0 && newValue <= maximumValue) {
       setMeasurement(newValue.toString() + measurementUnit);
     }
   };
@@ -149,12 +153,15 @@ function SetConsole({
           <button
             className="mx-auto block h-9 w-full rounded-md border border-gray-500 bg-green-600 font-bold text-white shadow-md"
             onClick={() => {
+              const date = Date.now();
+
               appendNewSet({
                 reps: reps,
                 measurement: measurement,
                 notes: notes,
-                date: Date.now(),
+                date,
               });
+              onSetLogged(date);
               setNotes("");
             }}
           >

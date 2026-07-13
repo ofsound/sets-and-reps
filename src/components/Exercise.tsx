@@ -17,9 +17,10 @@ import SetConsole from "../components/SetConsole.tsx";
 
 type ExerciseProps = {
   exercise: ExerciseObject;
+  onSetLogged: (date: number) => void;
 };
 
-function Exercise({ exercise }: ExerciseProps) {
+function Exercise({ exercise, onSetLogged }: ExerciseProps) {
   const [setAdderKey, setSetConsoleKey] = useState(0);
 
   let repsDefault = 3;
@@ -194,6 +195,7 @@ function Exercise({ exercise }: ExerciseProps) {
         {...{ initialReps }}
         {...{ initialMeasurement }}
         {...{ initialNotes }}
+        {...{ onSetLogged }}
       />
     </div>
   );

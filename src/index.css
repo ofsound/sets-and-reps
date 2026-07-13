@@ -5,3 +5,19 @@
 @theme {
   --font-sans: "Noto Sans", "sans-serif";
 }
+
+html,
+body {
+  /* Prevents the "bounce" effect at the top/bottom of the page on iOS */
+  overscroll-behavior-y: none;
+
+  /* Prevents text selection while you're trying to tap buttons quickly */
+  user-select: none;
+
+  /* Removes the tap highlight color on mobile Safari */
+  -webkit-tap-highlight-color: transparent;
+
+  /* Ensures the app takes up the full screen height even with the notch */
+  padding-top: env(safe-area-inset-top);
+  padding-bottom: env(safe-area-inset-bottom);
+}

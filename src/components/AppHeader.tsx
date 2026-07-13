@@ -1,8 +1,11 @@
+import RestTimer from "./RestTimer.tsx";
+
 type AppHeaderProps = {
   showManager: () => void;
   toggleMenu: () => void;
   appHeading: string;
   currentAppView: string;
+  lastSetLoggedAt: number | null;
 };
 
 function AppHeader({
@@ -10,6 +13,7 @@ function AppHeader({
   toggleMenu,
   appHeading,
   currentAppView,
+  lastSetLoggedAt,
 }: AppHeaderProps) {
   return (
     <div>
@@ -26,11 +30,12 @@ function AppHeader({
             </div>
           </div>
         )}
+        <RestTimer lastSetLoggedAt={lastSetLoggedAt} />
       </div>
       {currentAppView === "menu" && (
         <button
           onClick={showManager}
-          className="absolute top-2 right-1/20 z-200 mx-auto flex h-6.5 w-9 cursor-pointer justify-center rounded-sm bg-gray-300 py-1 text-sm text-black"
+          className="absolute top-2 left-1/20 z-200 mx-auto flex h-6.5 w-9 cursor-pointer justify-center rounded-sm bg-gray-300 py-1 text-sm text-black"
         >
           <svg
             width="18"
@@ -48,7 +53,7 @@ function AppHeader({
       {currentAppView === "manager" && (
         <button
           onClick={toggleMenu}
-          className="absolute top-2 right-1/20 z-200 mx-auto flex h-6.5 w-9 cursor-pointer justify-center rounded-sm bg-gray-300 pt-1 text-base font-black text-black"
+          className="absolute top-2 left-1/20 z-200 mx-auto flex h-6.5 w-9 cursor-pointer justify-center rounded-sm bg-gray-300 pt-1 text-base font-black text-black"
         >
           <svg
             className="relative top-1 -left-px"

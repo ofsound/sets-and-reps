@@ -40,6 +40,7 @@ function App() {
 
   const [exercises, setExercises] = useState<Array<ExerciseObject>>([]);
   const [currentExercise, setCurrentExercise] = useState<ExerciseObject>();
+  const [lastSetLoggedAt, setLastSetLoggedAt] = useState<number | null>(null);
 
   const openExercise = (exercise: ExerciseObject) => {
     setCurrentExercise(exercise);
@@ -72,6 +73,14 @@ function App() {
       });
 
       setExercises(dataFromFirestore);
+
+      const setDates = dataFromFirestore.flatMap((exercise) =>
+        exercise.attempts.flatMap((attempt) =>
+          attempt.map((set) => set.date),
+        ),
+      );
+
+      setLastSetLoggedAt(setDates.length > 0 ? Math.max(...setDates) : null);
     });
 
     return () => unsubscribe();
@@ -84,11 +93,16 @@ function App() {
         {...{ toggleMenu }}
         {...{ currentAppView }}
         {...{ appHeading }}
+        {...{ lastSetLoggedAt }}
       />
       {currentAppView === "welcome" && <AppWelcome {...{ exercises }} />}
 
       {currentAppView === "exercise" && currentExercise && (
-        <Exercise exercise={currentExercise} key={currentExercise.id} />
+        <Exercise
+          exercise={currentExercise}
+          key={currentExercise.id}
+          onSetLogged={setLastSetLoggedAt}
+        />
       )}
       {currentAppView === "menu" && (
         <ExercisesMenu {...{ exercises }} setCurrentExercise={openExercise} />
