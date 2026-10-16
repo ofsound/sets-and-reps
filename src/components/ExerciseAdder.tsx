@@ -26,6 +26,7 @@ function ExerciseAdder({ exercises }: ExerciseAdderProps) {
     const newExercise = {
       id: docRef.id,
       name: newExerciseName,
+      settings: "",
       attempts: [],
       order: exercises.length,
       isCurrent: true,
@@ -44,7 +45,7 @@ function ExerciseAdder({ exercises }: ExerciseAdderProps) {
   };
 
   return (
-    <div className="mx-auto flex w-9/10 rounded-sm">
+    <div className="mx-auto mb-3 flex w-9/10 shrink-0 rounded-sm">
       <input
         id="name"
         type="text"

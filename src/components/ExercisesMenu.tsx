@@ -80,11 +80,13 @@ function ExercisesMenu({ exercises, setCurrentExercise }: ExercisesMenuProps) {
               setCurrentExercise(item);
             }}
           >
-            <div
-              className={`absolute top-[9px] right-3 ml-4 text-xs ${isMostRecentDate ? "rounded-md bg-amber-300 px-2 py-0.5 font-bold text-gray-900 shadow-sm" : "text-zinc-300"}`}
-            >
-              {formatExerciseDate(exerciseDate)}
-            </div>
+            {exerciseDate !== null && (
+              <div
+                className={`absolute top-[9px] right-3 ml-4 rounded-md px-2 py-0.5 text-xs font-bold text-gray-900 shadow-sm ${isMostRecentDate ? "bg-amber-300" : "bg-gray-300"}`}
+              >
+                {formatExerciseDate(exerciseDate)}
+              </div>
+            )}
 
             <div className="relative w-max">
               <span className="text-shadow-md">{item.name}</span>

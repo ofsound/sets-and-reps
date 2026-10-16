@@ -95,7 +95,7 @@ function SetConsole({
   };
 
   return (
-    <div className="mx-auto flex w-full flex-col bg-gray-500 pb-3">
+    <div className="mx-auto flex w-full shrink-0 flex-col bg-gray-500 pb-[calc(0.75rem+env(safe-area-inset-bottom))]">
       <div className="flex justify-center bg-linear-to-t from-gray-500 to-slate-400 pt-3">
         <div className="flex flex-1 flex-col">
           <div className="mb-1 h-8 text-center text-sm font-bold">

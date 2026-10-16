@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 
 type RestTimerProps = {
   lastSetLoggedAt: number | null;
+  inline?: boolean;
 };
 
 const formatElapsedTime = (elapsedSeconds: number) => {
@@ -18,7 +19,7 @@ const formatElapsedTime = (elapsedSeconds: number) => {
   return `${minutes}:${seconds.toString().padStart(2, "0")}`;
 };
 
-function RestTimer({ lastSetLoggedAt }: RestTimerProps) {
+function RestTimer({ lastSetLoggedAt, inline = false }: RestTimerProps) {
   const [currentTime, setCurrentTime] = useState(() => Date.now());
 
   useEffect(() => {
@@ -43,7 +44,9 @@ function RestTimer({ lastSetLoggedAt }: RestTimerProps) {
   );
 
   return (
-    <div className="absolute top-2 right-4 rounded-sm bg-gray-300 px-2 py-px text-sm font-bold text-black tabular-nums">
+    <div
+      className={`${inline ? "col-start-3" : "absolute top-2 right-4"} rounded-sm bg-gray-300 px-2 py-px text-sm font-bold whitespace-nowrap text-black tabular-nums`}
+    >
       Rest {formatElapsedTime(elapsedSeconds)}
     </div>
   );

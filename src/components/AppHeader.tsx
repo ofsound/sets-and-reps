@@ -1,4 +1,6 @@
 import RestTimer from "./RestTimer.tsx";
+import ExerciseSettings from "./ExerciseSettings.tsx";
+import type { ExerciseObject } from "../interfaces.ts";
 
 type AppHeaderProps = {
   showManager: () => void;
@@ -6,6 +8,7 @@ type AppHeaderProps = {
   appHeading: string;
   currentAppView: string;
   lastSetLoggedAt: number | null;
+  exercise?: ExerciseObject;
 };
 
 function AppHeader({
@@ -14,23 +17,39 @@ function AppHeader({
   appHeading,
   currentAppView,
   lastSetLoggedAt,
+  exercise,
 }: AppHeaderProps) {
   return (
-    <div>
-      <div className="relative flex h-11 justify-between px-4 pt-2">
+    <div className="relative z-200 shrink-0 bg-gray-200">
+      <div
+        className={
+          exercise
+            ? "relative grid h-11 grid-cols-[minmax(0,1fr)_minmax(0,1.25fr)_auto] items-start gap-2 px-4 pt-2"
+            : "relative flex h-11 justify-between px-4 pt-2"
+        }
+      >
+        {exercise && (
+          <ExerciseSettings
+            key={`${exercise.id}:${exercise.settings ?? ""}`}
+            exercise={exercise}
+          />
+        )}
         {currentAppView !== "manager" && (
           <div
             onClick={() => {
               toggleMenu();
             }}
-            className="relative z-200 flex-1 cursor-pointer font-bold text-black select-none"
+            className="relative z-200 min-w-0 flex-1 cursor-pointer font-bold text-black select-none"
           >
-            <div className="mx-auto w-max rounded-sm bg-gray-300 px-3 py-px">
+            <div className="mx-auto w-max max-w-full truncate rounded-sm bg-gray-300 px-3 py-px">
               {appHeading} ⏷
             </div>
           </div>
         )}
-        <RestTimer lastSetLoggedAt={lastSetLoggedAt} />
+        <RestTimer
+          lastSetLoggedAt={lastSetLoggedAt}
+          inline={Boolean(exercise)}
+        />
       </div>
       {currentAppView === "menu" && (
         <button

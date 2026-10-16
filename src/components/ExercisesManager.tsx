@@ -9,7 +9,7 @@ type ExercisesManagerProps = {
 
 function ExercisesManager({ exercises }: ExercisesManagerProps) {
   return (
-    <div className="flex min-h-0 w-full flex-1 flex-col bg-gray-200">
+    <div className="flex min-h-0 w-full flex-1 flex-col bg-gray-200 pb-[env(safe-area-inset-bottom)]">
       <ExercisesIndex {...{ exercises }} />
       <ExerciseAdder {...{ exercises }} />
     </div>

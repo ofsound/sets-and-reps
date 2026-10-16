@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useReducer } from "react";
 
 import { collection, onSnapshot, query, orderBy } from "firebase/firestore";
 
@@ -7,6 +7,11 @@ import { db } from "./firebase-config.ts";
 import type { ExerciseObject } from "./interfaces.ts";
 
 import { firestoreMapAttemptsToArrayAttempts } from "./utils/dataConversions.ts";
+import {
+  createRestTimerState,
+  restTimerReducer,
+  REST_TIMER_STORAGE_KEY,
+} from "./utils/restTimer.ts";
 
 import AppHeader from "./components/AppHeader.tsx";
 import AppWelcome from "./components/AppWelcome.tsx";
@@ -40,7 +45,32 @@ function App() {
 
   const [exercises, setExercises] = useState<Array<ExerciseObject>>([]);
   const [currentExercise, setCurrentExercise] = useState<ExerciseObject>();
-  const [lastSetLoggedAt, setLastSetLoggedAt] = useState<number | null>(null);
+  const [{ lastSetLoggedAt }, dispatchRestTimer] = useReducer(
+    restTimerReducer,
+    null,
+    () => {
+      try {
+        return createRestTimerState(
+          localStorage.getItem(REST_TIMER_STORAGE_KEY),
+        );
+      } catch {
+        return createRestTimerState(null);
+      }
+    },
+  );
+
+  useEffect(() => {
+    if (lastSetLoggedAt === null) return;
+    try {
+      localStorage.setItem(REST_TIMER_STORAGE_KEY, String(lastSetLoggedAt));
+    } catch {
+      // The active timer still works when browser storage is unavailable.
+    }
+  }, [lastSetLoggedAt]);
+
+  const handleSetLogged = (date: number) => {
+    dispatchRestTimer({ type: "setLogged", date });
+  };
 
   const openExercise = (exercise: ExerciseObject) => {
     setCurrentExercise(exercise);
@@ -64,6 +94,8 @@ function App() {
         const rowFromFirestore: ExerciseObject = {
           id: exercise.id,
           name: exercise.name,
+          settings:
+            typeof exercise.settings === "string" ? exercise.settings : "",
           attempts: exerciseAttempts,
           order: exercise.order,
           isCurrent: exercise.isCurrent,
@@ -75,12 +107,13 @@ function App() {
       setExercises(dataFromFirestore);
 
       const setDates = dataFromFirestore.flatMap((exercise) =>
-        exercise.attempts.flatMap((attempt) =>
-          attempt.map((set) => set.date),
-        ),
+        exercise.attempts.flatMap((attempt) => attempt.map((set) => set.date)),
       );
 
-      setLastSetLoggedAt(setDates.length > 0 ? Math.max(...setDates) : null);
+      dispatchRestTimer({
+        type: "initialize",
+        date: setDates.length > 0 ? Math.max(...setDates) : null,
+      });
     });
 
     return () => unsubscribe();
@@ -94,6 +127,11 @@ function App() {
         {...{ currentAppView }}
         {...{ appHeading }}
         {...{ lastSetLoggedAt }}
+        exercise={
+          currentAppView === "exercise"
+            ? exercises.find((exercise) => exercise.id === currentExercise?.id)
+            : undefined
+        }
       />
       {currentAppView === "welcome" && <AppWelcome {...{ exercises }} />}
 
@@ -101,7 +139,7 @@ function App() {
         <Exercise
           exercise={currentExercise}
           key={currentExercise.id}
-          onSetLogged={setLastSetLoggedAt}
+          onSetLogged={handleSetLogged}
         />
       )}
       {currentAppView === "menu" && (

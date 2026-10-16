@@ -16,8 +16,12 @@ body {
 
   /* Removes the tap highlight color on mobile Safari */
   -webkit-tap-highlight-color: transparent;
+}
 
-  /* Ensures the app takes up the full screen height even with the notch */
-  padding-top: env(safe-area-inset-top);
-  padding-bottom: env(safe-area-inset-bottom);
+#root {
+  /* Leave extra room below the camera area for the iOS status-bar blur.
+     Bottom controls handle their own safe area so backgrounds reach the edge. */
+  box-sizing: border-box;
+  height: 100dvh;
+  padding-top: calc(env(safe-area-inset-top) + 12px);
 }
