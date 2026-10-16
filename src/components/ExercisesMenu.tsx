@@ -34,44 +34,38 @@ const formatExerciseDate = (dateNumber: number | null) => {
     .replace(/ (\s*)am/g, "am");
 };
 
-const isSameCalendarDate = (firstDate: number, secondDate: number) => {
-  const first = new Date(firstDate);
-  const second = new Date(secondDate);
-
-  return (
-    first.getFullYear() === second.getFullYear() &&
-    first.getMonth() === second.getMonth() &&
-    first.getDate() === second.getDate()
-  );
+const getCalendarDate = (timestamp: number) => {
+  const date = new Date(timestamp);
+  return new Date(date.getFullYear(), date.getMonth(), date.getDate()).getTime();
 };
+
+const pastDateColors = ["bg-neutral-200", "bg-neutral-300", "bg-neutral-400"];
 
 function ExercisesMenu({ exercises, setCurrentExercise }: ExercisesMenuProps) {
   const currentExercises = exercises.filter((item) => item.isCurrent === true);
-  const mostRecentDate = currentExercises.reduce<number | null>(
-    (latestDate, exercise) => {
-      const exerciseDate = getLastDateFromExercise(exercise);
-
-      if (
-        exerciseDate !== null &&
-        (latestDate === null || exerciseDate > latestDate)
-      ) {
-        return exerciseDate;
-      }
-
-      return latestDate;
-    },
-    null,
+  const exercisesWithDates = currentExercises.map((exercise) => ({
+    exercise,
+    lastDate: getLastDateFromExercise(exercise),
+  }));
+  const dates = [
+    ...new Set(
+      exercisesWithDates.flatMap(({ lastDate }) =>
+        lastDate === null ? [] : [getCalendarDate(lastDate)],
+      ),
+    ),
+  ].sort((a, b) => b - a);
+  const dateColors = new Map(
+    dates.map((date, index) => [
+      date,
+      index === 0
+        ? "bg-amber-300"
+        : pastDateColors[(index - 1) % pastDateColors.length],
+    ]),
   );
 
   return (
     <div className="w-full flex-1 overflow-auto bg-gray-200 pt-3">
-      {currentExercises.map((item) => {
-        const exerciseDate = getLastDateFromExercise(item);
-        const isMostRecentDate =
-          exerciseDate !== null &&
-          mostRecentDate !== null &&
-          isSameCalendarDate(exerciseDate, mostRecentDate);
-
+      {exercisesWithDates.map(({ exercise: item, lastDate: exerciseDate }) => {
         return (
           <button
             key={item.id}
@@ -82,7 +76,7 @@ function ExercisesMenu({ exercises, setCurrentExercise }: ExercisesMenuProps) {
           >
             {exerciseDate !== null && (
               <div
-                className={`absolute top-[9px] right-3 ml-4 rounded-md px-2 py-0.5 text-xs font-bold text-gray-900 shadow-sm ${isMostRecentDate ? "bg-amber-300" : "bg-gray-300"}`}
+                className={`absolute top-[9px] right-3 ml-4 rounded-md px-2 py-0.5 text-xs font-bold text-gray-900 shadow-sm ${dateColors.get(getCalendarDate(exerciseDate))}`}
               >
                 {formatExerciseDate(exerciseDate)}
               </div>
